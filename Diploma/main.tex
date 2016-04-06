@@ -13,7 +13,6 @@
 \usepackage{parskip}
 \usepackage[all]{xy}
 \usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
-
 \onehalfspacing
 
 \begin{document}
@@ -92,7 +91,7 @@ Področje dela tesno povezuje fiziko z računalništvo, natančneje - s strojnim
 
 Namen diplomskega dela je predvsem seznaniti se z uporabo metod strojnega učenja pri ločevanju signala in ozadja pri razpadu $H \rightarrow \tau^+\tau^-$, preveriti in ovrednotiti različne klasifikacijske metode na podatkih simulatorja ATLAS in preveriti proces optimizacije teh metod, ki izhaja iz podatkov (in ne nujno domenskega znanja). Sekundarni cilj je razvoj lastne klasifikacijske metode, ki bo temeljila na metodi podpornih vektorjev (SVM).
 
-Še enkrav velja izpostaviti, da se diplomsko delo nanaša predvsem na uporabo metod strojnega učenja pri analizi zahtevnih in analitično neobvladljivih problemov, in ne na fiziko osnovnih delcev in razlago/poznavanje standardnega modela (SM).
+Še enkrav velja izpostaviti, da se diplomsko delo nanaša predvsem na uporabo metod strojnega učenja pri analizi zahtevnih in analitično neobvladljivih problemov, in ne na fiziko osnovnih delcev in razlago standardnega modela (SM).
 
 \section*{Izziv HiggsML}
 \comment{Opis challenge-a.}
@@ -119,10 +118,9 @@ Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru m
 \section{ATLAS detektor}
 
 
-\section{Razpadi $H$}
+\section{Razpad $H \rightarrow \tau^+\tau^-$}
 
-\comment{Razpadi Higgsovega bozona - različni kanali.}
-\comment{Tu se gleda predvsem $H \rightarrow \tau^-\tau^+$, ki je (preveri!?) edini relevanten za challenge. \cite{Baldi2014}}
+\cite{Baldi2014} \cite{atlas2013}
 
 
 % -----------------------------------------------------------------------------
@@ -192,7 +190,46 @@ Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatko
 \comment{Vir, velikost ...}
 
 \subsection{Opis značilk}
-\comment{Podroben opis značilk}
+
+Opis značilk je povzet po \cite{Adam-Bourdarios14}.
+
+Stolpci brez prefiksa imajo posebno vlogo in se ne uporabljajo kot značilke:
+
+\begin{changemargin}{0.5cm}{0.0cm} 
+\begin{description}
+	\item [EventId] 	Zaporedna številka dogodka.
+	\item [Weight]  	Utež dogodka $w_i$, kakor je opisana v podpoglavju \ref{utez}.
+	\item [Label] 		Oznaka dogodka (niz) $y_i \in \{\text{s}, \text{b}\}$ (s za signal, b za ozadje).	
+\end{description}
+\end{changemargin}
+
+Stolpci s prefiksom \textbf{PRI} označujejo \textit{surove} podatke, ki jih detektor izmeri pri trku:
+\begin{changemargin}{0.5cm}{0.0cm} 
+\begin{description}
+	\item[PRI\_tau\_pt] Prečni (transverse???) moment $\sqrt{p_x^2 + p_y^2}$ hadronskega tau.
+	\item[PRI\_tau\_eta] Psevdorapidnost $\eta$ hadronskega tau.
+	\item[PRI\_tau\_phi] Azimutalni kot $\phi$ hadronskega tau.
+	
+	\item[PRI\_lep\_pt] Prečni moment $\sqrt{p_x^2 + p_y^2}$ leptona (elektrona ali miona).
+	\item[PRI\_lep\_eta] Psevdorapidnost $\eta$ leptona.
+	\item[PRI\_lep\_phi] Azimutalni kot $\phi$ leptona.
+	
+	\item[PRI\_met] Manjkajoča prečna energija $\vec{E}_T^{\text{miss}}$.
+	\item[PRI\_met\_phi] Azimutalni kot $\phi$ manjkajoče prečne energije.
+	
+	\item[PRI\_met\_sumet] Celotna prečna energija v detektorju.
+	
+	\item[PRI\_jet\_num] Število vseh žarkov ($\in {1, 2, 3}$), vednosti, večje od $3$ so bile zamenjane s 3
+	\item[text] description
+\end{description}
+\end{changemargin}
+
+Stolpci s prefiksom \textbf{DER} označujejo iz surovih podatkov izpeljane količine:
+\begin{changemargin}{0.5cm}{0.0cm} 
+\begin{description}
+	\item[label] description
+\end{description}
+\end{changemargin}
 
 \section{Raziskovalna analiza podatkov}
 \comment{Večina gre v dodatek.}
