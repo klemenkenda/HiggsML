@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Starter", "Starter\Starter.pyproj", "{96DB3490-B490-40E4-9895-0D6335DB5DFA}"
-EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TMVA", "TMVA\TMVA.pyproj", "{5F4A7155-1DDD-437F-A626-E89E0FF19BBD}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "NaiveBayes", "NaiveBayes\NaiveBayes.pyproj", "{96DB3490-B490-40E4-9895-0D6335DB5DFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,10 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{96DB3490-B490-40E4-9895-0D6335DB5DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96DB3490-B490-40E4-9895-0D6335DB5DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F4A7155-1DDD-437F-A626-E89E0FF19BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F4A7155-1DDD-437F-A626-E89E0FF19BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96DB3490-B490-40E4-9895-0D6335DB5DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96DB3490-B490-40E4-9895-0D6335DB5DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
