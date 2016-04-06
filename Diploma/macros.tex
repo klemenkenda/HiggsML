@@ -1,0 +1,28 @@
+%Velikost strani - dvostransko
+\oddsidemargin 1.2cm
+\evensidemargin -1.0cm
+\headheight 0.5cm
+\headsep 0.5cm
+
+%Nastavitev glave in repa strani
+\pagestyle{fancy}
+\fancyhead{}
+\renewcommand{\chaptermark}[1]{\markboth{\textsf{Poglavje \thechapter:\ #1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\textsf{\thesection\  #1}}{}}
+\fancyhead[RE]{\leftmark}
+\fancyhead[LO]{\rightmark}
+\fancyhead[LE,RO]{\thepage}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+
+\setlength{\parindent}{0cm}
+
+% define operators
+\newcommand{\comment}[1] {
+  \noindent\colorbox{yellow}{#1} \\
+}
+
+\newcommand{\mat}[1] {
+  \mathsf{#1}
+}

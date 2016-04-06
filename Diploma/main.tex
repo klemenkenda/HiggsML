@@ -1,0 +1,239 @@
+% !TeX spellcheck = sl_SI
+\documentclass[11pt,a4paper,openany]{book}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, fullpage}
+\usepackage{epsfig}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{amsfonts}
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage[all]{xy}
+\usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+
+\onehalfspacing
+
+\begin{document}
+\input{macros}
+
+% -----------------------------------------------------------------------------
+% UVODNESTRANI
+% -----------------------------------------------------------------------------
+\input{intropages}
+
+
+
+
+
+
+
+% -----------------------------------------------------------------------------
+% POVZETEK
+% -----------------------------------------------------------------------------
+\chapter*{Povzetek}
+\addcontentsline{toc}{chapter}{Povzetek}
+
+Plan dela:
+\begin{itemize}
+	\item Osnovno razumevanje fizikalnega dela + opis
+	\item Exploratory analysis + opis podatkov
+	\item Usposobitev baseline (predlaganih) metod
+		\begin{itemize}
+			\item Simple Window
+			\item Naive Bayes
+			\item XGBoost
+		\end{itemize}
+	\item Delo na ostalih metodah + opis metod
+		\begin{itemize}
+			\item Logistic regression
+			\item Perceptron
+			\item NN
+			\item SVM
+		\end{itemize}
+	\item Izboljšava metod
+		\begin{itemize}
+			\item Na podlagi logistične regresije
+			\item Na podlagi SVM
+		\end{itemize}
+\end{itemize} 
+
+\vspace{1.3cm}
+\noindent
+{\large \bf Ključne besede:}
+
+\vspace{0.5cm}
+\noindent test, test, test
+
+
+Abstract. Key words.
+
+
+
+
+
+
+
+% -----------------------------------------------------------------------------
+% UVOD
+% -----------------------------------------------------------------------------
+\chapter*{Uvod}
+\addcontentsline{toc}{chapter}{Uvod}
+
+Eksperimenta ATLAS in CMS sta leta 2012 objavila odkritje Higgsovega bozona\cite{Aad20121,Chatrchyan201230}. Odkritju je leta 2013 sledila Nobelova nagrada za fiziko, ki sta jo prejela François Englert in Peter Higgs. Obstoj delca, katerega vloga naj bi bila, da daje maso ostalim elementarnim delcem, je bil predviden pred skoraj 50 leti. Eksperimenti so potekali (in še vedno potekajo) na Velikem hadronskem trkalniku (Large Hadron Collider - LHC) v CERN-u (Evropski organizaciji za jedrske raziskave) v Ženevi\cite{ChallengeDoc}.
+
+Higgsov bozon lahko razpade skozi različne procese, ki jim v fiziki osnovnih delcev pravimo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v treh različnih razpadnih kanalih, v katerih vedno nastanejo pari bozonov. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare, predvsem v $\tau$ leptone in $b$ kvarke. Prvi dokazi o $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013}. \comment{Ali so rezultati $H \rightarrow \tau^+\tau^-$ že kje? Se to kaj navede?}
+
+Pri analizi eksperimentalnih podatkov je potrebno določiti relevantno območje faznega prostora izmerjenih značilk, v katerem je velika verjetnost, da smo naleteli na dogodke, ki nas zanimajo (v našem primeru na razpad $H \rightarrow \tau^+\tau^-$). V preteklosti so ta področja določali eksperti \textit{ročno}\cite{Adam-Bourdarios14}. Napredne klasifikacijske metode, ki temeljijo na strojnem učenju, pa se danes rutinirano uporabljajo za reševanje tega in podobnih problemov\cite{atlas2013}.
+
+Področje dela tesno povezuje fiziko z računalništvo, natančneje - s strojnim učenjem. 
+
+Namen diplomskega dela je predvsem seznaniti se z uporabo metod strojnega učenja pri ločevanju signala in ozadja pri razpadu $H \rightarrow \tau^+\tau^-$, preveriti in ovrednotiti različne klasifikacijske metode na podatkih simulatorja ATLAS in preveriti proces optimizacije teh metod, ki izhaja iz podatkov (in ne nujno domenskega znanja). Sekundarni cilj je razvoj lastne klasifikacijske metode, ki bo temeljila na metodi podpornih vektorjev (SVM).
+
+Še enkrav velja izpostaviti, da se diplomsko delo nanaša predvsem na uporabo metod strojnega učenja pri analizi zahtevnih in analitično neobvladljivih problemov, in ne na fiziko osnovnih delcev in razlago/poznavanje standardnega modela (SM).
+
+\section*{Izziv HiggsML}
+\comment{Opis challenge-a.}
+\comment{Globoko fizikalno razumevanje načeloma v tem poskusu ni pripomoglo k signifikantnemu izboljšanju klasifikacijskih modelov.}
+\comment{Vir: https://www.kaggle.com/c/higgs-boson/forums/t/10350/how-physicists-fared}
+
+
+\section*{Terminologija}
+\addcontentsline{toc}{section}{Terminologija}
+
+Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru majhno in ker se slovenska terminologija na tem področju še redkeje uporablja in je zato tudi strokovno podkovanemu bralcu manj znana, na tem mestu prilagamo kratek slovarček strokovnih terminov s področja strojnega učenja. Vsi prevodi temeljijo na \textit{Računalniškem slovarčku}, ki ga vzdržuje Odsek za inteligentne sistem na Inštitutu "Jožef Stefan"\footnote{\url{http://dis-slovarcek.ijs.si}}.
+
+\input{slovar}
+
+% -----------------------------------------------------------------------------
+% POGLAVJE: Fizikalne osnove
+% -----------------------------------------------------------------------------
+\chapter{Fizikalne osnove}
+
+\comment{Osnovni članek: \cite{AadScience2012}.}
+
+
+
+\section{ATLAS detektor}
+
+
+\section{Razpadi $H$}
+
+\comment{Razpadi Higgsovega bozona - različni kanali.}
+\comment{Tu se gleda predvsem $H \rightarrow \tau^-\tau^+$, ki je (preveri!?) edini relevanten za challenge. \cite{Baldi2014}}
+
+
+% -----------------------------------------------------------------------------
+% POGLAVJE: Opredelitev problema
+% -----------------------------------------------------------------------------
+\chapter{Opredelitev problema}
+
+Problem, s katerim sem se spopadel v diplomskem delu, sledi formulaciji na odprtem tekmovanju \textit{The Higgs Boson Machine Learning Challenge (HiggsML)}\footnote{ \url{http://www.kaggle.com/c/higgs-boson}}, ki temelji na rezultatih kolaboracije ATLAS\cite{Adam-Bourdarios14}. 
+
+
+\section{Formalna opredelitev problema}
+
+Naj ${\cal D} = \left\{({\mathbf x}_1, y_1, w_1, \dots, ({\mathbf x}_n, y_n, w_n) \right\}$ predstavlja učno podatkovno množico, kjer je $\mathbf{x}_i \in \mathbb{R}^d$ $d$-dimenzionalni vektor značilk, $y_i \in \{\text{b, s}\}$ je oznaka, $w_i \in \mathbb{R}^+$ pa je nenegativna utež. Naj bosta ${\cal S} = \{i : y_i = \text{s}\}$ in ${\cal B} = \{i : y_i = \text{b}$ množici indeksov dogodkov, ki predstavljajo signal in ozadje, $n_\text{s} = |{\cal S}|$ in $n_\text{b} = |{\cal B}|$ pa naj označujeta števili simuliranih dogodkov, ki predstavljata signal in ozadje.
+
+Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatkov}) in se razlikujejo od izmerjenih. Razmerje $n_\text{s} / n_\text{b}$ v podatkih tako ne odraža dejanskega razmerja dogodkov $P(y = s) / P(y = b)$. Glede ne nizko verjetnost, da pri nekem naravnem dogodku gre za signal \cite{Adam-Bourdarios14}, je tako učna podatkovna množica precej bolj uravnotežena in omogoča metodam, da se lahko naučijo razlikovati med dogodki, ki predstavljajo ozadje in tistimi, ki predstavljajo signal.
+
+\section{AMS metrika}
+
+% -----------------------------------------------------------------------------
+% POGLAVJE: Metode strojnega učenja
+% -----------------------------------------------------------------------------
+\chapter{Strojno učenje}
+
+\cite{Mitchell1997}, \cite{Witten2005}.
+
+\section{Metode za nadzorovano učenje}
+
+\section{Pregled klasifikacijskih metod}
+
+\subsection{Preprosto okno}
+\comment{http://higgsml.lal.in2p3.fr/software/simplest-python-kit/}
+
+\subsection{Logistična regresija}
+
+\subsection{Naivni Bayesov klasifikator}
+
+\subsection{Metoda podpornih vektorjev}
+\comment{Pride nekje do AMS 2,7.}
+\comment{https://www.kaggle.com/c/higgs-boson/forums/t/10165/has-anyone-tried-the-support-vector-machine-for-this-problem}
+\comment{Tu se splača igrat s kerneli.}
+
+\subsection{Nevronske mreže}
+\comment{Deep NN - zmagovalna metoda. Ansambli.}
+
+\subsubsection{Perceptron}
+
+\subsubsection{Umetne nevronske mreže - aNN}
+
+\subsubsection{Globoke nevronske mreže}
+
+\subsubsection{Ansambli}
+
+\subsection{Pospešena odločitvena drevesa}
+\comment{TMVA boosted trees? XGBoost - metoda, ki je manj potratna.}
+\comment{http://higgsml.lal.in2p3.fr/software/hep-tmva-kit/}
+\comment{http://higgsml.lal.in2p3.fr/software/multiboost/}
+\comment{https://github.com/dmlc/xgboost}
+
+
+% -----------------------------------------------------------------------------
+% POGLAVJE: Podatki
+% -----------------------------------------------------------------------------
+\chapter{Podatki}
+\label{analiza-podatkov}
+
+\section{Opis podatkov}
+\comment{Vir, velikost ...}
+
+\subsection{Opis značilk}
+\comment{Podroben opis značilk}
+
+\section{Raziskovalna analiza podatkov}
+\comment{Večina gre v dodatek.}
+
+
+	
+% -----------------------------------------------------------------------------
+% POGLAVJE: Izboljševanje metod in razvoj lastne metode
+% -----------------------------------------------------------------------------
+\chapter{Izboljševanje metod in razvoj lastne metode}
+
+Vse implementacije sem naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn}. Za pospešena odločitvena drevesa sem uporabil nagrajeni paket XGBoost\cite{chen2014}.
+
+\section{Izbira značilk}
+	
+\section{Generiranje novih značilk}
+
+\section{Fine tuning}
+
+\section{Razvoj metode na podlagi SVM ali NN}
+
+\section{Rezultati}
+
+
+
+
+% -----------------------------------------------------------------------------
+% POGLAVJE: Zaključek
+% -----------------------------------------------------------------------------
+\chapter*{Zaključek}
+\addcontentsline{toc}{chapter}{Zaključek}
+
+% -----------------------------------------------------------------------------
+% ZAKLJUČNE STRANI
+% -----------------------------------------------------------------------------
+\input{endpages}
+
+% -----------------------------------------------------------------------------
+% DODATEK
+% -----------------------------------------------------------------------------
+\input{appendix}
+
+
+\end{document}
