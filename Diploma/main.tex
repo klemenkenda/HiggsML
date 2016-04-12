@@ -159,6 +159,12 @@ Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatko
 
 \section{Pregled klasifikacijskih metod}
 
+V tipičnem klasifikacijskem problemu imamo množico vektorjev v prostoru $x_i \in \mathbb{R}^d$ (vektor značilk) in pripadajočih oznak $l_i \in {1, 2, 3, \ldots, N}$, kjer $N$ označuje število različnih razredov. Oznaka $l_i$ nam pove, v kateri razred spada vektor $x_i$. Cilj klasifikacijskega problema je predvideti oznake neznanih vektorjev, in sicer tako, da bo pri tem napaka najmanjša.
+
+Za binarne klasifikacijske probleme velja $N = 2$. V takih primerih obstajata 2 razreda: pozitivni in negativni. S takšnim problemom se srečujemo tudi v tem diplomskem delu.
+
+
+
 \subsection{Preprosto okno}
 \comment{http://higgsml.lal.in2p3.fr/software/simplest-python-kit/}
 
@@ -167,6 +173,32 @@ Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatko
 \subsection{Naivni Bayesov klasifikator}
 
 \subsection{Metoda podpornih vektorjev}
+
+Denimo, da imamo binarni klasifikacijski problem in da sta razreda točk v našem prostoru linearno separabilna. V večini takih primerov obstaja neskončno mnogo različnih hiperravnin, ki ločujejo med sabo oba razreda (glej sliko \ref{svmseparable}).
+
+\begin{figure}[ht]
+	\includegraphics[width=5.2cm]{methods/svm/svm_axes_1.pdf}
+	\includegraphics[width=5.2cm]{methods/svm/svm_axes_2.pdf}
+	\includegraphics[width=5.2cm]{methods/svm/svm_axes_3.pdf}	
+	
+	\caption{Veliko različnih rešitev za hiperravnino, ki ločuje razreda primerkov.}
+	\label{svmseparable}
+\end{figure}
+
+Metoda podpornih vektorjev (\textit{angl. Support Vector Machine} oz. SVM) se imenuje tudi klasifikator maksimalnega razmika. Prej opisani problem binarne klasifikacije s tem dobi enolično rešitev. Primer klasifikatorja z maksimalnim razmikom je ilustriran na sliki \ref{svmmaxclass}.
+
+\comment{Pripravi sliko!}
+
+\comment{Vključi komentar o več dimenzijah in uporabo kernelov.}
+
+Hiperravnino, ki ločuje različna razreda primerkov označimo s $H$. Enačbo ravnine lahko zapišemo kot
+\begin{equation}
+  w^T x + b = 0,
+\end{equation}
+kjer je $w$ normalni vektor (v našem kontekstu ga bomo imenovali \textit{vektor uteži}), $b$ pa odmik ravnine v izhodišču.
+
+Za enolično reprezentacijo hiperravnine je potrebno normalizirati faktorja $w$ in $b$. Taki reprezentaciji pravimo tudi kanonična reprezentancija.
+
 \comment{Pride nekje do AMS 2,7.}
 \comment{https://www.kaggle.com/c/higgs-boson/forums/t/10165/has-anyone-tried-the-support-vector-machine-for-this-problem}
 \comment{Tu se splača igrat s kerneli.}
