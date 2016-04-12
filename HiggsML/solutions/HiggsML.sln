@@ -7,6 +7,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TMVA", "TMVA\TMVA.pyproj", 
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "NaiveBayes", "NaiveBayes\NaiveBayes.pyproj", "{96DB3490-B490-40E4-9895-0D6335DB5DFA}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ExploratoryAnalysis", "ExploratoryAnalysis\ExploratoryAnalysis.pyproj", "{15F6EB52-02D6-4717-A584-D48B0C178957}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,8 @@ Global
 		{5F4A7155-1DDD-437F-A626-E89E0FF19BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96DB3490-B490-40E4-9895-0D6335DB5DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96DB3490-B490-40E4-9895-0D6335DB5DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15F6EB52-02D6-4717-A584-D48B0C178957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15F6EB52-02D6-4717-A584-D48B0C178957}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

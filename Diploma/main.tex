@@ -11,7 +11,9 @@
 \usepackage{url}
 \usepackage{fancyhdr}
 \usepackage{parskip}
-\usepackage[all]{xy}
+% \usepackage[dvips]{graphicx}
+\usepackage[titletoc]{appendix}
+\usepackage[dvips]{xy}
 \usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
 \onehalfspacing
 
@@ -91,11 +93,15 @@ Področje dela tesno povezuje fiziko z računalništvo, natančneje - s strojnim
 
 Namen diplomskega dela je predvsem seznaniti se z uporabo metod strojnega učenja pri ločevanju signala in ozadja pri razpadu $H \rightarrow \tau^+\tau^-$, preveriti in ovrednotiti različne klasifikacijske metode na podatkih simulatorja ATLAS in preveriti proces optimizacije teh metod, ki izhaja iz podatkov (in ne nujno domenskega znanja). Sekundarni cilj je razvoj lastne klasifikacijske metode, ki bo temeljila na metodi podpornih vektorjev (SVM).
 
-Še enkrav velja izpostaviti, da se diplomsko delo nanaša predvsem na uporabo metod strojnega učenja pri analizi zahtevnih in analitično neobvladljivih problemov, in ne na fiziko osnovnih delcev in razlago standardnega modela (SM).
+Še enkrat velja izpostaviti, da se diplomsko delo nanaša predvsem na uporabo metod strojnega učenja pri analizi zahtevnih in analitično neobvladljivih problemov, in ne na fiziko osnovnih delcev in razlago standardnega modela (SM).
+
+\comment{Če zmagovalna metoda na lepih podatkih doseže AMS 3,7, kako lahko na podlagi teh}
+\comment{rezultatov pridemo do $\sigma = 5$??}
 
 \section*{Izziv HiggsML}
 \comment{Opis challenge-a.}
-\comment{Globoko fizikalno razumevanje načeloma v tem poskusu ni pripomoglo k signifikantnemu izboljšanju klasifikacijskih modelov.}
+\comment{Globoko fizikalno razumevanje načeloma v tem izzivu ni pripomoglo k signifikantnemu izboljšanju}
+\comment{klasifikacijskih modelov. Osnovne izpeljane vrednosti so zadoščale!}
 \comment{Vir: https://www.kaggle.com/c/higgs-boson/forums/t/10350/how-physicists-fared}
 
 
@@ -122,6 +128,9 @@ Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru m
 
 \cite{Baldi2014} \cite{atlas2013}
 
+
+\section{Posebna teorija relativnosti}
+\comment{Relevantno za izpeljavo značilk! Navedba/izpeljava enačb za izpeljane vrednosti ... \cite{Adam-Bourdarios14}}
 
 % -----------------------------------------------------------------------------
 % POGLAVJE: Opredelitev problema
@@ -189,6 +198,11 @@ Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatko
 \section{Opis podatkov}
 \comment{Vir, velikost ...}
 
+250000 dogodokov
+85667 signala
+164333 ozadja
+
+
 \subsection{Opis značilk}
 
 Opis značilk je povzet po \cite{Adam-Bourdarios14}.
@@ -220,20 +234,45 @@ Stolpci s prefiksom \textbf{PRI} označujejo \textit{surove} podatke, ki jih det
 	\item[PRI\_met\_sumet] Celotna prečna energija v detektorju.
 	
 	\item[PRI\_jet\_num] Število vseh žarkov ($\in {1, 2, 3}$), vednosti, večje od $3$ so bile zamenjane s 3
-	\item[text] description
+	
+	\item[PRI\_jet\_leading\_pt] Prečni moment $\sqrt{p_x^2 + p_y^2}$ glavnega žarka, t. j. žarka z največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	\item[PRI\_jet\_leading\_eta] Psevdorapidnost $\eta$ glavnega žarka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	\item[PRI\_jet\_leading\_phi] Azimutalni kot $\phi$ glavnega žarka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	
+	\item[PRI\_jet\_subleading\_pt] Prečni moment $\sqrt{p_x^2 + p_y^2}$ prvega pomožnega žarka, t. j. žarka z drugo največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 0$).
+	\item[PRI\_jet\_subleading\_eta] Psevdorapidnost $\eta$ prvega pomožnega žarka, t. j. žarka z drugo največjo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 0$).
+	\item[PRI\_jet\_subleading\_phi] Azimutalni kot $\phi$ prvega pomožnega žarka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 0$).
+	
+	\item[PRI\_jet\_all\_pt] Skalarna vsota prečnih momentov vseh žarkov pri dogodkih.
 \end{description}
 \end{changemargin}
 
 Stolpci s prefiksom \textbf{DER} označujejo iz surovih podatkov izpeljane količine:
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
-	\item[label] description
+	\item[DER\_mass\_MMC] Ocenjena masa kandidata za Higgsov bozon $m_H$, pridobljena s pomočjo (\comment{MC?}) verjetnostne integracije po faznem prostoru (vrednost ni definirana v primeru, da topologija dogodka preveč odstopa od pričakovane)
+	\item[DER\_mass\_transverse\_met\_lep] Prečna masa med manjkajočo prečno energijo in leptonom.
+	\item[DER\_mass\_vis] Invarianta masa hadronskega $\tau$ in leptona.
+	\item[DER\_pt\_h] Modulus ... \comment{uf, preveri!}
+	\item[DER\_deltaeta\_jet\_jet] Absolutna vrednost psevdorapidnostne separacije med obema žarkoma (vrednost ni definirana v primeru $PRI\_jet\_num \le 1$).
+	\item[DER\_mass\_jet\_jet] Invariantna masa obeh žarkov (vrednost ni definirana pri $PRI\_jet\_num \le 1$).
+	\item[DER\_prodeta\_jet\_jest] Produkt psevdorapidnosti obeh žarkov (vrednost ni definirana pri $PRI\_jet\_num \le 1$).
+	
 \end{description}
 \end{changemargin}
 
+\comment{Vse izpeljane vrednosti so definirane v dodatku! Referenciranje na ustrezne enačbe!}
+
 \section{Raziskovalna analiza podatkov}
 \comment{Večina gre v dodatek.}
+\comment{Povzetek raziskovalne analize podatkov je lepo razložen v \cite{hand2001}.}
 
+	
+% -----------------------------------------------------------------------------
+% POGLAVJE: Rezultati osnovnih metod
+% -----------------------------------------------------------------------------
+\chapter{Rezultati osnovnih metod}
+	
 
 	
 % -----------------------------------------------------------------------------
@@ -249,7 +288,18 @@ Vse implementacije sem naredil v programskem jeziku Python z uporabo paketa \tex
 
 \section{Fine tuning}
 
-\section{Razvoj metode na podlagi SVM ali NN}
+\section{Razvoj metode na podlagi SVM}
+
+\comment{Nekaj idej:}
+\comment{Problem je v nelinearnosti. Zato je treba nelinearnost pripeljat v SVM.}
+\comment{To naredimo s pomočjo različnih kernelov, in generiranja novih featurejev.}
+\comment{Feature je lahko na enem atributu - logaritem, ekspoment, kakšna druga podobna naravna funkcija - tudi poljubna.}
+\comment{Ali pa na dveh. Več kod dveh se skoraj ne splača uporabljat. Vsote, zmnožki, diference, $e^y$.}
+\comment{En zanimiv feature se da generirat s pomočjo KMeans clusteringa - kar ID clustra.}
+\comment{SVM z veliko featureji načeloma ne bi smel biti nič slabši kot deep NN.}
+\comment{Problem je samo, da se mu te feature-je porine ...}
+\comment{SVM zna najti iglo v kopici sena ... Torej - če se bo našel en dober feature, ga bo sVM našel.}
+\comment{Prednost SVM je še v tem, da ni black-box, da se da razumeti stvar.}
 
 \section{Rezultati}
 
