@@ -6,7 +6,7 @@
 
 \comment{Popravi tabelo, da pride lepo na eno stran!}
 
-\section{"5" figure summary}
+\section{5-figure summary}
 
 \begin{table}[ht]
 	\centering
@@ -50,6 +50,8 @@
 	\caption{5 figure summary.}
 	\label{5figuresum}
 \end{table}
+
+\clearpage
 
 \section{Histogrami}
 
@@ -107,6 +109,8 @@
 	
 \end{figure}
 
+\clearpage
+
 \section{Korelacijska matrika značilk}
 
 \begin{figure}[ht]
@@ -130,6 +134,8 @@
 	\caption{Scatter plot močno koreliranih značilk.}
 \end{figure}
 
+\clearpage
+
 \section{Scatter plots}
 
 \comment{Razloži krivuljo KDE kot generalizacijo histograma. \cite{hand2001}}
@@ -150,6 +156,7 @@
 	\caption{Scatter plot nekoreliranih koreliranih značilk.}
 \end{figure}
 
+\clearpage
 
 \section{Nedefinirane vrednosti}
 
@@ -180,10 +187,16 @@ background - povprečje    0.624191
 \end{table}
 
 \section{PCA in LDA}
-\comment{Naredil sem PCA - obstaja tabela vrednosti; vrednotenje.}
-\comment{Naredil sem vizualizacijo v 2D; z vsemi sampli obeta, da se nekako da zaznati}
-\comment{regijo, kjer je več dogodkov, pri samplanju na 2000-10000 eventov pa tega ni videt;}
-\comment{mogoče je to samo artefakt vizualizacije.}
+\begin{figure}[ht]	
+	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d.pdf}
+	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d_1_3.pdf}
+	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d_2_3.pdf}		
+	
+	\caption{PCA 1-2, 1-3, 2-3.}
+	\label{pca}
+\end{figure}
 
-\comment{Mogoče naredim še kakšno LDA vizualizacijo.}
+
+\comment{Naredil sem PCA - obstaja tabela vrednosti; vrednotenje.}
+\comment{Mogoče naredim še kakšno LDA vizualizacijo - LDA pravi, da ima kolinearne vektorje?!}
 \comment{Manjka nekaj zgodbe iz te analize!}

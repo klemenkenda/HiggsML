@@ -130,6 +130,17 @@ Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru m
 
 
 \section{Posebna teorija relativnosti}
+Podpoglavje opisuje nekaj osnovnih enačb iz posebne teorije relativnosti in sledi predvsem izpeljavi novih značilk iz surovih podatkov. Izpeljane značilke si je moč ogledati v podpoglavju \ref{opis-podatkov}.
+
+\subsection{Gibalna količina, masa in energija}
+Fundamentalna enačba posebne teorije relativnostni
+\begin{equation}
+	E^2 = p^2c^2 + m^2c^4,
+	\label{stirimoment}
+\end{equation}
+\comment{Strnad 3/39 (9)}
+kjer je $E$ energija delca, $p$ njegova gibalna količina, $m$ lastna masa (masa v mirovanju) in $c$ hitrost svetlobe v praznem prostoru. V primeru, ko delec miruje (in ima s tem gibalno količino enako $0$), se enačba poenostavi v znano $E = mc^2$.
+
 \comment{Relevantno za izpeljavo značilk! Navedba/izpeljava enačb za izpeljane vrednosti ... \cite{Adam-Bourdarios14}}
 \comment{Mogoče smiselno citirati tudi Strnada 3?}
 
@@ -147,7 +158,39 @@ Naj ${\cal D} = \left\{({\mathbf x}_1, y_1, w_1, \dots, ({\mathbf x}_n, y_n, w_n
 
 Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatkov}) in se razlikujejo od izmerjenih. Razmerje $n_\text{s} / n_\text{b}$ v podatkih tako ne odraža dejanskega razmerja dogodkov $P(y = s) / P(y = b)$. Glede ne nizko verjetnost, da pri nekem naravnem dogodku gre za signal \cite{Adam-Bourdarios14}, je tako učna podatkovna množica precej bolj uravnotežena in omogoča metodam, da se lahko naučijo razlikovati med dogodki, ki predstavljajo ozadje in tistimi, ki predstavljajo signal.
 
+Podatek, ki ga da simulacija, je tudi utež $w_i$, ki je mera za pomembnost nekega simuliranega dogodka. Ker je optimizacijska funkcija (\ref{en:ams}) odvisna od \textit{nenormalizirane vsote} uteži in ker želimo, da je naš sistem invarianten na števili simuliranih dogodkov $n_s$ in $n_b$, moramo vsoto vsake podatkovne množice (učne, validacijske ...) za vsak razred (signal ali ozadje) fiksirano:
+\begin{equation}
+\sum_{i \in \cal{S}}{w_i} = N_s
+\qquad\text{in}\qquad
+\sum_{i \in \cal{B}}{w_i} = N_b
+\end{equation}
+Normalizacijski konstanti $N_s$ in $N_b$ imata fizikalni pomen in predstavljata \textit{pričakovano število} dogodkov ki predstavljajo signal in ozadje, med intervalom zajema podatkov (v našem primeru leta 2012). Individualne uteži so proporcionalne pogojnim gostotam, deljenimi z instrumentalnimi gostotami, uporabljenimi na simulatorju.
+
+\begin{equation}
+	w_i = \left\{\begin{array}{r}
+		p_s(\textbf{x}_i)/q_s(x_i),\qquad \text{if}\;y_i = s \\
+		p_b(\textbf{x}_i)/q_b(x_i),\qquad \text{if}\;y_i = b 
+	\end{array}
+	\right.,
+\end{equation}
+kjer sta
+\begin{equation*}
+p_s(\textbf{x}_i) = p(\textbf{x}_i|y = s) \qquad in \qquad p_b(\textbf{x}_i) = p(\textbf{x}_i|y = b)
+\end{equation*}
+pogojni gostoti signala in ozadja ter $q_s(\textbf{x}_i)$ in $q_b(\textbf{x}_i)$ instrumentalni gostoti.
+
+Naj bo $g : \mathbb{R}^d \rightarrow \{b, s\}$ poljubna klasifikacijska funkcija. Naj bo izbrano področje ${\cal G} = \{\textbf{x} : g(\textbf{x}) = s\}$ množca točk, klasificirana kod signal, in naj $\hat{\cal G}$ označuje množico indeksov točk, ki jih $g$ izbere (klasificira kot signal).
+\begin{equation*}
+\hat{\cal G} = \{ i : \textbf{x}_i \in {\cal G}\} = \{ i : g(\textbf{x}_i) = s \}.
+\end{equation*}
+
+
 \section{AMS metrika}
+
+\begin{equation}
+\text{AMS} = \sqrt{2 \left( ( s + b + b_{reg} ) \ln \left( 1 +  \frac{s}{b + b_{reg}} \right) - s \right) }
+\label{en:ams}
+\end{equation}
 
 % -----------------------------------------------------------------------------
 % POGLAVJE: Metode strojnega učenja
@@ -156,6 +199,28 @@ Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatko
 
 \cite{Mitchell1997}, \cite{Witten2005}.
 
+\section{Raziskovalna analiza podatkov}
+Raziskovalna analiza podatkov predstavlja enega od pristopov k začetni analizi množice podatkov predvsem s pomočjo vizualnih metod. Opisi v pričujočem poglavju sledijo \cite{hand2001}.
+
+\subsection{Osnovni pregled značilk}
+5-figure description
+manjkajoče vrednosti
+histogrami
+
+\subsection{Korelacijska matrika značilnosti}
+
+
+
+\comment{Hierarhični clustering}.
+
+\subsection{Scatter plots}
+
+\subsection{Analza glavnih komponent}
+Analiza glavnih komponent (\textit{Principal component analysis}, PCA) je definirana kot ortogonalna linearna transformacija, ki transformira nabor podatkov v nov koordinatni sistem, in sicer tako, da komponenta z največjo varianco neke projekcije podatkov leži na prvi koordinati, druga največja na drugem mestu in tako naprej.
+
+
+
+
 \section{Metode za nadzorovano učenje}
 
 \section{Pregled klasifikacijskih metod}
@@ -163,11 +228,6 @@ Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatko
 V tipičnem klasifikacijskem problemu imamo množico vektorjev v prostoru $x_i \in \mathbb{R}^d$ (vektor značilk) in pripadajočih oznak $l_i \in {1, 2, 3, \ldots, N}$, kjer $N$ označuje število različnih razredov. Oznaka $l_i$ nam pove, v kateri razred spada vektor $x_i$. Cilj klasifikacijskega problema je predvideti oznake neznanih vektorjev, in sicer tako, da bo pri tem napaka najmanjša.
 
 Za binarne klasifikacijske probleme velja $N = 2$. V takih primerih obstajata 2 razreda: pozitivni in negativni. S takšnim problemom se srečujemo tudi v tem diplomskem delu.
-
-
-
-\subsection{Preprosto okno}
-\comment{http://higgsml.lal.in2p3.fr/software/simplest-python-kit/}
 
 \subsection{Logistična regresija}
 
@@ -227,20 +287,23 @@ Za enolično reprezentacijo hiperravnine je potrebno normalizirati faktorja $w$ 
 % -----------------------------------------------------------------------------
 \chapter{Podatki}
 \label{analiza-podatkov}
+Podatki, ki sem jih uporabil v diplomskem delu, so bili uporabljeni za izvedbo \textit{HiggsML Challenge}. Podatki predstavljajo dogodke, ki so bili simulirani na uradnem simulatorju polnega detektorja kolaboracija ATLAS\cite{Adam-Bourdarios14}. Podatki iz simulatorja imajo lastnosti, ki posnemajo statistične lastnosti dejanskih dogodkov - tako signala, kakor tudi ozadja.
+
+Vzorec signala zajema dogodke, v katerih naj bi nastal Higgsov bozon (katrega masa je bila nastavljena na $m_H = 125\,\text{GeV}$). Vzorec, ki predstavlja ozadje, vsebuje dogodke, ki odražajo druge znane procese, ki lahko proizvajajo dogodke z vsaj enim elektronom ali mionom in hadronskim tau, ki posnemajo signal.
+
+V simuliranih podatkov so predstavljeni samo trije procesi ozadja. Prvi prihaja od razpada $Z \rightarrow \tau^+\tau^-$ (masa z bozona je $m_Z = 91.2\,\text{GeV}$). Ta razpad proizvaja dogodke s topologijo, ki je zelo podobna tisti pri razpadu Higgsovega bozona. Druga množica dogodkov vsebuje par $t$ kvarkov, ki imata lahko med svojimi razpadnimi produkti lepton ali hadronski tau. Tretja množica vsebuje razpad $W$ bozona, kjer lahko nastaneta en elektron ali mion in hadronski tau. 
 
 \section{Opis podatkov}
-\comment{Vir, velikost ...}
 
-250000 dogodokov
-85667 signala
-164333 ozadja
+V učni podatkovni množici je na voljo 250.000 dogodkov, od teh jih je 85.667 predstavljalo signal, 164.333 pa ozadje. Vsak dogodek je predstavljen z $d = 30$ značilkami, ki so dodatno opisane v \ref{sec:opis-znacilk}, in 3 metapodatki: oznako razreda ($s$ - signal ali $b$ - ozadje), utežjo $w_i$ in zaporedno številko dogodka. Raziskovalna analiza podatkov je predstavljena v \ref{sec:raziskovalna-analiza}.
 
+Potrjevalna podatkovna množica vsebuje 100.000 dogodkov, ki pa niso opremljeni z oznako razreda ali utežjo $w_i$. 
 
 \subsection{Opis značilk}
+\label{sec:opis-znacilk}
+Podatki zajemajo $d = 30$ značilk, katerih opis je povzet po \cite{Adam-Bourdarios14}. Stolpci s predpono PRI (ki označuje \textit{PRImitives}) predstavlja \textit{surove} podatke o trkih, kot jih izmeri detektor. Stolpci s predpono DER (ki označuje \textit{DERived}) predstavljajo vrednosti, izpeljane iz primitivnih lastnosti. Količine so določili sodelavci kolaboracije ATLAS z namenom, da bi pomagale definirati relevantna področja faznega prostora za klasifikacijske metode.
 
-Opis značilk je povzet po \cite{Adam-Bourdarios14}.
-
-Stolpci brez prefiksa imajo posebno vlogo in se ne uporabljajo kot značilke:
+Stolpci brez predpone imajo posebno vlogo in se ne uporabljajo kot značilke:
 
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
@@ -250,7 +313,7 @@ Stolpci brez prefiksa imajo posebno vlogo in se ne uporabljajo kot značilke:
 \end{description}
 \end{changemargin}
 
-Stolpci s prefiksom \textbf{PRI} označujejo \textit{surove} podatke, ki jih detektor izmeri pri trku:
+Stolpci s predpono \textbf{PRI} označujejo \textit{surove} podatke, ki jih detektor izmeri pri trku:
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
 	\item[PRI\_tau\_pt] Prečni (transverse???) moment $\sqrt{p_x^2 + p_y^2}$ hadronskega tau.
@@ -280,7 +343,7 @@ Stolpci s prefiksom \textbf{PRI} označujejo \textit{surove} podatke, ki jih det
 \end{description}
 \end{changemargin}
 
-Stolpci s prefiksom \textbf{DER} označujejo iz surovih podatkov izpeljane količine:
+Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količine:
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
 	\item[DER\_mass\_MMC] Ocenjena masa kandidata za Higgsov bozon $m_H$, pridobljena s pomočjo (\comment{MC?}) verjetnostne integracije po faznem prostoru (vrednost ni definirana v primeru, da topologija dogodka preveč odstopa od pričakovane)
@@ -296,9 +359,32 @@ Stolpci s prefiksom \textbf{DER} označujejo iz surovih podatkov izpeljane koli�
 
 \comment{Vse izpeljane vrednosti so definirane v dodatku! Referenciranje na ustrezne enačbe!}
 
-\section{Raziskovalna analiza podatkov}
+\section{Rezultati raziskovalne analiza podatkov}
+\label{sec:raziskovalna-analiza}
+
+\subsection{Manjkajoči podatki}
+
+, tabela \ref{manjkajoče} pa predstavlja dogodke z manjkajočimi vrednostmi določenih značilk.
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{ccc}
+		\hline
+		{} & \textbf{signal} & \textbf{ozadje} \\
+		\hline
+		brez curkov & $81002\;(29,6\%)$ & $239967\;(45,3\%)$ \\
+		1 curek & $88189\;(32,3\%)$ & $159071\;(30,2\%)$ \\
+		vsi curki & $169191\;(61,9\%)$ & $398139\;(75,5\%)$ \\
+		\hline
+		Higgsova masa & $9011\;(3,3\%)$ & $114925\;(21,8\%)$
+		
+	\end{tabular}
+	\caption{Manjkajoče značilke, število dogodkov in odstotek v razred.}
+	\label{manjkajoče}
+\end{table}
+
+
 \comment{Večina gre v dodatek.}
-\comment{Povzetek raziskovalne analize podatkov je lepo razložen v \cite{hand2001}.}
 
 	
 % -----------------------------------------------------------------------------
@@ -306,18 +392,21 @@ Stolpci s prefiksom \textbf{DER} označujejo iz surovih podatkov izpeljane koli�
 % -----------------------------------------------------------------------------
 \chapter{Rezultati osnovnih metod}
 	
-
+\subsection{Preprosto okno}
+\comment{http://higgsml.lal.in2p3.fr/software/simplest-python-kit/}
 	
 % -----------------------------------------------------------------------------
 % POGLAVJE: Izboljševanje metod in razvoj lastne metode
 % -----------------------------------------------------------------------------
 \chapter{Izboljševanje metod in razvoj lastne metode}
+\label{raziskovalna_analiza}
 
 Vse implementacije sem naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn}. Za pospešena odločitvena drevesa sem uporabil nagrajeni paket XGBoost\cite{chen2014}.
 
 \section{Izbira značilk}
 	
 \section{Generiranje novih značilk}
+\comment{Poglavje 6 - ali so te količine dovolj?} \cite{Adam-Bourdarios14}
 
 \section{Fine tuning}
 
