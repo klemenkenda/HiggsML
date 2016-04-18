@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath, fullpage}
+\usepackage{lmodern}
 \usepackage{epsfig}
 \usepackage{setspace}
 \usepackage{color}
@@ -200,38 +201,111 @@ Naj bo $g : \mathbb{R}^d \rightarrow \{b, s\}$ poljubna klasifikacijska funkcija
 \cite{Mitchell1997}, \cite{Witten2005}.
 
 \section{Raziskovalna analiza podatkov}
-Raziskovalna analiza podatkov predstavlja enega od pristopov k začetni analizi množice podatkov predvsem s pomočjo vizualnih metod. Opisi v pričujočem poglavju sledijo \cite{hand2001}.
+Raziskovalna analiza podatkov predstavlja enega od pristopov k začetni analizi množice podatkov predvsem s pomočjo vizualnih metod. Vizualne metode temeljijo na sposobnosti človeških možganov, da prepoznajo strukturo v podatkih. Namen analize je pregledati osnovne lastnosti podatkov, ki pomagajo pri določanju scenarijev za implementacijo metod strojnega učenja. Poleg omenjenega so vizualne metode na področju rudarjenja podatkov pomembne tudi zato, ker je mogoče z njihovo pomočjo odkriti nove, nepričakovane zakonitosti v podatkih. Metode raziskovalne analize imajo pri visoko-dimenzionalnih naborih podatkov očitne omejitve. Opisi v diplomskem delu so povzeti po \cite{hand2001}.
+
+\comment{Data-driven.}
+
+\comment{Starejše statistične metode, ki so se razcvetele v dobi računalništva.}
+
+
 
 \subsection{Osnovni pregled značilk}
+Osnovni pregled podatkov se nanaša na pregled po eni posamezni značilki. Zajema \textbf{pregled manjkajočih vrednosti} v podatkih, \textbf{pregled osnovnih agregatov} in natančnejši \textbf{pregled porazdelitev} določenih značilk s pomočjo histogramov.
+
+
+
 5-figure description
 manjkajoče vrednosti
 histogrami
 
-\subsection{Korelacijska matrika značilnosti}
+\subsection{Razpršeni grafi}
+
+\subsection{Korelacijska matrika značilk}
 
 
 
 \comment{Hierarhični clustering}.
 
-\subsection{Scatter plots}
 
-\subsection{Analza glavnih komponent}
+\subsection{Analiza glavnih komponent}
 Analiza glavnih komponent (\textit{Principal component analysis}, PCA) je definirana kot ortogonalna linearna transformacija, ki transformira nabor podatkov v nov koordinatni sistem, in sicer tako, da komponenta z največjo varianco neke projekcije podatkov leži na prvi koordinati, druga največja na drugem mestu in tako naprej.
 
+\comment{Basic MDS}
 
 
 
 \section{Metode za nadzorovano učenje}
 
+\comment{Overfitting}
+
 \section{Pregled klasifikacijskih metod}
 
-V tipičnem klasifikacijskem problemu imamo množico vektorjev v prostoru $x_i \in \mathbb{R}^d$ (vektor značilk) in pripadajočih oznak $l_i \in {1, 2, 3, \ldots, N}$, kjer $N$ označuje število različnih razredov. Oznaka $l_i$ nam pove, v kateri razred spada vektor $x_i$. Cilj klasifikacijskega problema je predvideti oznake neznanih vektorjev, in sicer tako, da bo pri tem napaka najmanjša.
+V tipičnem klasifikacijskem problemu imamo množico vektorjev v prostoru $x^{(i)} \in \mathbb{R}^d$ (vektor značilk) in pripadajočih oznak $y^{(i)} \in {1, 2, 3, \ldots, N}$, kjer $N$ označuje število različnih razredov. Oznaka $y^{(i)}$ nam pove, v kateri razred spada vektor $x^{(i)}$. Cilj klasifikacijskega problema je predvideti oznake neznanih vektorjev, in sicer tako, da bo pri tem napaka najmanjša.
 
 Za binarne klasifikacijske probleme velja $N = 2$. V takih primerih obstajata 2 razreda: pozitivni in negativni. S takšnim problemom se srečujemo tudi v tem diplomskem delu.
 
 \subsection{Logistična regresija}
 
+Linearno regresijo je moč, ko imamo opravka z numeričnimi značilkami, uporabiti kot klasifikacijsko metodo. Pravzaprav lahko vsako regresijsko tehniko uporabimo za klasifikacijo. Prenos regresijske tehnike v klasifikacijsko domeno lahko naredimo s pomočjo preprostega trika, in sicer da pozitivno klasificiranim točkam pripišemo vrednost 1, negativno klasificiranim pa vrednost 0. Ko poskusimo s pomočjo naučenega modela klasificirati neznano točko, lahko vrednost, ki jo vrne linearna regresija, interpretiramo kot funkcijo članstva v določenem razredu. \cite{Witten2005}
+
+Težava tega pristopa je, da se funkcija članstva ne nanaša na verjetnost pripadnosti vzorca določenemu razredu (saj je lahko večja od 1 ali manjša od 0), hkrati pa je binarna porazdelitev vrednosti točk daleč od normalne, ki jo zahteva metoda.
+
+\comment{Povzeto po Andrew Ng, Stanford University on-line course, 10. 10. - 12. 12. 2011. Kako citirati?}
+\comment{\url{http://cs229.stanford.edu/notes/cs229-notes1.pdf}}
+
+\textit{Logistična regresija} je statistična metoda, ki nima težav iz zgornjega odstavka. Namesto, da bi poskusila vrednosti 0 in 1 aproksimirati neposredno, uporabi za ta namen transformacijsko funkcijo ($[0, 1] \rightarrow \mathbb{R}$). Katerokoli realno število pretvori na interval med 0 in 1.
+
+Standardno logistično funkcijo zapišemo kot
+\begin{equation}
+	\label{en:standardna_log_funkcija}
+	h_\theta(x) = g(\theta^Tx) = \frac{1}{1 + e^{-\theta^Tx}},
+\end{equation}
+kjer se
+\begin{equation}
+	g(z) = \frac{1}{1 + e^{-z}}
+\end{equation}
+imenuje \textbf{logistična funkcija} ali {sigmoid}. Graf funkcije je prikazan na sliki \ref{sl:standardna_logisticna}.
+$h(x)$ predstavlja linearno kombinacijo značilk $h(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \dots + \theta_nx_n$. Če privzamemo $x_0^{(i)} = 1$, lahko zapišemo $h(x) = \theta \cdot x$.
+
+Interpretacija hipoteze je verjetnostna. Vrednost hipoteze je $P(y=1|x;\theta)$ - torej verjetnost, da je $y = 1$ pri danem $x$ in $\theta$.
+
+Naloga učnega algoritma je določitev parametrov $\theta_i$. Najprej moramo definirati logistično minimizacijsko funkcijo $J(\theta)$. Ta funkcija je odvisna od razlike med hipotezo in dejansko vrednostjo točk. Pri linearni regresiji funkcijo zapišemo kot
+\begin{equation}
+	J(\theta) = \frac{1}{m} \sum^m_{i = 1} \frac{1}{2} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2.
+\end{equation}
+Parametre $\theta$ izberemo tako, da je vsota kvadratnih členov kar najmanjša. Pri logistični regresiji sumand nadomestimo s \textit{cost} funkcijo $\text{Cost}(h_\theta(x), y)$. Zapišimo \textit{cost} funkcijo
+\begin{equation}
+	\text{Cost}(h_\theta(x), y) = \left\{
+	\begin{array}{rl}
+		-\log(h_\theta(x)) & \text{če je} \; y = 1 \\
+		-\log(1 - h_\theta(x)) & \text{če je} \; y = 0
+	\end{array}
+	\right.
+\end{equation}
+Vemo, da je $y \in \{0, 1\}$. Zdaj lahko v eni sapi zapišemo $J(\theta)$
+\begin{equation}
+	J(\theta) = -\frac{1}{m} \left[ 
+		\sum^m_{i = 1}
+			y^{(i)} \log h_\theta(x^{(i)}) + (1 - y^{(i)}) \log (1 - h_\theta(x^{(i)}))
+	\right].
+	\label{en:j_theta}
+\end{equation}
+Naša učna naloga je poiskati tak $\theta$, da bo $J(\theta)$ najmanjši. Napoved za nov nepoznani $x$ izračunamo s pomočjo enačbe (\ref{en:standardna_log_funkcija}), ki nam predstavlja verjetnost, da dani primerek spada v pozitivni razred $P(y = 1 | x;\theta)$. $\theta$ bomo poiskali s pomočjo minimizacije $J(\theta)$, in sicer s pomočjo gradientnega spusta.
+
+Ena pomembnih tehnik pri zagotavljanju uspešnega gradientnega spusta je skaliranje značilk. S tem se izognemo nepotrebnim oscilacijam, ki upočasnjujejo konvergenco. Oscilacije so posledica dejstva, da je velikostni red nekaterih značilk precej nižji od ostalih.
+
+Osnovni algoritem gradientnega spusta je zelo preprost. Potrebno je izračunati parcialne odvode $\frac{\partial}{\partial x_i}J(\theta)$. Upoštevajoč enačbo (\ref{en:j_theta}) lahko zapišemo posamezni korak naše minimizacije
+\begin{equation}
+	\theta_j := \theta_j - \alpha \sum^m_{i = 1}(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)},
+	\label{en:log_reg_update}
+\end{equation}  
+pri čemer velja $j \in {1, 2, ...,  d}$, popravki pa se izvršijo simultano (torej ne vplivajo drug na drugega).
+
 \subsection{Naivni Bayesov klasifikator}
+
+\comment{Predvideva neodvisnost značilk.}
+
+\comment{Rabi malo podatkov za trening - ni nam nič v pomoč.}
 
 \subsection{Metoda podpornih vektorjev}
 
@@ -268,8 +342,21 @@ Za enolično reprezentacijo hiperravnine je potrebno normalizirati faktorja $w$ 
 \comment{Deep NN - zmagovalna metoda. Ansambli.}
 
 \subsubsection{Perceptron}
+Razpravo o nevronskih mrežah začenjamo pri algoritmu, imenovanem \textbf{perceptron}. V 60-ih letih prejšnjega stoletja so ta algoritem uvedli kot osnovni model delovanja nevronov v možganih. Kljub temu, da se razprava o perceptronu lepo navezuje na razpravo o logistični regresiji, je narava tega algoritma precej drugačna od ostalih. Predvsem je na podlagi rezultatov tega algoritma težko najti interpretacije, ki bi temeljile na verjetnosti ali oceni maksimalne podobnosti (maximum likelihood).
 
-\subsubsection{Umetne nevronske mreže - aNN}
+V primeru, da logistično regresijo spremenimo tako, da funkcijo $g(z)$ zapišemo v obliki Heavisidove funkcije:
+\begin{equation}
+	g(z) = \left\{
+		\begin{array}{ll}
+			1 & \text{če je} \; z \geq 0 \\
+			0 & \text{če je} \; z \le 0
+		\end{array}
+	\right.
+\end{equation}
+Podobno kot v primeru logistične regresije določimo $h_\theta(x) = g(\theta^Tx)$. Pravilo za gradientni spust ostane enako definiciji v (\ref{en:log_reg_update}).
+
+
+\subsubsection{Umetne nevronske mreže}
 
 \subsubsection{Globoke nevronske mreže}
 
@@ -281,6 +368,9 @@ Za enolično reprezentacijo hiperravnine je potrebno normalizirati faktorja $w$ 
 \comment{http://higgsml.lal.in2p3.fr/software/multiboost/}
 \comment{https://github.com/dmlc/xgboost}
 
+
+\section{Evalvacija klasifikacijskih metod}
+\comment{Tole bi vseeno mogoče izpustil. Nekje dodam samo še preceision/recall, ki sta OK za lažje razumevanje dogajanja.}
 
 % -----------------------------------------------------------------------------
 % POGLAVJE: Podatki
@@ -392,8 +482,13 @@ Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količ
 % -----------------------------------------------------------------------------
 \chapter{Rezultati osnovnih metod}
 	
-\subsection{Preprosto okno}
+\section{Preprosto okno}
 \comment{http://higgsml.lal.in2p3.fr/software/simplest-python-kit/}
+
+\section{Naivni Bayesov klasifikator}
+
+\section{Multiboost}
+
 	
 % -----------------------------------------------------------------------------
 % POGLAVJE: Izboljševanje metod in razvoj lastne metode
