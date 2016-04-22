@@ -16,6 +16,7 @@
 \usepackage[titletoc]{appendix}
 \usepackage[dvips]{xy}
 \usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
+\usepackage{soul}
 \onehalfspacing
 
 \begin{document}
@@ -40,26 +41,26 @@
 
 Plan dela:
 \begin{itemize}
-	\item Osnovno razumevanje fizikalnega dela + opis
-	\item Exploratory analysis + opis podatkov
+	\item \st{Uvod} + Opis HiggsML + Osnovno razumevanje fizikalnega dela + opis
+	\item \st{Exploratory analysis + opis podatkov}
 	\item Usposobitev baseline (predlaganih) metod
 		\begin{itemize}
 			\item Simple Window
-			\item Naive Bayes
-			\item XGBoost
+			\item Naive Bayes + opis metode
+			\item XGBoost + opis nagrajene metode
 		\end{itemize}
-	\item Delo na ostalih metodah + opis metod
+	\item Osnove strojnega učenja + delo na ostalih metodah + opis metod
 		\begin{itemize}
-			\item Logistic regression
-			\item Perceptron
-			\item NN
+			\item \st{Logistic regression}
+			\item \st{Perceptron}
+			\item NN + opis zmagovalne metode
 			\item SVM
 		\end{itemize}
 	\item Izboljšava metod
-		\begin{itemize}
-			\item Na podlagi logistične regresije
+		\begin{itemize}			
 			\item Na podlagi SVM
 		\end{itemize}
+	\item Zaključek + povzetek
 \end{itemize} 
 
 \vspace{1.3cm}
@@ -86,11 +87,13 @@ Abstract. Key words.
 
 Eksperimenta ATLAS in CMS sta leta 2012 objavila odkritje Higgsovega bozona\cite{Aad20121,Chatrchyan201230}. Odkritju je leta 2013 sledila Nobelova nagrada za fiziko, ki sta jo prejela François Englert in Peter Higgs. Obstoj delca, katerega vloga naj bi bila, da daje maso ostalim elementarnim delcem, je bil predviden pred skoraj 50 leti. Eksperimenti so potekali (in še vedno potekajo) na Velikem hadronskem trkalniku (Large Hadron Collider - LHC) v CERN-u (Evropski organizaciji za jedrske raziskave) v Ženevi\cite{ChallengeDoc}.
 
-Higgsov bozon lahko razpade skozi različne procese, ki jim v fiziki osnovnih delcev pravimo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v treh različnih razpadnih kanalih, v katerih vedno nastanejo pari bozonov. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare, predvsem v $\tau$ leptone in $b$ kvarke. Prvi dokazi o $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013}. \comment{Ali so rezultati $H \rightarrow \tau^+\tau^-$ že kje? Se to kaj navede?}
+Higgsov bozon lahko razpade skozi različne procese, ki jim v fiziki osnovnih delcev pravimo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v treh različnih razpadnih kanalih, v katerih vedno nastanejo pari bozonov. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare, predvsem v $\tau$ leptone in $b$ kvarke. Prvi dokazi o $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013}. 
+
+\comment{Ali so rezultati vpliva $H \rightarrow \tau^+\tau^-$ že kje? Se to kaj navede? Koliko so izboljšali $\sigma$?}
 
 Pri analizi eksperimentalnih podatkov je potrebno določiti relevantno območje faznega prostora izmerjenih značilk, v katerem je velika verjetnost, da smo naleteli na dogodke, ki nas zanimajo (v našem primeru na razpad $H \rightarrow \tau^+\tau^-$). V preteklosti so ta področja določali eksperti \textit{ročno}\cite{Adam-Bourdarios14}. Napredne klasifikacijske metode, ki temeljijo na strojnem učenju, pa se danes rutinirano uporabljajo za reševanje tega in podobnih problemov\cite{atlas2013}.
 
-Področje dela tesno povezuje fiziko z računalništvo, natančneje - s strojnim učenjem. 
+Področje dela tesno povezuje fiziko z računalništvom, natančneje - s strojnim učenjem. 
 
 Namen diplomskega dela je predvsem seznaniti se z uporabo metod strojnega učenja pri ločevanju signala in ozadja pri razpadu $H \rightarrow \tau^+\tau^-$, preveriti in ovrednotiti različne klasifikacijske metode na podatkih simulatorja ATLAS in preveriti proces optimizacije teh metod, ki izhaja iz podatkov (in ne nujno domenskega znanja). Sekundarni cilj je razvoj lastne klasifikacijske metode, ki bo temeljila na metodi podpornih vektorjev (SVM).
 
@@ -130,7 +133,7 @@ Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru m
 \cite{AadScience2012}
 
 
-\section{Posebna teorija relativnosti}
+\section{Izpeljava relevantnih značilk}
 Podpoglavje opisuje nekaj osnovnih enačb iz posebne teorije relativnosti in sledi predvsem izpeljavi novih značilk iz surovih podatkov. Izpeljane značilke si je moč ogledati v podpoglavju \ref{opis-podatkov}.
 
 \subsection{Gibalna količina, masa in energija}
@@ -155,7 +158,9 @@ Problem, s katerim sem se spopadel v diplomskem delu, sledi formulaciji na odprt
 
 \section{Formalna opredelitev problema}
 
-Naj ${\cal D} = \left\{({\mathbf x}_1, y_1, w_1, \dots, ({\mathbf x}_n, y_n, w_n) \right\}$ predstavlja učno podatkovno množico, kjer je $\mathbf{x}_i \in \mathbb{R}^d$ $d$-dimenzionalni vektor značilk, $y_i \in \{\text{b, s}\}$ je oznaka, $w_i \in \mathbb{R}^+$ pa je nenegativna utež. Naj bosta ${\cal S} = \{i : y_i = \text{s}\}$ in ${\cal B} = \{i : y_i = \text{b}$ množici indeksov dogodkov, ki predstavljajo signal in ozadje, $n_\text{s} = |{\cal S}|$ in $n_\text{b} = |{\cal B}|$ pa naj označujeta števili simuliranih dogodkov, ki predstavljata signal in ozadje.
+\comment{Notacijo spremeni, da bo konsistentna z Andrew Ng - spodaj.}
+
+Naj ${\cal D} = \left\{({\mathbf x}_1, y_1, w_1), \dots, ({\mathbf x}_n, y_n, w_n) \right\}$ predstavlja učno podatkovno množico, kjer je $\mathbf{x}_i \in \mathbb{R}^d$ $d$-dimenzionalni vektor značilk, $y_i \in \{\text{b, s}\}$ je oznaka, $w_i \in \mathbb{R}^+$ pa je nenegativna utež. Naj bosta ${\cal S} = \{i : y_i = \text{s}\}$ in ${\cal B} = \{i : y_i = \text{b}$ množici indeksov dogodkov, ki predstavljajo signal in ozadje, $n_\text{s} = |{\cal S}|$ in $n_\text{b} = |{\cal B}|$ pa naj označujeta števili simuliranih dogodkov, ki predstavljata signal in ozadje.
 
 Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatkov}) in se razlikujejo od izmerjenih. Razmerje $n_\text{s} / n_\text{b}$ v podatkih tako ne odraža dejanskega razmerja dogodkov $P(y = s) / P(y = b)$. Glede ne nizko verjetnost, da pri nekem naravnem dogodku gre za signal \cite{Adam-Bourdarios14}, je tako učna podatkovna množica precej bolj uravnotežena in omogoča metodam, da se lahko naučijo razlikovati med dogodki, ki predstavljajo ozadje in tistimi, ki predstavljajo signal.
 
@@ -187,7 +192,7 @@ Naj bo $g : \mathbb{R}^d \rightarrow \{b, s\}$ poljubna klasifikacijska funkcija
 
 
 \section{AMS metrika}
-
+\label{sc:ams}
 \begin{equation}
 \text{AMS} = \sqrt{2 \left( ( s + b + b_{reg} ) \ln \left( 1 +  \frac{s}{b + b_{reg}} \right) - s \right) }
 \label{en:ams}
@@ -203,46 +208,33 @@ Naj bo $g : \mathbb{R}^d \rightarrow \{b, s\}$ poljubna klasifikacijska funkcija
 \section{Raziskovalna analiza podatkov}
 Raziskovalna analiza podatkov predstavlja enega od pristopov k začetni analizi množice podatkov predvsem s pomočjo vizualnih metod. Vizualne metode temeljijo na sposobnosti človeških možganov, da prepoznajo strukturo v podatkih. Namen analize je pregledati osnovne lastnosti podatkov, ki pomagajo pri določanju scenarijev za implementacijo metod strojnega učenja. Poleg omenjenega so vizualne metode na področju rudarjenja podatkov pomembne tudi zato, ker je mogoče z njihovo pomočjo odkriti nove, nepričakovane zakonitosti v podatkih. Metode raziskovalne analize imajo pri visoko-dimenzionalnih naborih podatkov očitne omejitve. Opisi v diplomskem delu so povzeti po \cite{hand2001}.
 
-\comment{Data-driven.}
+Metoda odraža pristop k reševanju problema, ki temelji na podatkih in ne na predhodnem znanju. S pomočjo takega pristopa lahko odkrijemo nove značilnosti v podatkih in s tem novo znanje. Metodologija je bila razvita že v začetku šestdesetih let prejšnjega stoletja, je pa svoj preporod doživela z razvojem računalništva, ki je močno olajšalo izdelavo vizualizacij. 
 
-\comment{Starejše statistične metode, ki so se razcvetele v dobi računalništva.}
+\textbf{Osnovni pregled značilk} se nanaša na pregled po eni posamezni značilki. Zajema \textbf{pregled manjkajočih vrednosti} v podatkih, \textbf{pregled osnovnih agregatov} in natančnejši \textbf{pregled porazdelitev} določenih značilk s pomočjo histogramov. Pregled osnovnih agregatov zajema: povprečja, standardno deviacijo, minimum, maksimum, število vrednosti, kvantile ... Ponazoritev posamezhnih značilk s pomočjo histogramov pa nam da lepši grafični pregled in informacijo o porazdelitvi posamezne značilke.
 
+\textbf{Razpršeni grafi} se nanašajo na 2 značilki. Podatke ponazorimo s točkami, katerih eno koordinato predstavlja vrednost ene, drugo pa druge značilke. Grafe ponavadi prikažemo v matriki 2, 3 ali 4 različnih značilk, tako da jih lahko primerjamo med sabo. Takšen prikaz nam lahko razkrije skrito strukturo v podatkih, ki je po pregledu ene same značilke ne zasledimo. V primeru klasifikacije lahko npr. opazimo, če določena kombinacija značilk bolje loči oba razreda kot ena sama, prav tako pa lahko s temi grafi opazimo medsebojno korelacijo posameznih značilk, ki se odraža na urejenosti/razpršenosti točk.
 
+\textbf{Korelacijska matrika značilk} je zelo učinkovita metoda za hiter in celosten pregled nad podatki. V matriki dimenzije $d \times d$, kjer je $d$ število značilk, s pomočjo barvne lestvice ponazorimo korelacijo med parom značilk. S pomočjo kompletnega pivotiranja, ki ga naredimo s pomočjo hierarhičnega grozdenja značilk, lahko značilke, ki so si med seboj podobne glede na korelacijo z drugimi, smiselno uredimo. Metoda je še zlasti uporabna pri izločanju linearno odvisnih značilk, ki modelom ne prinašajo dodatne vrednosti. 
 
-\subsection{Osnovni pregled značilk}
-Osnovni pregled podatkov se nanaša na pregled po eni posamezni značilki. Zajema \textbf{pregled manjkajočih vrednosti} v podatkih, \textbf{pregled osnovnih agregatov} in natančnejši \textbf{pregled porazdelitev} določenih značilk s pomočjo histogramov.
+\textbf{Analiza glavnih komponent} (\textit{Principal component analysis}, PCA) je definirana kot ortogonalna linearna transformacija, ki transformira nabor podatkov v nov koordinatni sistem, in sicer tako, da komponenta z največjo varianco neke projekcije podatkov leži na prvi koordinati, druga največja na drugem mestu in tako naprej. Metoda je poenostavitev metode večdimenzionalnega skaliranja (\textit{Multi-dimensional scaling}, MDS).
 
-
-
-5-figure description
-manjkajoče vrednosti
-histogrami
-
-\subsection{Razpršeni grafi}
-
-\subsection{Korelacijska matrika značilk}
-
-
-
-\comment{Hierarhični clustering}.
-
-
-\subsection{Analiza glavnih komponent}
-Analiza glavnih komponent (\textit{Principal component analysis}, PCA) je definirana kot ortogonalna linearna transformacija, ki transformira nabor podatkov v nov koordinatni sistem, in sicer tako, da komponenta z največjo varianco neke projekcije podatkov leži na prvi koordinati, druga največja na drugem mestu in tako naprej.
-
-\comment{Basic MDS}
-
-
+Praktična uporaba opisanih metod z razultati na podatkih iz detektorja ATLAS je opisana v poglavju \ref{analiza-podatkov}.
 
 \section{Metode za nadzorovano učenje}
 
-\comment{Overfitting}
+Na področju strojnega učenja v grobem ločimo dva različna razreda metod: (1) \textbf{metode za nadzorovano učenje} in (2) \textbf{metode za nenadzorovano učenje}. Zadnji razred metod se ponavadi izvaja na podatkih, ki ne vsebujejo oznake $y^{(i)}$, torej parametra, ki nas zanima (npr. oznaka razreda). Zakonitosti iščemo torej samo v strukturi, ki jo oblikuje množica točk $x^{(i)}$ v faznem prostoru. Osnovni primer take metode je grozdenje, ki poskuša točke povezati s smiselne zaključene množice - grozde. Metoda grozdenja je lahko tudi učinkovita metoda generiranja novih značilk, pri čemer oznaka grozda služi kot dodatna značilka v nadzorovanem učnem problemu.
+
+Metode za nadzorovano učenje (1) delujejo na podatkih z znanim parametrom, ki nas zanima ($y^{(i)}$). Ločimo regresijske in klasifikacijske metode. Pri \textbf{regresijskih metodah} je ponavadi parameter $y^{(i)} \in \mathbb{R}$. Cilj regresijskih metod je za neznano točko $x^{(i)}$ oceniti realno vrednost $y^{(i)}$. 
+
+V tipičnem \textbf{klasifikacijskem problemu}, ki je tudi sicer predmet diplomskega dela, imamo množico vektorjev v prostoru $x^{(i)} \in \mathbb{R}^d$ (vektor značilk) in pripadajočih oznak $y^{(i)} \in {1, 2, 3, \ldots, N}$, kjer $N$ označuje število različnih razredov. Oznaka $y^{(i)}$ nam pove, v kateri razred spada vektor $x^{(i)}$. Cilj klasifikacijskega problema je predvideti oznake neznanih vektorjev, in sicer tako, da bo pri tem napaka najmanjša.
+
+Za binarne klasifikacijske probleme velja $N = 2$. V takih primerih obstajata 2 razreda: pozitivni in negativni. S takšnim problemom se srečujemo tudi v tem diplomskem delu.
+
 
 \section{Pregled klasifikacijskih metod}
 
-V tipičnem klasifikacijskem problemu imamo množico vektorjev v prostoru $x^{(i)} \in \mathbb{R}^d$ (vektor značilk) in pripadajočih oznak $y^{(i)} \in {1, 2, 3, \ldots, N}$, kjer $N$ označuje število različnih razredov. Oznaka $y^{(i)}$ nam pove, v kateri razred spada vektor $x^{(i)}$. Cilj klasifikacijskega problema je predvideti oznake neznanih vektorjev, in sicer tako, da bo pri tem napaka najmanjša.
+Pri pregledu klasifikacijskih metod sem se omejil na naslednje metode: osnovne metode, ki prinašajo dodaten vpogled v podatke (logistična regresija), osnovne metode, ki jih je predlagal organizator (preprosto okno, naivni Bayesov klasifikator, pospešena odločitvena drevesa), zmagovalno metodo (globoke nevronske mreže) in na metodo, katere uporabo za dani problem sem želel v diplomskem delu sam raziskati - metodo podpornih vektorjev. 
 
-Za binarne klasifikacijske probleme velja $N = 2$. V takih primerih obstajata 2 razreda: pozitivni in negativni. S takšnim problemom se srečujemo tudi v tem diplomskem delu.
 
 \subsection{Logistična regresija}
 
@@ -303,9 +295,50 @@ pri čemer velja $j \in {1, 2, ...,  d}$, popravki pa se izvršijo simultano (to
 
 \subsection{Naivni Bayesov klasifikator}
 
-\comment{Predvideva neodvisnost značilk.}
+\comment{http://cs229.stanford.edu/notes/cs229-notes2.}
 
-\comment{Rabi malo podatkov za trening - ni nam nič v pomoč.}
+Pri logistični regresiji (podobno tudi pri perceptronu, glej spodaj) smo poskusili predvideti $p(y|x;\theta)$, pogojno porazdelitev $y$ pri danem $x$. Pri logistični regresiji smo verjetnost aproksimirali kar z logistično funkcijo $h_\theta(x) = g(\theta^Tx)$, kjer je $g$ sigmoidna funkcija. Pri klasifikacijskem problemu se tak algoritem nauči določiti mejo med različnimi razredi točk. Takim algoritmom pravimo \textbf{diskriminativni}.
+
+Naivni Bayesov klasifikator je \textbf{generativni} algoritem. Ta se poskuša naučiti modelirati $p(x|y)$ (in $p(y)$). Povedno preprosteje, algoritem poskusi modelirati porazdelitev posamezne značilke v primeru, ko meritve spadajo v točno določen razred. Lepa ilustracija tega pristopa so histogrami, ki smo jih pridelali v raziskovalni analizi podatkov, je npr. na sliki \ref{sl:histogrami}.
+
+Ko znamo izračunati $p(y)$ (imenovan tudi \textbf{class prior}) in $p(x|y)$, lahko uporabimo Bayesovo pravilo, da izpeljemo porazdelitev $p(y|x)$.
+\begin{equation}
+	p(y|x) = \frac{p(x|y)p(y)}{p(x)}.
+\end{equation}
+Imenovalec lahko izračunamo kot $p(x) = p(x|y = 1)p(y = 1) + p(x|y = 0)p(y = 0)$, v resnici pa ga ni potrebno nikoli izračunati, saj dejansko v klasifikacijskem algoritmu iščemo
+\begin{equation}
+	\arg \max_y p(y|x) = \arg \max_y \frac{p(x|y)p(y)}{p(x)} = \arg \max_y p(x|y)p(y).
+\end{equation}
+Privzemimo, da je porazdelitev $p(x|y)$ normalna. V $d$ dimenzijah takšno porazdelitev parametriziramo s pomočjo povprečja $\mu \in \mathbb{R}^d$ in kovariančne matrike $\Sigma \in \mathbb{R}^{d \times d}$, kjer je $\Sigma \geq 0$ simetrična in pozitivno semi definitna Porazdelitev zapišemo kot
+\begin{equation}
+	p(x;\mu,\Sigma) = {\cal N}(\mu,\Sigma) = \frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}} \exp \left(-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x - \mu)\right),
+\end{equation}
+kjer $|\Sigma|$ označuje determinantno matrike $\Sigma$.
+
+Model zapišimo tako, da ima $p(y)$ Bernoullijevo porazdelitev, $p(x|y)$ pa normalno:
+\begin{eqnarray}
+	p(y) &=& \phi^y(1-\phi)^{1-y} \\
+	p(x|y = 0) &=& {\cal N}(\mu_0;\Sigma) \\
+	p(x|y = 1) &=& {\cal N}(\mu_1;\Sigma)
+\end{eqnarray}
+
+\comment{Manjka!!!}
+
+Naivni Bayesov klasifikator se uporablja predvsem v primerih, ko imamo opravka z binarnimi značilkami (npr. pri obravnavni teksta, najbolj značilna uporaba metode je pri klasifikaciji nezaželene elektronske pošte), uporaba v primerih, ko je značilka $x_i \in \{1, 2, ..., k_i\}$ preprosta, če uporabimo ustrezno porazdelitev za $p(x_i|y)$. Pred uporabo algoritma je zato potrebno zvezne značilke ustrezno diskretizirati.
+
+Pri naivnem Bayesovem klasifikatorju privzamemo, da so značilke $x_i$ med seboj pogojno neodvisne. Pogojna neodvisnost pomeni, da bomo v primeru, ko bomo imeli opravka z npr. pozitivno klasificirano točko ($y = 1$), ki bo imela neki vrednosti značilk $x_1 = a_1$ in $x_2 = a_2$ privzeli, da naše vedenje o $x_1$ v ostalih primerih ne bo vplivalo na vedenje o $x_2$. To pomeni, da bo veljalo $p(x_1|y) = p(x_1|y, x_2)$. 
+
+Sedaj lahko izračunamo verjetnost
+\begin{equation}
+	\begin{split}
+	p(x_1,...,x_d|y) &= p(x_1|y)p(x_2|y, x_1)p(x_3|y,x_1,x_2) \cdots p(x_d|y,x_1,...x_{d-1}) \\
+	& = p(x_1|y)p(x_2|y)p(x_3|y) \cdots p(x_d|y) \\
+	& = \prod_{i=0}^{d} p(x_i|y).
+	\end{split}
+\end{equation}
+Predpostavko pogojne neodvisnosti je sicer težko izpolniti, vendar končni algoritem dobro deluje na veliko različnih problemih.
+
+Dobra lastnost algoritma je, da za relativno dobro delovanje potrebuje zelo malo primerov v učni podatkovni množici, kar pa v primeru obsežne zbirke podatkov, s katero imamo opravka v diplomskem delu, ni odločilna prednost.
 
 \subsection{Metoda podpornih vektorjev}
 
@@ -370,7 +403,34 @@ Podobno kot v primeru logistične regresije določimo $h_\theta(x) = g(\theta^Tx
 
 
 \section{Evalvacija klasifikacijskih metod}
-\comment{Tole bi vseeno mogoče izpustil. Nekje dodam samo še preceision/recall, ki sta OK za lažje razumevanje dogajanja.}
+Poleg metrike, ki je razložena v razdelku \ref{sc:ams} in je specifična problemu ločevanja signala in ozadja v primeru podatkov iz detektorja ATLAS, je v splošnem za razumevanje delovanja in izbiro klasifikacijskih metod priporočljivo uporabiti še nekaj metrik. Pregled metrik je povzet po \cite{wiki:precision_and_recall}.
+
+\begin{itemize}
+	\item \textbf{pravilno pozitivni (\textit{true positive}, TP)}, predstavlja število pravilno klasificiranih pozitivnih dogodkov (signal)
+	\item \textbf{pravilno negativni (\textit{true negative}, TN)}, predstavlja število pravilno klasificiranih negativnih dogodkov (ozadje)
+	\item \textbf{napačno pozitivni (\textit{false positive}, FP)}, predstavlja število napačno klasificiranih negativnih dogodkov (ozadje, klasificirano kot signal)
+	\item \textbf{napačno negativni (\textit{false negative}, FN)}, predstavja število napačno klasificiranih pozitivnih dogodkov (signal, klasificiran kot ozadje)
+	\item \textbf{natančnost (\textit{precision} ali \textit{positive prediction value}, PPV)} (pozitivna napovedna vrednost), definirana kot 
+	\begin{equation}	
+	PPV = \frac{TP}{TP + FP}
+	\end{equation}
+	\item \textbf{priklic (\textit{recall} ali \textit{true positive rate}, TNR)} (ali občutljivost), definiran kot
+	\begin{equation}	
+	TNR = \frac{TP}{TP + FN}
+	\end{equation}
+	\item \textbf{$F_1$ score} povezuje natančnost in priklic v geometrijskem povprečju. 
+	\begin{equation}
+	F_1 = 2 \cdot \frac{PPV \cdot TNR}{PPV + TTR} = \frac{2TP}{2TP + FP + FN}
+	\end{equation}
+	\item \textbf{točnost (\textit{accuracy}, ACC)}
+	\begin{equation}
+	ACC = \frac{TP + TN}{P + N}
+	\end{equation}
+\end{itemize}
+
+\comment{Teorija je precej bolj podrobna, vendar se ne bi poglabljal.}
+
+\comment{Mogoče bi moral razložiti tudi ROC krivuljo.}
 
 % -----------------------------------------------------------------------------
 % POGLAVJE: Podatki
@@ -481,6 +541,9 @@ Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količ
 % POGLAVJE: Rezultati osnovnih metod
 % -----------------------------------------------------------------------------
 \chapter{Rezultati osnovnih metod}
+
+Vse implementacije sem naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn}. Za pospešena odločitvena drevesa sem uporabil nagrajeni paket XGBoost\cite{chen2014}.
+
 	
 \section{Preprosto okno}
 \comment{http://higgsml.lal.in2p3.fr/software/simplest-python-kit/}
@@ -493,30 +556,30 @@ Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količ
 % -----------------------------------------------------------------------------
 % POGLAVJE: Izboljševanje metod in razvoj lastne metode
 % -----------------------------------------------------------------------------
-\chapter{Izboljševanje metod in razvoj lastne metode}
-\label{raziskovalna_analiza}
+\chapter{Razvoj lastne metode}
+\label{razvoj lastne metode}
 
-Vse implementacije sem naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn}. Za pospešena odločitvena drevesa sem uporabil nagrajeni paket XGBoost\cite{chen2014}.
+Metodi, ki sta se pri reševanju danega problema odrezali najbolje, sta bili metodo globokih nevronskih mrež in pa pospešena odločitvena drevesa. Kljub temu, da je bil najboljši rezultat $AMS$ dosežen s pomočjo globokih nevronskih mrež, je izbrana metoda pri ločevanju signala od ozadja na projektu ATLAS metoda, ki temelji na pospošenih odločitvenih drevesih. Značilnost obeh metod je, da v sistem vpeljeta nelinearnost. 
 
-\section{Izbira značilk}
-	
+Nekaj poročil je bilo o uporabi metode podpornih vektorjev (SVM)\footnote{\url{https://www.kaggle.com/c/higgs-boson/forums/t/10165/}}, vendar so tekmovalci poročali o precej nižjem rezultati, kakor je bil npr. osnovni rezultat metode pospešenih odločitvenih dreves.
+
+Nelinearnost lahko v SVM modele pripeljemo s pomočjo jeder (\textit{kernel}) ali neposredno - s pomočjo generiranjem večjega nabora novih značilk, ki temeljijo na izvirnih značilkah. V grobem lahko zapišemo $x_j = f(x_{k_1}, x_{k_2}, ..., x_{k_l})$, pri čemerj je $l$ celo število in indeks izpeljane značilke $j > d$. Ponavadi velja $l \in \{1, 2, 3\}$. Funkcija $f$ je lahko poljubna. Pri vrednosti $l = 1$ lahko vpeljemo kvadrat, kub, logaritem, eksponent ali kakšno drugo podobno funkcijo. Pri večjem naboru se osredotočimo predvsem na produkte, vsote, diference, eksponente značilk v kombinaciji s prej omenjenimi funkcijami. 
+
+Pri generiranju novih značilk šteje iznajdljivost in inovativnost. Zanimiv pristop je npr. uporaba metode grozdenja (npr. KMeans) in uporaba zaporedne številke grozda kot nove značilke.
+
+Lepa lastnost metode SVM je, da se dobro obnese v primerih, ko imamo veliko število značilk. Še več, SVM zna najti \textit{iglo v kopici sena}. Zna torej v ogromnem naboru značilk poiskati tisto, ki najbolje odraža dinamiko modela. S pomočjo poskusov in napak je moč ob sistematičnem pregledu sicer neomejenega prostora izpeljanih značlik najti tiste, ki največ prispevajo k izboljšanju modela. Še ena lepa prednost metode SVM pred npr. nevronskimi mrežami je, da ne gre za \textit{črno škatlo}, pač pa je moč rezultate in končni SVM model interpretirati.
+
+Glede na to, da globoke nevronske mreže nimajo višje izrazne vrednosti kot SVM obogaten z gornjimi izpeljanimi značilkami, je cilj razvoja algoritma, da se približa rezultatom pospešnih odločitvenih dreves in da preseže rezultate, o katerih so poročali drugi tekmovalci ($AMS > 2.8$).
+
+
 \section{Generiranje novih značilk}
 \comment{Poglavje 6 - ali so te količine dovolj?} \cite{Adam-Bourdarios14}
 
-\section{Fine tuning}
+\section{Optimizacija AMS}
 
-\section{Razvoj metode na podlagi SVM}
+\section{Implementacija}
+Metodo sem implementiral v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn} za metodo SVM. Vsa koda, razvita in preizkušena v diplomskem delu, je dosegljiva na sistemu GitHub\footnote{\url{https://github.com/klemenkenda/HiggsML}}.
 
-\comment{Nekaj idej:}
-\comment{Problem je v nelinearnosti. Zato je treba nelinearnost pripeljat v SVM.}
-\comment{To naredimo s pomočjo različnih kernelov, in generiranja novih featurejev.}
-\comment{Feature je lahko na enem atributu - logaritem, ekspoment, kakšna druga podobna naravna funkcija - tudi poljubna.}
-\comment{Ali pa na dveh. Več kod dveh se skoraj ne splača uporabljat. Vsote, zmnožki, diference, $e^y$.}
-\comment{En zanimiv feature se da generirat s pomočjo KMeans clusteringa - kar ID clustra.}
-\comment{SVM z veliko featureji načeloma ne bi smel biti nič slabši kot deep NN.}
-\comment{Problem je samo, da se mu te feature-je porine ...}
-\comment{SVM zna najti iglo v kopici sena ... Torej - če se bo našel en dober feature, ga bo sVM našel.}
-\comment{Prednost SVM je še v tem, da ni black-box, da se da razumeti stvar.}
 
 \section{Rezultati}
 
