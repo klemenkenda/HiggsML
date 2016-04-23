@@ -6,7 +6,7 @@
 
 \comment{Popravi tabelo, da pride lepo na eno stran!}
 
-\section{5-figure summary}
+\section{Povzetek značilk}
 
 \begin{table}[ht]
 	\centering
@@ -48,7 +48,7 @@
 		Weight                      &  164333.0 &       2.501018 &      1.794235 &       0.064061 &       1.340468 &       2.080362 &       4.353313 &       7.822543 &  85667.0 &       0.008078 &      0.008231 &       0.001502 &       0.001503 &       0.001503 &       0.018636 &       0.018636 \\
 	\end{tabular}
 	\caption{5 figure summary.}
-	\label{5figuresum}
+	\label{tb:5figuresum}
 \end{table}
 
 \clearpage
@@ -76,6 +76,7 @@
 	\includegraphics[width=5.2cm]{exploratory/ea_hist_der_lep_eta_centrality.pdf}
 	
 	\caption{Primerjava histogramov izpeljanih značilk.}
+	\label{sl:histogram_izpeljane}
 \end{figure}
 
 \begin{figure}[ht]
@@ -105,7 +106,8 @@
 	\includegraphics[width=5.2cm]{exploratory/ea_hist_pri_jet_num.pdf}	
 	\includegraphics[width=5.2cm]{exploratory/ea_hist_pri_jet_all_pt.pdf}	
 
-	\caption{Primerjava histogramov simuliranih (merjenih) značilk.}			
+	\caption{Primerjava histogramov simuliranih (merjenih) značilk.}	
+	\label{sl:histogram_izmerjene}		
 	
 \end{figure}
 
@@ -120,40 +122,29 @@
 \end{figure}
 \comment{Slika \ref{corr_matrix} ne pove nič več kot \ref{corr_clust_matrix}, zato lahko gre ven.}
 
-\begin{figure}[ht]
-	\includegraphics[width=15.6cm]{exploratory/ea_corr_clustermap.pdf}
-	\caption{Koreliranost značilk v simuliranih (merjenih) podatkih - urejenost na podlagi hierarhičnega grozdenja.}
-	\label{corr_clust_matrix}
-\end{figure}
-
-\begin{figure}[ht]
-	\label{scatter_corr}
-	
-	\includegraphics[width=15.6cm]{exploratory/ea_scatter_correlated.pdf}
-	
-	\caption{Scatter plot močno koreliranih značilk.}
-\end{figure}
 
 \clearpage
 
-\section{Scatter plots}
+\section{Razpršeni graf}
 
 \comment{Razloži krivuljo KDE kot generalizacijo histograma. \cite{hand2001}}
 
 \begin{figure}[ht]
-	\label{scatter_corr2}
-	
-	\includegraphics[width=16.6cm]{exploratory/ea_scatter_correlated_2.pdf}
-	
-	\caption{Scatter plot močno koreliranih značilk 2.}
+	\includegraphics[width=15.6cm]{exploratory/ea_scatter_correlated.pdf}	
+	\caption{Razpršeni graf prvega nabora močno koreliranih značilk.}
+	\label{sl:scatter_corr}
+\end{figure}
+
+\begin{figure}[ht]	
+	\includegraphics[width=16.6cm]{exploratory/ea_scatter_correlated_2.pdf}	
+	\caption{Razpršeni graf drugega nabora močno koreliranih značilk.}
+	\label{sl:scatter_corr2}
 \end{figure}
 
 \begin{figure}[ht]
-	\label{scatter_noncorr}
-	
-	\includegraphics[width=15.6cm]{exploratory/ea_scatter_noncorrelated.pdf}
-	
-	\caption{Scatter plot nekoreliranih koreliranih značilk.}
+	\includegraphics[width=15.6cm]{exploratory/ea_scatter_noncorrelated.pdf}	
+	\caption{Razpršeni graf nekoreliranih koreliranih značilk.}
+	\label{sl:scatter_noncorr}			
 \end{figure}
 
 \clearpage
@@ -164,27 +155,7 @@ signal - povprečje    0.479367
 background - povprečje    0.624191
 \comment{Ne smemo ravno povprečiti ...}
 
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{lrr}
-		\hline
-		\textbf{Značilka} &         \textbf{Signal} &         \textbf{ozadje} \\
-		\hline
-		DER\_mass\_MMC           &  0.033093 &  0.214680 \\
-		DER\_deltaeta\_jet\_jet   &  0.621033 &  0.756117 \\
-		DER\_mass\_jet\_jet       &  0.621033 &  0.756117 \\
-		DER\_prodeta\_jet\_jet    &  0.621033 &  0.756117 \\
-		DER\_lep\_eta\_centrality &  0.621033 &  0.756117 \\
-		PRI\_jet\_leading\_pt     &  0.297571 &  0.452867 \\
-		PRI\_jet\_leading\_eta    &  0.297571 &  0.452867 \\
-		PRI\_jet\_leading\_phi    &  0.297571 &  0.452867 \\
-		PRI\_jet\_subleading\_pt  &  0.621033 &  0.756117 \\
-		PRI\_jet\_subleading\_eta &  0.621033 &  0.756117 \\
-		PRI\_jet\_subleading\_phi &  0.621033 &  0.756117 \\
-	\end{tabular}
-	\caption{Nedefinirane vrednosti v dogodkih, ki označujejo signal in ozadje, normalizirano na število dogodkov.}
-	\label{unknown_values}
-\end{table}
+
 
 \section{PCA in LDA}
 \begin{figure}[ht]	

@@ -134,7 +134,7 @@ Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru m
 
 
 \section{Izpeljava relevantnih značilk}
-Podpoglavje opisuje nekaj osnovnih enačb iz posebne teorije relativnosti in sledi predvsem izpeljavi novih značilk iz surovih podatkov. Izpeljane značilke si je moč ogledati v podpoglavju \ref{opis-podatkov}.
+Podpoglavje opisuje nekaj osnovnih enačb iz posebne teorije relativnosti in sledi predvsem izpeljavi novih značilk iz surovih podatkov. Izpeljane značilke si je moč ogledati v razdelku \ref{sec:opis_podatkov}.
 
 \subsection{Gibalna količina, masa in energija}
 Fundamentalna enačba posebne teorije relativnostni
@@ -403,6 +403,8 @@ Podobno kot v primeru logistične regresije določimo $h_\theta(x) = g(\theta^Tx
 
 
 \section{Evalvacija klasifikacijskih metod}
+\comment{Ne samo metrika, ampak celoten princip! Učna/testna množica, cross-validacija, ipd.}
+
 Poleg metrike, ki je razložena v razdelku \ref{sc:ams} in je specifična problemu ločevanja signala in ozadja v primeru podatkov iz detektorja ATLAS, je v splošnem za razumevanje delovanja in izbiro klasifikacijskih metod priporočljivo uporabiti še nekaj metrik. Pregled metrik je povzet po \cite{wiki:precision_and_recall}.
 
 \begin{itemize}
@@ -444,6 +446,7 @@ Vzorec signala zajema dogodke, v katerih naj bi nastal Higgsov bozon (katrega ma
 V simuliranih podatkov so predstavljeni samo trije procesi ozadja. Prvi prihaja od razpada $Z \rightarrow \tau^+\tau^-$ (masa z bozona je $m_Z = 91.2\,\text{GeV}$). Ta razpad proizvaja dogodke s topologijo, ki je zelo podobna tisti pri razpadu Higgsovega bozona. Druga množica dogodkov vsebuje par $t$ kvarkov, ki imata lahko med svojimi razpadnimi produkti lepton ali hadronski tau. Tretja množica vsebuje razpad $W$ bozona, kjer lahko nastaneta en elektron ali mion in hadronski tau. 
 
 \section{Opis podatkov}
+\label{ch:opis_podatkov}
 
 V učni podatkovni množici je na voljo 250.000 dogodkov, od teh jih je 85.667 predstavljalo signal, 164.333 pa ozadje. Vsak dogodek je predstavljen z $d = 30$ značilkami, ki so dodatno opisane v \ref{sec:opis-znacilk}, in 3 metapodatki: oznako razreda ($s$ - signal ali $b$ - ozadje), utežjo $w_i$ in zaporedno številko dogodka. Raziskovalna analiza podatkov je predstavljena v \ref{sec:raziskovalna-analiza}.
 
@@ -509,32 +512,68 @@ Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količ
 
 \comment{Vse izpeljane vrednosti so definirane v dodatku! Referenciranje na ustrezne enačbe!}
 
-\section{Rezultati raziskovalne analiza podatkov}
+\section{Rezultati raziskovalne analize podatkov}
 \label{sec:raziskovalna-analiza}
 
-\subsection{Manjkajoči podatki}
+V raziskovalni analizi podatkov sem najprej pregledal \textbf{porazdelitev posameznih značilk, uteži in oznak skozi celotno množico}. Ugotovil sem, da so vse količine enakomerno porazdeljene, kar nam zagotavlja, da poljubno rezanje množice podatkov (npr. na učno in testno množico) ne bo bistveno vplivalo na končne rezultate.
 
-, tabela \ref{manjkajoče} pa predstavlja dogodke z manjkajočimi vrednostmi določenih značilk.
+V drugem koraku sem si ogledal \textbf{porazdelitev uteži} $w^{(i)}$ pri obeh razredih. Rezultat je predstavljen na sliki \ref{sl:weight}. Povprečna utež pri signalu je $w = 0.0080 \pm 0.0082$, pri ozadju pa $w = 2.501 \pm 1.794$. Razlika v utežeh vpliva na optimizacijo algoritmov, kot je razloženo v poglavju \ref{ch:razvoj_lastne_metode}.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=10cm]{exploratory/ea_weight.pdf} 
+	\caption{Porazdelitev uteži $w^{(i)}$ v učni podatkovni množici.}
+	\label{sl:weight}		
+\end{figure}
+
+Množica podatkov vsebuje veliko manjkajočih vrednosti. Gre za značilke, ki jih pri določenih topologijah ni bilo mogoče izmeriti ali izračunati. Rezultati so predstavljeni v tabeli \ref{tb:manjkajoce_vrednosti}. V celotni množici več kot $70\%$ točk nima vseh podatkov. Strategije pristopov pri reševanju težav, ki nastanejo zaradi manjkajočih vrednosti, so opisane v poglavju \ref{ch:razvoj_lastne_metode}.
 
 \begin{table}[ht]
 	\centering
-	\begin{tabular}{ccc}
+	\begin{tabular}{lrr}
 		\hline
-		{} & \textbf{signal} & \textbf{ozadje} \\
+		\textbf{Značilka} &         \textbf{Signal} &         \textbf{ozadje} \\
 		\hline
-		brez curkov & $81002\;(29,6\%)$ & $239967\;(45,3\%)$ \\
-		1 curek & $88189\;(32,3\%)$ & $159071\;(30,2\%)$ \\
-		vsi curki & $169191\;(61,9\%)$ & $398139\;(75,5\%)$ \\
-		\hline
-		Higgsova masa & $9011\;(3,3\%)$ & $114925\;(21,8\%)$
-		
+		DER\_mass\_MMC            &  3.3\%  &  21.5\% \\
+		DER\_deltaeta\_jet\_jet   &  62.1\% &  75.6\% \\
+		DER\_mass\_jet\_jet       &  62.1\% &  75.6\% \\
+		DER\_prodeta\_jet\_jet    &  62.1\% &  75.6\% \\
+		DER\_lep\_eta\_centrality &  62.1\% &  75.6\% \\
+		PRI\_jet\_leading\_pt     &  29.8\% &  45.3\% \\
+		PRI\_jet\_leading\_eta    &  29.8\% &  45.3\% \\
+		PRI\_jet\_leading\_phi    &  29.8\% &  45.3\% \\
+		PRI\_jet\_subleading\_pt  &  62.1\% &  75.6\% \\
+		PRI\_jet\_subleading\_eta &  62.1\% &  75.6\% \\
+		PRI\_jet\_subleading\_phi &  62.1\% &  75.6\% \\
 	\end{tabular}
-	\caption{Manjkajoče značilke, število dogodkov in odstotek v razred.}
-	\label{manjkajoče}
+	\caption{Nedefinirane vrednosti v dogodkih, ki označujejo signal in ozadje, normalizirane na število dogodkov v posameznem razredu.}
+	\label{tb:manjkajoce_vrednosti}
 \end{table}
 
+Pregled povzetka značilk nam pove, da so značilke, ki se med razredi najbolj razlikujejo \comment{naštej}. Povzetek vseh značilk je prikazan v tabeli \ref{tb:5figuresum}. Natančnejši pogled posamičnih značilk je možen s pomočjo histogramov. Nekaj predstavnikov, pri katerih se porazdelitve med razredi najbolj razlikujejo, je predstaviljenih na sliki \ref{sl:histogrami}, celoten pregled izmerjenih in izračunanih značilk pa je na voljo na slikah \ref{sl:histogram_izmerjene} in \ref{sl:histogram_izpeljane}.
 
-\comment{Večina gre v dodatek.}
+\begin{figure}[ht]
+	\includegraphics[width=7.7cm]{exploratory/ea_hist_der_mass_mmc.pdf}
+	\includegraphics[width=7.8cm]{exploratory/ea_hist_der_mass_transverse_met_lep.pdf}	
+	\includegraphics[width=7.8cm]{exploratory/ea_hist_der_deltaeta_jet_jet.pdf}		
+	\includegraphics[width=7.8cm]{exploratory/ea_hist_pri_jet_subleading_eta.pdf}	
+	\caption{Nekaj tipičnih histogramov za značilke, katerih porazdelitev se med razredoma razlikuje. Rumena barva prikazuje signal, zelena pa ozadje.}
+	\label{sl:histogrami}			
+\end{figure}
+
+Korelacijo dveh značilk in njun potencial pri ločevanju signala od ozadja si lahko ogledamo na razpršenih grafih. Trije primeri so prikazani v dodatku, in sicer dva, ki ponazarjata močno korelirane značilke (glej sliki \ref{sl:scatter_corr} in \ref{sl:scatter_corr2}), in en, ki ponazarja nekorelirane značilke (slika \ref{sl:scatter_noncorr}).
+
+Bolj popolna informacija o korelaciji posameznih značilk je prikazana na sliki \ref{sl:corr_clust_matrix}. Podobno obarvane vrstice oz. stolpci (ki so velikosti $d$) na sliki prikazujejo značilke, ki so si med seboj zelo podobne in podobno korelirajo z drugimi značilkami. Vsaka vrstica oz. stolpec ponazarja vektor korelacij posamezne značilke z vsemi ostalimi.
+
+Hierarhično grozdenje temelji na evklidski razdalji med vektorji korelacij, njegov rezultat pa je ponazorjen s skicama nad in levo od matrike korelacij. Podobnost dveh značilk lahko bralec oceni z odmikom razcepa, ki ponazarja posamični grozd.
+
+S slike je razvidno, da obstaja en relativno koreliran grozd značilk (zgoraj levo), ki zajema značilke: PRI\_met, PRI\_jet\_subleading\_pt, PRI\_jet\_num, PRI\_jet\_all\_pt, DER\_sum\_pt, PRI\_met\_sumet, DER\_pt\_h in PRI\_jet\_leading\_pt.
+
+\begin{figure}[ht]
+	\includegraphics[width=15.6cm]{exploratory/ea_corr_clustermap.pdf}
+	\caption{Koreliranost značilk v simuliranih (merjenih) podatkih. Značilke so urejene urejenost na podlagi hierarhičnega grozdenja.}
+	\label{sl:corr_clust_matrix}
+\end{figure}
 
 	
 % -----------------------------------------------------------------------------
@@ -557,7 +596,7 @@ Vse implementacije sem naredil v programskem jeziku Python z uporabo paketa \tex
 % POGLAVJE: Izboljševanje metod in razvoj lastne metode
 % -----------------------------------------------------------------------------
 \chapter{Razvoj lastne metode}
-\label{razvoj lastne metode}
+\label{ch:razvoj_lastne_metode}
 
 Metodi, ki sta se pri reševanju danega problema odrezali najbolje, sta bili metodo globokih nevronskih mrež in pa pospešena odločitvena drevesa. Kljub temu, da je bil najboljši rezultat $AMS$ dosežen s pomočjo globokih nevronskih mrež, je izbrana metoda pri ločevanju signala od ozadja na projektu ATLAS metoda, ki temelji na pospošenih odločitvenih drevesih. Značilnost obeh metod je, da v sistem vpeljeta nelinearnost. 
 
