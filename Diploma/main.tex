@@ -12,6 +12,7 @@
 \usepackage{url}
 \usepackage{fancyhdr}
 \usepackage{parskip}
+\usepackage{wrapfig}
 % \usepackage[dvips]{graphicx}
 \usepackage[titletoc]{appendix}
 \usepackage[dvips]{xy}
@@ -45,7 +46,8 @@ Plan dela:
 	\item \st{Exploratory analysis + opis podatkov}
 	\item Usposobitev baseline (predlaganih) metod
 		\begin{itemize}
-			\item Simple Window
+			\item \st{Simple Window}
+			\item \st{Logisticna regresija}
 			\item Naive Bayes + opis metode
 			\item XGBoost + opis nagrajene metode
 		\end{itemize}
@@ -567,13 +569,32 @@ Bolj popolna informacija o korelaciji posameznih značilk je prikazana na sliki 
 
 Hierarhično grozdenje temelji na evklidski razdalji med vektorji korelacij, njegov rezultat pa je ponazorjen s skicama nad in levo od matrike korelacij. Podobnost dveh značilk lahko bralec oceni z odmikom razcepa, ki ponazarja posamični grozd.
 
-S slike je razvidno, da obstaja en relativno koreliran grozd značilk (zgoraj levo), ki zajema značilke: PRI\_met, PRI\_jet\_subleading\_pt, PRI\_jet\_num, PRI\_jet\_all\_pt, DER\_sum\_pt, PRI\_met\_sumet, DER\_pt\_h in PRI\_jet\_leading\_pt.
+S slike je razvidno, da obstaja en močno koreliran grozd značilk (zgoraj levo), ki zajema značilke: PRI\_met, PRI\_jet\_subleading\_pt, PRI\_jet\_num, PRI\_jet\_all\_pt, DER\_sum\_pt, PRI\_met\_sumet, DER\_pt\_h in PRI\_jet\_leading\_pt. Nobena izmed omenjenih značilk ne vsebuje veliko novih informacij, ki bi lahko pripomogle k izboljšanju klasifikacijskih metod, kakor katerakoli druga iz tega grozda. Podobnih grozdov ali vsaj parov (trojic) značilk lahko iz slike razberemo še precej.
+
+Slika korelacij nam že sama po sebi da zelo informativen vpogled v podatke, pri modeliranju pa bi nam lahko služila kot orodje za izbiro značilk. V našem primeru se sicer zdi zmanjševanje značilk nepotrebno, saj razpolagamo z nekaj velikostnih redov večjim naborom podatkov, kakor pa je nabor značilk. Zaradi tega ne tvegamo pojava prenasičenja (\textit{overfitting}), pri čemer bi zaradi prilagajanja posameznim vzorcem iz učne množice podatkov izgubili na splošnosti modela.
 
 \begin{figure}[ht]
-	\includegraphics[width=15.6cm]{exploratory/ea_corr_clustermap.pdf}
+	\centering
+	\includegraphics[width=12cm]{exploratory/ea_corr_clustermap.pdf}
 	\caption{Koreliranost značilk v simuliranih (merjenih) podatkih. Značilke so urejene urejenost na podlagi hierarhičnega grozdenja.}
 	\label{sl:corr_clust_matrix}
 \end{figure}
+
+Na zadnji sliki (\ref{sl:pca}) je prikazanih nekaj vizualizacij na podlagi analize glavnih komponent (PCA). Namen te analize je preveriti potencial za linearno separabilnost vzorcev, ki pripadajo različnima razredoma. 
+
+
+Na vseh treh grafih je moč s prostim očesom razločiti območja, ki pripadajo predvsem signalu (rdeča) oz. ozadju (zelena).
+
+\begin{figure}[h]	
+	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d.pdf}
+	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d_1_3.pdf}
+	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d_2_3.pdf}		
+	
+	\caption{Analiza glavnih komponent. Razpršeni grafi 1. in 2., 1. in 3. ter 2. in 3. komponente.}
+	\label{sl:pca}
+\end{figure}
+
+Nekaj slik iz podrobnejše raziskovalne analize podatkov je na voljo v dodatku \ref{ch:dodatek_raziskovalna}.
 
 	
 % -----------------------------------------------------------------------------
@@ -581,15 +602,136 @@ S slike je razvidno, da obstaja en relativno koreliran grozd značilk (zgoraj le
 % -----------------------------------------------------------------------------
 \chapter{Rezultati osnovnih metod}
 
-Vse implementacije sem naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn}. Za pospešena odločitvena drevesa sem uporabil nagrajeni paket XGBoost\cite{chen2014}.
+Osnovne metode so bile predlagane in vsaj delno implementirane že v spremljevalnem gradivu HiggsML izziva. Vse teste in dopolnitve sem sicer naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn}. Za pospešena odločitvena drevesa sem uporabil nagrajeni paket \texttt{XGBoost}\cite{chen2014}.
 
 	
 \section{Preprosto okno}
-\comment{http://higgsml.lal.in2p3.fr/software/simplest-python-kit/}
+
+Metoda preprostega okna temelji na izbiri preprostega okna s pomočjo ene same spremenljivke (ki naj bi vsebovalo signal)\footnote{\url{https://higgsml.lal.in2p3.fr/software/simplest-python-kit/}}. Predlagana implementacija temelji na oceni mase Higgsovega bozona (spremenljivka DER\_mass\_MMC). Dogodke, ki ustrezajo $m_H = 125\,\text{GeV} \pm 22\,\text{GeV}$, pri čemer je $22\,\text{GeV}$ predlog praga, metoda klasificira kot pozitivne (signal).
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{rl}
+		\hline
+		\textbf{Mera} & \textbf{Rezultat} \\
+		\hline
+		pravilno pozitivni & 23,2\%\\
+		pravilno negativni & 50,8\% \\
+		napačno pozitivni & 14,8\% \\
+		napačno negativni & 11,2\% \\
+		natančnost & 0.611 \\
+		priklic & 0.673 \\
+		točnost & 0.740 \\
+		ocena $F_1$ & 0.641 \\
+		ocena $AMS_2$ & 1.514 \\
+		ocena $AMS_{2(test)}$ & 1.535 		
+	\end{tabular}
+	\caption{Rezultati predlagane metode preprostega okna na podlagi $m_H$.}
+	\label{tb:preprosto_okno}
+\end{table}
+
+Preprosta metoda doseže na potrjevalni množici podatkov oceno $AMS_{2(test)} = 1.535$, to oceno je moč razbrati tudi iz zadnje vrstice tabele \ref{tb:preprosto_okno}. Naključna rešitev, ki služi kot osnovna metoda, da rezultat $AMS_2{(test)} = 0.586$.
+
+Pristop sicer kliče po optimizaciji in izboljšanju metode. V prvem koraku lahko na podlagi mere ($AMS_2$) izboljšamo vrednost praga. Glede na porazdelitev značilke DER\_mass\_MMC glede na oba razreda pa lahko sklepamo, da bi lahko optimizirali tudi sredino okna. Optimizacija po pragu je prikazana na sliki \ref{sl:simple_optimization_threshold}.
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[width=7.6cm]{methods/simple/sw_amslearn.pdf}
+	\includegraphics[width=7.6cm]{methods/simple/sw_amslearn_detail.pdf}		
+	
+	\caption{Optimizacija praga pri metodi preprostega okna.}
+	\label{sl:simple_optimization_threshold}
+\end{figure}
+
+Izbira praga pri ($\pm 22\,\text{GeV}$) ni bila optimalna. Metoda prag postavlja približno na $\pm 31\,\text{GeV}$, pri čemer velja komentirati, da je na območju med $\pm 38\,\text{GeV}$ in $\pm 30\,\text{GeV}$ napaka pri izračunu $AMS_2$ velika v primerjavi z dejansko obliko krivulje, zato lahko velikost praga zgolj približno ocenimo, in sicer na $\pm 31\,\text{GeV}$. Rezultati so prikazani v tabeli \ref{tb:preprosto_okno_optimized}
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{rl}
+		\hline
+		\textbf{Mera} & \textbf{Rezultat} \\
+		\hline
+		pravilno pozitivni & 28,2\%\\
+		pravilno negativni & 43,0\% \\
+		napačno pozitivni & 22,5\% \\
+		napačno negativni & 6,3\% \\
+		natančnost & 0.556 \\
+		priklic & 0.819 \\
+		točnost & 0.712 \\
+		ocena $F_1$ & 0.662 \\
+		ocena $AMS_2$ & 1.573 \\
+		ocena $AMS_{2(test)}$ & 1.583 		
+	\end{tabular}
+	\caption{Rezultati metode preprostega okna na podlagi $m_H$ z optimiziranim pragom za mero $AMS_2$.}
+	\label{tb:preprosto_okno_optimized}
+\end{table}
+
+Optimizacija po dveh parametrih (prah in $m_H$) je prikazan na sliki \ref{sl:simple_optimization_2d}. Po pregledu faznega prostora sem izluščil območje, kjer je $AMS_2$ najvišji. Določil sem $m_H = 127,25\,\text{GeV} \pm 32.25\,\text{GeV}$. Na levem grafu je celostni pregled zanimivega faznega prostora, na desnem pa povečan del z najvišjimi vrednostmi $AMS_2$. Na $x$ osi je prikazan prag, na $y$ osi je prikazana $m_H$. $AMS_2$ je predstavljen ob plastnicah. Modra barva predstavlja plastnice z nižjo, rdeča pa plastnice z višjo vrednostjo $AMS_2$.
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[width=7.6cm]{methods/simple/sw_amslearn_2d_contour.pdf}
+	\includegraphics[width=7.6cm]{methods/simple/sw_amslearn_2d_contour_detail.pdf}		
+	
+	\caption{Optimizacija praga in $m_H$ pri metodi preprostega okna.}
+	\label{sl:simple_optimization_2d}
+\end{figure}
+
+Rezultati tako optimizirane metode so prikazani v tabeli \ref{tb:preprosto_okno_2d_optimized}.
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{rl}
+		\hline
+		\textbf{Mera} & \textbf{Rezultat} \\
+		\hline
+		pravilno pozitivni & 28,4\%\\
+		pravilno negativni & 43,2\% \\
+		napačno pozitivni & 22,3\% \\
+		napačno negativni & 6,1\% \\
+		natančnost & 0.560 \\
+		priklic & 0.824 \\
+		točnost & 0.716 \\
+		ocena $F_1$ & 0.667 \\
+		ocena $AMS_2$ & 1.579 \\
+		ocena $AMS_{2(test)}$ & 1.587 		
+	\end{tabular}
+	\caption{Rezultati metode preprostega okna na podlagi $m_H$ z optimiziranim pragom in $m_H$ za mero $AMS_2$.}
+	\label{tb:preprosto_okno_2d_optimized}
+\end{table}
+
+\section{Logistična regresija}
+Logistična regresija je prva metoda, s katero lahko združimo več različnih značilk.
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{rl}
+		\hline
+		\textbf{Mera} & \textbf{Rezultat} \\
+		\hline
+		pravilno pozitivni & 18,4\%\\
+		pravilno negativni & 56,4\% \\
+		napačno pozitivni & 9,1\% \\
+		napačno negativni & 16,1\% \\
+		natančnost & 0.668 \\
+		priklic & 0.535 \\
+		točnost & 0.749 \\
+		ocena $F_1$ & 0.594 \\
+		ocena $AMS_2$ & 2.015 \\
+		ocena $AMS_{2(test)}$ & 1.998 		
+	\end{tabular}
+	\caption{Rezultati neoptimizirane logistične regresije.}
+	\label{tb:logisticna}
+\end{table}
+
 
 \section{Naivni Bayesov klasifikator}
 
-\section{Multiboost}
+\footnote{\url{https://higgsml.lal.in2p3.fr/software/starting-kit/}}
+
+\section{Pospešena odločitvena drevesa}
+
+\footnote{\url{https://github.com/dmlc/xgboost/}}
 
 	
 % -----------------------------------------------------------------------------
