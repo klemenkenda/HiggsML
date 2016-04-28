@@ -701,9 +701,23 @@ Rezultati tako optimizirane metode so prikazani v tabeli \ref{tb:preprosto_okno_
 \end{table}
 
 \section{Logistična regresija}
-Logistična regresija je prva metoda, s katero lahko združimo več različnih značilk.
+Uporaba logistične regresije na problemu ločevanja signala od ozadja nam bo dala prvi vpogled v \textit{domet} linearne ekspresivnosti značilk. Rezultati osnovne metode so prikazani v tabeli \ref{tb:logisticna}. Metodo lahko izkoristimo predvsem zato, da dobimo dodatni vpogled v podatke. Pri raziskovalni analizi podatkov smo imeli vpogled v modeliranje po eni ali dveh značilkah, logistična regresija pa upošteva vse. 
 
-\begin{table}[ht]
+S slike \ref{sl:logistic_weights} lahko razberemo, da so najbolj dominantne značilke pri oblikovanju linearnega modela poleg števila curkov (PRI\_jet\_num) predvsem izpeljane vrednosti: DER\_deltar\_tau\_lep, DER\_pt\_ratio\_lep\_tau, DER\_lep\_eta\_centrality in DER\_deltaeta\_jet\_jet.
+
+\begin{figure}[h]
+	\centering	
+	\includegraphics[width=15.6cm]{methods/logistic/lr_weights.pdf}
+	
+	\caption{Absolutne vrednosti uteži pri logistični regresiji (logaritemska skala na osi $y$).}
+	\label{sl:logistic_weights}
+\end{figure}
+
+Uspešnost metode je primerljiva z uspešnostjo naivnega Bayesovega klasifikatorja ($AMS_2 \approx 2$). Z veliko verjetnostjo lahko zato trdimo, da z linearno kombinacijo značilk, s katerimi razpolagamo, ne glede na izbrano klasifikacijsko metodo, lahko dosežemo približno podobno dober rezultat.
+
+Napovedno vrednost klasifikacijskega algoritma bomo torej znatno lahko izboljšali zgolj z vpeljavo novih značilk, predvsem takih, ki v sistem vnašajo nelinearne relacije. Podoben rezultat lahko npr. pričakujemo tudi od metode podpornih vektorjev (brez uporabe jeder ali razširjenega nabora značilk).
+
+\begin{table}[h!]
 	\centering
 	\begin{tabular}{rl}
 		\hline
@@ -724,6 +738,7 @@ Logistična regresija je prva metoda, s katero lahko združimo več različnih z
 	\label{tb:logisticna}
 \end{table}
 
+\comment{Zanimivo bi bilo pogledati, kako daleč pridemo samo s PRImarnimi značilkami.}
 
 \section{Naivni Bayesov klasifikator}
 
@@ -750,7 +765,13 @@ Pri generiranju novih značilk šteje iznajdljivost in inovativnost. Zanimiv pri
 
 Lepa lastnost metode SVM je, da se dobro obnese v primerih, ko imamo veliko število značilk. Še več, SVM zna najti \textit{iglo v kopici sena}. Zna torej v ogromnem naboru značilk poiskati tisto, ki najbolje odraža dinamiko modela. S pomočjo poskusov in napak je moč ob sistematičnem pregledu sicer neomejenega prostora izpeljanih značlik najti tiste, ki največ prispevajo k izboljšanju modela. Še ena lepa prednost metode SVM pred npr. nevronskimi mrežami je, da ne gre za \textit{črno škatlo}, pač pa je moč rezultate in končni SVM model interpretirati.
 
-Glede na to, da globoke nevronske mreže nimajo višje izrazne vrednosti kot SVM obogaten z gornjimi izpeljanimi značilkami, je cilj razvoja algoritma, da se približa rezultatom pospešnih odločitvenih dreves in da preseže rezultate, o katerih so poročali drugi tekmovalci ($AMS > 2.8$).
+Glede na to, da globoke nevronske mreže nimajo višje izrazne vrednosti kot SVM obogaten z gornjimi izpeljanimi značilkami, je cilj razvoja algoritma, da se približa rezultatom pospešnih odločitvenih dreves in da preseže rezultate, o katerih so poročali drugi tekmovalci ($AMS > 2.7$).
+
+
+\section{Osnovna implementacija}
+Za implementacijo sem uporabil programski jezik Python. Za nalaganje in čiščenje podatkov sem uporabil knjižnico \texttt{Pandas}, implementacijo SVM in metode za skaliranje sem vzel iz paketa \texttt{scikit-learn}\cite{scikit-learn}. Vsa koda, razvita in preizkušena v diplomskem delu, je dosegljiva na sistemu GitHub\footnote{\url{https://github.com/klemenkenda/HiggsML}}.
+
+Od vseh preizkušenih metod je prav SVM najbolj občutljiv na velikost značilk. Algoritem za dobro delovanje potrebuje značilke, ki so podobno skalirane. V našem primeru smo vse značilke linearno transformirali tako, da imajo povprečno vrednost $0$ in standardno deviacijo $1$.
 
 
 \section{Generiranje novih značilk}
@@ -759,11 +780,33 @@ Glede na to, da globoke nevronske mreže nimajo višje izrazne vrednosti kot SVM
 \section{Optimizacija AMS}
 
 \section{Implementacija}
-Metodo sem implementiral v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn} za metodo SVM. Vsa koda, razvita in preizkušena v diplomskem delu, je dosegljiva na sistemu GitHub\footnote{\url{https://github.com/klemenkenda/HiggsML}}.
+
 
 
 \section{Rezultati}
 
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{r|cccc|cccc|cc}		
+		\textbf{Metoda} & 
+			\rotatebox[origin=l]{90}{pravilno pozitivni} & 
+			\rotatebox[origin=l]{90}{pravilno negativni} & 
+			\rotatebox[origin=l]{90}{napačno pozitivni} & 
+			\rotatebox[origin=l]{90}{napačno negativni} &
+			\rotatebox[origin=l]{90}{natančnost} & 
+			\rotatebox[origin=l]{90}{priklic} & 
+			\rotatebox[origin=l]{90}{točnost} & 
+			\rotatebox[origin=l]{90}{ocena $F_1$} & 
+			\rotatebox[origin=l]{90}{ocena $AMS_2$} & 
+			\rotatebox[origin=l]{90}{ocena $AMS_{2(test)}$} \\
+		\hline	
+		osnovni nabor & 23,7\% & 58.1\% & 7,4\% & 10,7\% &
+			0,761 & 0,689 & 0.819 & 0.724 &
+			2,674 & ? \\
+	\end{tabular}
+	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev.}
+	\label{tb:svm}
+\end{table}
 
 
 
