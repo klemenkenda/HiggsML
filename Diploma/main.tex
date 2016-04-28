@@ -773,6 +773,7 @@ Za implementacijo sem uporabil programski jezik Python. Za nalaganje in čišče
 
 Od vseh preizkušenih metod je prav SVM najbolj občutljiv na velikost značilk. Algoritem za dobro delovanje potrebuje značilke, ki so podobno skalirane. V našem primeru smo vse značilke linearno transformirali tako, da imajo povprečno vrednost $0$ in standardno deviacijo $1$.
 
+Preskusil sem naslednja standardna jedra SVM: (1) linearnega, (2) polinomskega in (3) RBF (Gaussovskega). Rezultati so zabeleženi v tabeli \ref{tb:svm}.
 
 \section{Generiranje novih značilk}
 \comment{Poglavje 6 - ali so te količine dovolj?} \cite{Adam-Bourdarios14}
@@ -800,9 +801,17 @@ Od vseh preizkušenih metod je prav SVM najbolj občutljiv na velikost značilk.
 			\rotatebox[origin=l]{90}{ocena $AMS_2$} & 
 			\rotatebox[origin=l]{90}{ocena $AMS_{2(test)}$} \\
 		\hline	
-		osnovni nabor & 23,7\% & 58.1\% & 7,4\% & 10,7\% &
+		SVM(rbf) & 23,7\% & 58.1\% & 7,4\% & 10,7\% &
 			0,761 & 0,689 & 0.819 & 0.724 &
 			2,674 & ? \\
+		SVM(lin) & 18,9\% & 56,0\% & 9,5\% & 15,6\% &
+			0,665 & 0,548 & 0,749 & 0,600 &
+			1,999 & ? \\
+		SVM(poly) & 19,1\% & 59,7\% & 5,9\% & 15,3\% &
+			0,764 & 0,555 & 0,787 & 0,643 &
+			2,345 & ? \\
+		
+		
 	\end{tabular}
 	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev.}
 	\label{tb:svm}
