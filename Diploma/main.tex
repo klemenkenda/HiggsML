@@ -44,18 +44,23 @@
 % -----------------------------------------------------------------------------
 \chapter*{Povzetek}
 \addcontentsline{toc}{chapter}{Povzetek}
+\noindent Diplomsko delo obravnava problem ločevanja signala in ozadja v eksperimentu ATLAS pri razpadu $H \rightarrow \tau^+\tau^-$. Reševanje problema temelji na skupku algoritmov, ki jih v računalništvo imenujemo tudi \textit{strojno učenje}. Algoritmi so uspešni pri iskanju področij prostora meritev, ki ustrezajo signalu.
 
+Zaradi podobnosti drugim razpadom, je razpad $H \rightarrow \tau^+\tau^-$ še posebej težaven za klasifikacijo. Diplomsko delo se naslanja na podatke in nekatere izsledke iz javnega izziva HiggsML, ki so ga z namenom iskanja najboljših algoritmov za klasifikacijo razpadov, ki ustrezajo $H \rightarrow \tau^+\tau^-$, organizirali sodelavci kolaboracije ATLAS.
+
+V diplomskem delu je predstavljen kratek opis problema. Izbrane relevantne metode strojnega učenja, ki so jih identificirali organizatorji izziva, so predstavljene in preizkušene na podatkih simulatorja detektorja ATLAS. Poleg omenjenih metod sem v diplomskem delu razvil lasten algoritem, ki temelji na metodi podpornih vektorjev.
+
+Uspešnost algoritma presega nekatere implementacije metode pospešenega gradientnega spusta na odločitvenih drevesih, ki jo trenutno uporabljajo pri klasifikaciji dogodkov na detektorju ATLAS, vseeno pa krepko zaostaja za zmagovalnimi rešitvami.
 
 
 \vspace{1.3cm}
-\noindent
+
+
+
 {\large \bf Ključne besede:}
 
 \vspace{0.5cm}
-\noindent test, test, test
-
-
-Abstract. Key words.
+\noindent strojno učenje, nadzorovano učenje, klasfikacijske metode, pospešena odločitvena drevesa, metoda podpornih vektorjev, SVM, Higgsov bozon
 
 
 
@@ -771,7 +776,7 @@ Množica podatkov vsebuje veliko manjkajočih vrednosti. Gre za značilke, ki ji
 	\label{tb:manjkajoce_vrednosti}
 \end{table}
 
-Pregled povzetka značilk nam pove, da so značilke, ki se med razredi najbolj razlikujejo \comment{naštej}. Povzetek vseh značilk je prikazan v tabeli \ref{tb:5figuresum}. Natančnejši pogled posamičnih značilk je možen s pomočjo histogramov. Nekaj predstavnikov, pri katerih se porazdelitve med razredi najbolj razlikujejo, je predstaviljenih na sliki \ref{sl:histogrami}, celoten pregled izmerjenih in izračunanih značilk pa je na voljo na slikah \ref{sl:histogram_izmerjene} in \ref{sl:histogram_izpeljane}.
+Pregled povzetka značilk nam pove, da so značilke, ki se med razredi najbolj razlikujejo (npr. DER\_mass\_MMC, DER\_mass\_transverse\_met\_lep, DER\_deltaeta\_jet\_jet, PRI\_jet\_leading\_eta). Povzetek vseh značilk je prikazan v tabeli \ref{tb:5figuresum}. Natančnejši pogled posamičnih značilk je možen s pomočjo histogramov. Nekaj predstavnikov, pri katerih se porazdelitve med razredi najbolj razlikujejo, je predstaviljenih na sliki \ref{sl:histogrami}, celoten pregled izmerjenih in izračunanih značilk pa je na voljo na slikah \ref{sl:histogram_izmerjene} in \ref{sl:histogram_izpeljane}.
 
 \begin{figure}[ht]
 	\includegraphics[width=7.7cm]{exploratory/ea_hist_der_mass_mmc.pdf}
@@ -967,7 +972,7 @@ V sklopu diplomskega dela sem preizkusil metodo GBC iz paketa \texttt{scikit\_le
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{r|cccc|cccc|c}		
-		\textbf{Jedro \hfill \break (značilke)} & 
+		\textbf{Metoda \hfill \break (značilke)} & 
 		\rotatebox[origin=l]{90}{pravilno pozitivni} & 
 		\rotatebox[origin=l]{90}{pravilno negativni} & 
 		\rotatebox[origin=l]{90}{napačno pozitivni} & 
@@ -988,14 +993,12 @@ V sklopu diplomskega dela sem preizkusil metodo GBC iz paketa \texttt{scikit\_le
 		GBC (17) & 24,3\% & 58,8\% & 6,7\% & 10,1\% &
 		0.783 & 0.706 & 0.831 & 0.743 &
 		2.819 \\
-		
-		
-		
-		
-		
+		*XGBoost (1) & 27,8\% & 51,6\% & 14,0\% & 6,7\% &
+			0,665 & 0,806 & 0,793 & 0,729 &
+			3,735 \\
 	\end{tabular}
 	\caption{Rezultati različnih implementacij gradientnega spusta.}
-	\label{tb:svm}
+	\label{tb:gbt}
 \end{table}
 	
 % -----------------------------------------------------------------------------
@@ -1066,6 +1069,7 @@ Primer relevantnosti posameznih značilk v modelu SVM je prikazan na sliki \ref{
 		(17) & (8) z dodanino značilko clustra iz algoritma KMeans. \\
 	\end{tabular}
 	\caption{Nabor značilk pri metodi SVM.}	
+	\label{tb:feature_sets}
 \end{table}
 
 Izbrane transformiranke ene značilke:
@@ -1101,16 +1105,161 @@ Izbrane transformiranke dveh značilk:
 
 Izbrani pari značilk so pri vsoti kvadratov in korenu vsote kvadratov enaki. To je mogoče indikator, da koren ne prinese dodatne informacije v klasifikacijski algoritem.
 
-\comment{Featurji iz nelabeliranih podatkov - KMeans! Slabši rezultat.}
-\comment{Upoštevanje uteži v SVM algoritmu - ni učinka.}
+Nabori značilk, ki sem jih uporabil pri razvoju lastne metode, so razvidni iz tabele \ref{tb:feature_sets}. Na podlagi zgoraj opisanih postopkov sem določil 17 različnih naborov značilk. Eksperimentom sem za primerjavo dodal še enega od naborov značilk zmagovalne metode na izzivu (11), ki je služil za primerjavo uspešnosti postopka izbire značilk.
+
+Najboljše rezultate pri klasifikaciji z linearnim jedrom (glej tabelo \ref{tb:svm}) so prinesli nefiltrirani nabori značilk (435 in več značilk). Posledica velikega nabora značilk je bil časovno potraten algoritem. Zmagovalni nabor značilk (11) je bil pri metodi SVM opazno slabši. 
+
+Ideja z vključevanjem zaporedne številke grozdov iz algoritma KMeans ni prinesla posebnega uspeha. 
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{r|cccc|cccc|c}		
+		\textbf{Jedro \hfill \break (značilke)} & 
+		\rotatebox[origin=l]{90}{pravilno pozitivni} & 
+		\rotatebox[origin=l]{90}{pravilno negativni} & 
+		\rotatebox[origin=l]{90}{napačno pozitivni} & 
+		\rotatebox[origin=l]{90}{napačno negativni} &
+		\rotatebox[origin=l]{90}{natančnost} & 
+		\rotatebox[origin=l]{90}{priklic} & 
+		\rotatebox[origin=l]{90}{točnost} & 
+		\rotatebox[origin=l]{90}{ocena $F_1$} & 
+		\rotatebox[origin=l]{90}{ocena $AMS_2$} \\
+		\hline	
+		
+		LIN (1) & 18,9\% & 56,0\% & 9,5\% & 15,6\% &
+		0,665 & 0,548 & 0,749 & 0,600 &
+		1,999 \\
+		LIN (3) & 22,5\% & 58,0\% & 7,6\% & 11,9\% &
+		0,748 & 0,655 & 0,805 & 0,698 &
+		2,526 \\
+		LIN (4) & 22,5\% & 58,0\% & 7,6\% & 11,9\% &
+		0,748 & 0,654 & 0,805 & 0,698 &
+		2,528 \\
+		LIN (5) & 22,6\% & 57,6\% & 7,9\% & 11,8\% &
+		0,740 & 0,657 & 0,802 & 0,696 &
+		2,478 \\
+		LIN (6) & 23,5\% & 57,4\% & 8,2\% & 10,9\% &
+		0,743 & 0,683 & 0,809 & 0,712 & 
+		2,547 \\
+		LIN (7) & 23,8\% & 56,9\% & 8,6\% & 10,7\% &
+		0,734 & 0,690 & 0,807 & 0,711 & 
+		2,516 \\
+		LIN (8) & 23,1\% & 57,1\%&  8,5\% & 11,4\% &
+		0,732 & 0,670 & 0,802 & 0,700 &
+		2,482 \\		
+		LIN (10) & 24,3\% & 57,2 \% & 8,3\% & 10,1\% &
+		0,744 & 0,705 & 0,815 & 0,724 &
+		2,582 \\	
+		LIN (11) & 20,1\% & 56,7\% & 8,9\% & 14,3\% &
+		0,694 & 0,584 & 0,768 & 0,634 &
+		2,201 \\
+		LIN (12) & 24,3\% & 57,2\% & 8,3\% & 10,1\% &
+		0,744 & 0,705 & 0,815 & 0,724 &
+		2,583 \\
+		LIN (13) & 24,4\% & 57,2\% & 8,4\% & 10,0\% &
+		0,744 & 0,709 & 0,816 & 0,726 &
+		2,581 \\
+		LIN (14) & 24,3\% & 57,2\% & 8,3\% & 10,1\% &
+		0,744 & 0,705 & 0,815 & 0,724 &
+		2,583 \\
+		LIN (15) & 24,4\% & 57,1\% & 8,4\% & 10,0\% & 
+		0,744 & 0,710 & 0,816 & 0,726 &
+		2.578 \\
+		LIN (16) & 23,6\% & 57,3\% & 8,3\% & 10.9\% &
+		0,740 & 0,684 & 0,809 & 0,711 &
+		2,553 \\	
+				
+	\end{tabular}
+	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev.}
+	\label{tb:svm}
+\end{table}
 
 
 \section{Jedra}
 
-Preskusil sem naslednja standardna jedra SVM: (1) linearnega, (2) polinomskega in (3) RBF (Gaussovskega). Rezultati so zabeleženi v tabeli \ref{tb:svm},
+Preskusil sem naslednja standardna jedra SVM: (1) linearnega, (2) polinomskega in (3) RBF (Gaussovskega). Rezultati so zabeleženi v tabeli \ref{tb:svm_kernel},
 
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{r|cccc|cccc|c}		
+		\textbf{Jedro \hfill \break (značilke)} & 
+		\rotatebox[origin=l]{90}{pravilno pozitivni} & 
+		\rotatebox[origin=l]{90}{pravilno negativni} & 
+		\rotatebox[origin=l]{90}{napačno pozitivni} & 
+		\rotatebox[origin=l]{90}{napačno negativni} &
+		\rotatebox[origin=l]{90}{natančnost} & 
+		\rotatebox[origin=l]{90}{priklic} & 
+		\rotatebox[origin=l]{90}{točnost} & 
+		\rotatebox[origin=l]{90}{ocena $F_1$} & 
+		\rotatebox[origin=l]{90}{ocena $AMS_2$} \\
+		\hline	
+		
+		POLY, $c=0$ (1) & 19,1\% & 59,7\% & 5,9\% & 15,3\% &
+		0,764 & 0,555 & 0,787 & 0,643 &
+		2,345 \\
+		POLY, $c=1$ (1) & 24,1\% & 57,6\% & 8,0\% & 10,4\% &
+		0,752 & 0,699 & 0,817 & 0,724 &
+		2,632 \\
+		POLY$^2$, $c=1$ (1) &  23,8\% & 58,0\% & 7,5\% & 10,6\% &
+		0,759 & 0,691 & 0,818 & 0,723 & 
+		2,633 \\		
+		POLY$^4$, $c=1$ (1) & 24,0\% & 57,0\% & 8,5\% & 10,4\% &
+		0,738 & 0,698 & 0,811 & 0,718 & 
+		2,570 \\
+		POLY, $c=1$ (8) & 24,5\% & 57,7\% & 7,8\% & 9,9\% &
+		0,758 & 0,711 & 0,822 & 0,734 &
+		2,704 \\
+		POLY, $c=1$ (9) & 24,0\% & 57,6\% & 8,0\% & 10,4\% &
+		0,751 & 0,697 & 0,816 & 0,723 &
+		2,603 \\
+		POLY, $c=1$ (11) & 24,2\% & 58,0\% & 7,5\% & 10,3\% &
+		0,763 & 0,702 & 0,822 & 0,731 &
+		2,701 \\		
+		POLY, $c=1$ (16) & 24,3\% & 57,8\% & 7,8\% & 10,1\% & 
+		0,757 & 0,706 & 0,821 & 0,731 &
+		2,640 \\
+		
+		\hline
+		
+		RBF (1) & 23,7\% & 58,1\% & 7,4\% & 10,7\% &
+		0,761 & 0,689 & 0,819 & 0,724 &
+		2,674 \\								
+		RBF (2) & 23,8\% & 58,2\% & 7,4\% & 10,6\% &
+		0,763 & 0,691 & 0,820 & 0,725 &
+		2,688 \\
+		RBF (8) & 24,4\% & 58,2\% & 7,3\% & 10,0\% &
+		0,769 & 0,708 & 0,826 & 0,737 &
+		2,783 \\			
+		RBF (9) & 23,6\% & 58,2\% & 7,4\% & 10,9\% &
+		0,761 & 0,684 & 0,817 & 0,721 &
+		2,648 \\
+		RBF (11) & 23,5\% & 58,3\% & 7,2\% & 11,0\% &
+		0,766 & 0,682 & 0,819 & 0,721 &
+		2,703 \\
+		RBF (16) & 24,1\% & 58,3\% & 7,3\% & 10,3\% &
+		0,768 & 0,700 & 0,824 & 0,732 &
+		2,747 \\
+		RBF (17) & 24,7\% & 58,1\% & 7,5\% & 9,8\% &
+		0,767 & 0,716 & 0,827 & 0,740 &
+		2,772 \\
+		
+		\hline
+		*RBF (8) & 24,7\% & 59,0\% & 6,5\% & 9,7\% &
+		0,791 & 0,718 & 0,837 & 0,752 &
+		2,940 \\
+		*RBF (16) & 24,5\% & 59,0\% & 6,6\% & 10,0\% &
+		0,787 & 0,711 & 0,834 & 0,747 &
+		2.916 \\
+		
+		
+	\end{tabular}
+	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev. * označuje metodo, ki je bila naučena s celotno učno podatkovno množico.}
+	\label{tb:svm_kernel}
+\end{table}
 
 \section{Ansambli}
+
+Pri poskusu implementacije ansambla metod na podlagi več SVM klasifikatorjev, sem učno podatkovno množico razdelil na 10 delov. 9 sem jih porabil za učenje šibkih modelov, zadnji del pa je, podobno kot pri vseh ostalih eksperimentih, služil za validacijo. Za osnovni model sem si izbral najbolj uspešno metodo iz prejšnjih eksperimentov: SVM z jedrom RBF, in sicer z naborom značilk (8). Rezultati posameznih šibkih modelov so prikazani v tabeli \ref{tb:svm-ensemble-part}.
 
 \begin{table}[h!]
 	\centering
@@ -1159,6 +1308,9 @@ Preskusil sem naslednja standardna jedra SVM: (1) linearnega, (2) polinomskega i
 	\label{tb:svm-ensemble-part}
 \end{table}
 
+Uporabil sem ansambelski metodi zlaganja in kaskade. Pri zlaganju sem vsak vzorec iz testne podatkovne množice ovrednotil z vsakim od 9 šibkih algoritmov, končni rezultat pa podal na podlagi glasovanja. Rezultati so prikazani v tabeli \ref{tb:svm-ensemble}. Rezultat metode je v konkretnem malenkost boljši od posameznih šibkih metod, hkrati pa opazno slabši od SVM metode, pognane na celotni razpoložljivi učni množici podatkov. Zlaganje torej ni prineslo izboljšanja.
+
+Pri kaskadi sem uporabil 8 šibkih algoritmov, kjer sem algoritem SVM pognal na podlagi njihovih rezultatov (kot značilkami) pri drugostopenjski SVM klasifikaciji na 9. delu učne podatkovne množice. Rezultati te metode so bili še slabši od zlaganja.
 
 \begin{table}[h!]
 	\centering
@@ -1175,10 +1327,10 @@ Preskusil sem naslednja standardna jedra SVM: (1) linearnega, (2) polinomskega i
 		\rotatebox[origin=l]{90}{ocena $AMS_2$} \\
 		\hline	
 	
-	bagging (glasovanje) & 24,4\% & 58,7\% & 6,9\% & 10,0\% &
+	zlaganje (glasovanje) & 24,4\% & 58,7\% & 6,9\% & 10,0\% &
 		0,780 & 0,708 & 0,831 & 0,743 &
 		2,854 \\
-	cascade (SVM - pure) & 24,4\% & 58,5\% & 7,0\% & 10,0\% &
+	kaskada (SVM) & 24,4\% & 58,5\% & 7,0\% & 10,0\% &
 		0,776 & 0,710 & 0,830 & 0,741 &
 		2,842 \\
 	
@@ -1195,128 +1347,7 @@ Vsi rezultati so prikazani v tabeli \ref{tb:svm}. Osnovni nabor značilk je v ko
 
 Za najbolj obetavno kombinacijo jedra in značilk sem algoritem pognal na celotni učni množici podatkov. Če primerjamo RBF (16) in *RBF (16) iz tabele \ref{tb:svm} vidimo, da da metoda, označena z *, ki je bila pognana na celotni razpoložljivi učni množici, $AMS_2$, ki je za slabi 2 desetinki boljši.
 
-\begin{table}[h!]
-	\centering
-	\begin{tabular}{r|cccc|cccc|c}		
-		\textbf{Jedro \hfill \break (značilke)} & 
-			\rotatebox[origin=l]{90}{pravilno pozitivni} & 
-			\rotatebox[origin=l]{90}{pravilno negativni} & 
-			\rotatebox[origin=l]{90}{napačno pozitivni} & 
-			\rotatebox[origin=l]{90}{napačno negativni} &
-			\rotatebox[origin=l]{90}{natančnost} & 
-			\rotatebox[origin=l]{90}{priklic} & 
-			\rotatebox[origin=l]{90}{točnost} & 
-			\rotatebox[origin=l]{90}{ocena $F_1$} & 
-			\rotatebox[origin=l]{90}{ocena $AMS_2$} \\
-		\hline	
-		
-		LIN (1) & 18,9\% & 56,0\% & 9,5\% & 15,6\% &
-			0,665 & 0,548 & 0,749 & 0,600 &
-			1,999 \\
-		LIN (3) & 22,5\% & 58,0\% & 7,6\% & 11,9\% &
-			0,748 & 0,655 & 0,805 & 0,698 &
-			2,526 \\
-		LIN (4) & 22,5\% & 58,0\% & 7,6\% & 11,9\% &
-			0,748 & 0,654 & 0,805 & 0,698 &
-			2,528 \\
-		LIN (5) & 22,6\% & 57,6\% & 7,9\% & 11,8\% &
-			0,740 & 0,657 & 0,802 & 0,696 &
-			2,478 \\
-		LIN (6) & 23,5\% & 57,4\% & 8,2\% & 10,9\% &
-			0,743 & 0,683 & 0,809 & 0,712 & 
-			2,547 \\
-		LIN (7) & 23,8\% & 56,9\% & 8,6\% & 10,7\% &
-			0,734 & 0,690 & 0,807 & 0,711 & 
-			2,516 \\
-		LIN (8) & 23,1\% & 57,1\%&  8,5\% & 11,4\% &
-			0,732 & 0,670 & 0,802 & 0,700 &
-			2,482 \\		
-		LIN (10) & 24,3\% & 57,2 \% & 8,3\% & 10,1\% &
-			0,744 & 0,705 & 0,815 & 0,724 &
-			2,582 \\	
-		LIN (11) & 20,1\% & 56,7\% & 8,9\% & 14,3\% &
-			0,694 & 0,584 & 0,768 & 0,634 &
-			2,201 \\
-		LIN (12) & 24,3\% & 57,2\% & 8,3\% & 10,1\% &
-			0,744 & 0,705 & 0,815 & 0,724 &
-			2,583 \\
-		LIN (13) & 24,4\% & 57,2\% & 8,4\% & 10,0\% &
-			0,744 & 0,709 & 0,816 & 0,726 &
-			2,581 \\
-		LIN (14) & 24,3\% & 57,2\% & 8,3\% & 10,1\% &
-			0,744 & 0,705 & 0,815 & 0,724 &
-			2,583 \\
-		LIN (15) & 24,4\% & 57,1\% & 8,4\% & 10,0\% & 
-			0,744 & 0,710 & 0,816 & 0,726 &
-			2.578 \\
-		LIN (16) & 23,6\% & 57,3\% & 8,3\% & 10.9\% &
-			0,740 & 0,684 & 0,809 & 0,711 &
-			2,553 \\	
-		
-		\hline
-				
-		POLY, $c=0$ (1) & 19,1\% & 59,7\% & 5,9\% & 15,3\% &
-			0,764 & 0,555 & 0,787 & 0,643 &
-			2,345 \\
-		POLY, $c=1$ (1) & 24,1\% & 57,6\% & 8,0\% & 10,4\% &
-			0,752 & 0,699 & 0,817 & 0,724 &
-			2,632 \\
-		POLY$^2$, $c=1$ (1) &  23,8\% & 58,0\% & 7,5\% & 10,6\% &
-			0,759 & 0,691 & 0,818 & 0,723 & 
-			2,633 \\		
-		POLY$^4$, $c=1$ (1) & 24,0\% & 57,0\% & 8,5\% & 10,4\% &
-			0,738 & 0,698 & 0,811 & 0,718 & 
-			2,570 \\
-		POLY, $c=1$ (8) & 24,5\% & 57,7\% & 7,8\% & 9,9\% &
-			0,758 & 0,711 & 0,822 & 0,734 &
-			2,704 \\
-		POLY, $c=1$ (9) & 24,0\% & 57,6\% & 8,0\% & 10,4\% &
-			0,751 & 0,697 & 0,816 & 0,723 &
-			2,603 \\
-		POLY, $c=1$ (11) & 24,2\% & 58,0\% & 7,5\% & 10,3\% &
-			0,763 & 0,702 & 0,822 & 0,731 &
-			2,701 \\		
-		POLY, $c=1$ (16) & 24,3\% & 57,8\% & 7,8\% & 10,1\% & 
-			0,757 & 0,706 & 0,821 & 0,731 &
-			2,640 \\
 
-		\hline
-
-		RBF (1) & 23,7\% & 58,1\% & 7,4\% & 10,7\% &
-			0,761 & 0,689 & 0,819 & 0,724 &
-			2,674 \\								
-		RBF (2) & 23,8\% & 58,2\% & 7,4\% & 10,6\% &
-			0,763 & 0,691 & 0,820 & 0,725 &
-			2,688 \\
-		RBF (8) & 24,4\% & 58,2\% & 7,3\% & 10,0\% &
-			0,769 & 0,708 & 0,826 & 0,737 &
-			2,783 \\			
-		RBF (9) & 23,6\% & 58,2\% & 7,4\% & 10,9\% &
-			0,761 & 0,684 & 0,817 & 0,721 &
-			2,648 \\
-		RBF (11) & 23,5\% & 58,3\% & 7,2\% & 11,0\% &
-			0,766 & 0,682 & 0,819 & 0,721 &
-			2,703 \\
-		RBF (16) & 24,1\% & 58,3\% & 7,3\% & 10,3\% &
-			0,768 & 0,700 & 0,824 & 0,732 &
-			2,747 \\
-		RBF (17) & 24,7\% & 58,1\% & 7,5\% & 9,8\% &
-			0,767 & 0,716 & 0,827 & 0,740 &
-			2,772 \\
-			
-		\hline
-		*RBF (8) & 24,7\% & 59,0\% & 6,5\% & 9,7\% &
-			0,791 & 0,718 & 0,837 & 0,752 &
-			2,940 \\
-		*RBF (16) & 24,5\% & 59,0\% & 6,6\% & 10,0\% &
-			0,787 & 0,711 & 0,834 & 0,747 &
-			2.916 \\
-
-		
-	\end{tabular}
-	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev. * označuje metodo, ki je bila naučena s celotno učno podatkovno množico.}
-	\label{tb:svm}
-\end{table}
 
 % -----------------------------------------------------------------------------
 % POGLAVJE: Zaključek
