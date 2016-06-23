@@ -24,6 +24,7 @@
 \makesavenoteenv{table}
 \usepackage[]{algorithm2e}
 \usepackage{pict2e}
+\usepackage[decimalsymbol=comma]{siunitx}
 
 \begin{document}
 \input{macros}
@@ -44,13 +45,13 @@
 % -----------------------------------------------------------------------------
 \chapter*{Povzetek}
 \addcontentsline{toc}{chapter}{Povzetek}
-\noindent Diplomsko delo obravnava problem ločevanja signala in ozadja v eksperimentu ATLAS pri razpadu $H \rightarrow \tau^+\tau^-$. Reševanje problema temelji na skupku algoritmov, ki jih v računalništvo imenujemo tudi \textit{strojno učenje}. Algoritmi so uspešni pri iskanju področij prostora meritev, ki ustrezajo signalu.
+\noindent Diplomsko delo obravnava problem ločevanja signala in ozadja v eksperimentu ATLAS pri razpadu $H \rightarrow \tau^+\tau^-$. Reševanje problema temelji na skupku algoritmov, ki jih v računalništvu imenujemo tudi \textit{strojno učenje}. Algoritmi so uspešni pri iskanju področij faznega prostora meritev, ki ustrezajo signalu.
 
-Zaradi podobnosti drugim razpadom, je razpad $H \rightarrow \tau^+\tau^-$ še posebej težaven za klasifikacijo. Diplomsko delo se naslanja na podatke in nekatere izsledke iz javnega izziva HiggsML, ki so ga z namenom iskanja najboljših algoritmov za klasifikacijo razpadov, ki ustrezajo $H \rightarrow \tau^+\tau^-$, organizirali sodelavci kolaboracije ATLAS.
+Zaradi podobnosti z drugimi razpadi, je razpad $H \rightarrow \tau^+\tau^-$ še posebej težaven za klasifikacijo. Diplomsko delo se naslanja na podatke in nekatere izsledke javnega izziva \textit{HiggsML}, ki so ga z namenom iskanja najboljših algoritmov za klasifikacijo razpadov $H \rightarrow \tau^+\tau^-$ organizirali sodelavci kolaboracije ATLAS.
 
-V diplomskem delu je predstavljen kratek opis problema. Izbrane relevantne metode strojnega učenja, ki so jih identificirali organizatorji izziva, so predstavljene in preizkušene na podatkih simulatorja detektorja ATLAS. Poleg omenjenih metod sem v diplomskem delu razvil lasten algoritem, ki temelji na metodi podpornih vektorjev.
+V diplomskem delu je predstavljen kratek opis problema. Izbrane relevantne metode strojnega učenja, ki so jih identificirali organizatorji izziva, so predstavljene in preizkušene na podatkih simulatorja detektorja ATLAS. Poleg preizkusa omenjenih metod sem v diplomskem delu razvil lasten algoritem, ki temelji na metodi podpornih vektorjev.
 
-Uspešnost algoritma presega nekatere implementacije metode pospešenega gradientnega spusta na odločitvenih drevesih, ki jo trenutno uporabljajo pri klasifikaciji dogodkov na detektorju ATLAS, vseeno pa krepko zaostaja za zmagovalnimi rešitvami.
+Uspešnost razvitega algoritma presega nekatere osnovne implementacije metode pospešenega gradientnega spusta na odločitvenih drevesih, ki jo trenutno uporabljajo pri klasifikaciji dogodkov na detektorju ATLAS, vseeno pa krepko zaostaja za zmagovalnimi rešitvami.
 
 
 \vspace{1.3cm}
@@ -60,7 +61,7 @@ Uspešnost algoritma presega nekatere implementacije metode pospešenega gradien
 {\large \bf Ključne besede:}
 
 \vspace{0.5cm}
-\noindent strojno učenje, nadzorovano učenje, klasfikacijske metode, pospešena odločitvena drevesa, metoda podpornih vektorjev, SVM, Higgsov bozon
+\noindent strojno učenje, nadzorovano učenje, klasfikacijske metode, logistična regresija, pospešeni gradientni spust, odločitvena drevesa, metoda podpornih vektorjev, SVM, Higgsov bozon
 
 
 
@@ -74,9 +75,9 @@ Uspešnost algoritma presega nekatere implementacije metode pospešenega gradien
 \chapter*{Uvod}
 \addcontentsline{toc}{chapter}{Uvod}
 
-Eksperimenta ATLAS in CMS sta leta 2012 objavila odkritje Higgsovega bozona\cite{Aad20121,Chatrchyan201230}. Odkritju je leta 2013 sledila Nobelova nagrada za fiziko, ki sta jo prejela François Englert in Peter Higgs. Obstoj delca, katerega vloga naj bi bila, da daje maso ostalim elementarnim delcem, je bil predviden pred skoraj 50 leti. Eksperimenti so potekali (in še vedno potekajo) na Velikem hadronskem trkalniku (Large Hadron Collider - LHC) v CERN-u (Evropski organizaciji za jedrske raziskave) v Ženevi\cite{ChallengeDoc}.
+Eksperimenta ATLAS in CMS sta leta 2012 objavila odkritje Higgsovega bozona\cite{Aad20121,Chatrchyan201230}. Odkritju je leta 2013 sledila Nobelova nagrada za fiziko, ki sta jo prejela François Englert in Peter Higgs. Obstoj delca, katerega vloga je, da daje maso ostalim elementarnim delcem, je bil predviden pred skoraj 50 leti. Eksperimenti so potekali (in še vedno potekajo) na Velikem hadronskem trkalniku (\textit{Large Hadron Collider}, LHC) v CERN-u (Evropski organizaciji za jedrske raziskave) v Ženevi\cite{ChallengeDoc}.
 
-Higgsov bozon lahko razpade skozi različne procese, ki jim v fiziki osnovnih delcev pravimo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v treh različnih razpadnih kanalih, v katerih vedno nastanejo pari bozonov. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare, predvsem v $\tau$ leptone in $b$ kvarke. Prvi dokazi o $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013}, končni rezultati pa v \cite{atlas2015htautau}.
+Higgsov bozon lahko razpade s pomočjo različnih procesov, ki jim v fiziki osnovnih delcev pravimo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v treh različnih razpadnih kanalih, v katerih vedno nastanejo pari bozonov. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare, predvsem v $\tau$ leptone in $b$ kvarke. Prvi dokazi o $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013}, končni rezultati pa v \cite{atlas2015htautau}.
 
 Pri analizi eksperimentalnih podatkov je potrebno določiti relevantno območje faznega prostora izmerjenih značilk, v katerem je velika verjetnost, da smo naleteli na dogodke, ki nas zanimajo (v našem primeru na razpad $H \rightarrow \tau^+\tau^-$). V preteklosti so ta področja določali eksperti \textit{ročno}\cite{Adam-Bourdarios14}. Napredne klasifikacijske metode, ki temeljijo na strojnem učenju, pa se danes rutinirano uporabljajo za reševanje tega in podobnih problemov\cite{atlas2013}.
 
@@ -87,7 +88,7 @@ Namen diplomskega dela je predvsem seznaniti se z uporabo metod strojnega učenj
 Še enkrat velja izpostaviti, da se diplomsko delo nanaša predvsem na uporabo metod strojnega učenja pri analizi zahtevnih in analitično neobvladljivih problemov, in ne na fiziko osnovnih delcev in razlago standardnega modela (SM).
 
 \section*{Izziv HiggsML}
-Z namenom, da bi izboljšali uporabljene klasifikacijske metode za reševanje prej omenjenega problema, so sodelavci kolaboracije ATLAS pripravili mednarodno spletno tekmovanje \textit{Higgs Boson Machine Learning Challenge} (ali krajše \textit{Izziv HiggsML})\cite{HiggsMLChallenge}, s katerim so k sodelovanju privabili zajetno množico strokovnjakov s področja strojnega učenja. Na izzivu je sodelovalo 1942 oseb, ki so skupaj pripravile 35772 rešitev. Rezultati neoptimizirane metode TMVA (ki jo uporablja CERN) so bili premagani že prvi dan izziva, kar 781 rešitev pa je bilo boljših tudi od najbolje optimizirane TMVA metode\cite{Adam-Bourdarios14}.
+Z namenom, da bi izboljšali uporabljene klasifikacijske metode za reševanje prej omenjenega problema ločevanja signala od ozadja, so sodelavci kolaboracije ATLAS pripravili mednarodno tekmovanje \textit{Higgs Boson Machine Learning Challenge} (ali krajše \textit{Izziv HiggsML})\cite{HiggsMLChallenge}, s katerim so k sodelovanju privabili zajetno množico strokovnjakov s področja strojnega učenja. Na izzivu je sodelovalo 1942 oseb, ki so skupaj pripravile 35772 rešitev. Rezultati neoptimizirane metode iz knjižnice TMVA (ki so jo je razvili in prvotno uporabljali v CERN-u) so bili premagani že prvi dan izziva, kar 781 rešitev pa je bilo boljših tudi od najbolje optimizirane TMVA metode\cite{Adam-Bourdarios14}.
 
 Pri pripravi diplomskega dela sem si pomagal s podatki, ki so bili pripravljeni (in prvič javno objavljeni) posebej za omenjeni izziv, hkrati pa sem za primerjavo lastne metode in namige za izboljšavo uporabil javno dostopne rešitve, forume in druge vire v okivru izziva.
 
@@ -97,7 +98,7 @@ Izziv je bil namenjen širokemu naboru predvsem strokovnjakov s področja strojn
 \section*{Terminologija}
 \addcontentsline{toc}{section}{Terminologija}
 
-Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru majhno in ker se slovenska terminologija na tem področju še redkeje uporablja in je zato tudi strokovno podkovanemu bralcu manj znana, na tem mestu prilagam kratek slovarček strokovnih terminov s področja strojnega učenja. Vsi prevodi temeljijo na \textit{Računalniškem slovarčku}, ki ga vzdržuje Odsek za inteligentne sistem na Inštitutu "Jožef Stefan"\footnote{\url{http://dis-slovarcek.ijs.si}}.
+Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru majhno in ker se slovenska terminologija na tem področju še redkeje uporablja in je zato tudi strokovno podkovanemu bralcu manj znana, na tem mestu prilagam kratek slovarček strokovnih terminov s področja strojnega učenja. Vsi prevodi temeljijo na \textit{Računalniškem slovarčku}, ki ga vzdržuje Odsek za inteligentne sistem na Inštitutu "Jožef Stefan"\footnote{\url{http://dis-slovarcek.ijs.si}}. Slovarček je prikazan v tabeli \ref{slovar}.
 
 \input{slovar}
 
@@ -110,32 +111,32 @@ Prvo poglavje diplomskega dela se nanaša na kratek opis fizikalnih osnov, povze
 
 Standardni model (SM) osnovnih delcev določa osnovne delce in interakcije med njimi. V SM interakcije potekajo preko delcev s spinom, imenovanih bozoni. Bozoni se izmenjujejo med elektromagnetnimi, šibkimi in močnimi naboji. Nosilci naboja so elementarni delci, ki jih imenujemo fermioni: šest kvarkov in šest leptonov (ter pripadajočih antidelcev). Delci polja, ki ustvarajo elektromagnetno in močno interakcijo (foton in gluoni), so bozoni brez mase. Nosilci šibke interakcije, $W$ in $Z$ bozoni, pa imajo maso približno 100-krat večjo od protona. 
 
-Teoretični fiziki so pred petimi desetletji napovedali obstoj polja, ki prežema prostor in daje energijo vakuumu. Obstoj polja je bil potreben za pojasnitev mas $W$ in $Z$ bozonov. Standardni model predvideva tudi, da bi v primeru zadostne količine razpoložljive energije, lahko z vzbuditvijo tega polja nastal masiven delec s spinom 0: Higgsov bozon, ki ga označujemo s $H$. Higgsov bozon je nestabilen, zato hitro razpade v druge delce. 
+Teoretični fiziki so pred petimi desetletji napovedali obstoj polja, ki prežema prostor in daje energijo vakuumu. Obstoj polja je bil potreben za pojasnitev mas $W$ in $Z$ bozonov. Standardni model predvideva tudi, da bi v primeru zadostne količine razpoložljive energije lahko z vzbuditvijo tega polja nastal masiven delec s spinom 0: Higgsov bozon, ki ga označujemo s $H$. Higgsov bozon je nestabilen, zato hitro razpade v druge delce. 
 
-Veliki hadronski trkalnik (\textit{Large Hadron Collider} ali {LHC}) je največji in najmočnejši trkalnik delcev. Med njegove glavne fizikalne cilje se uvršča preizkus kritične hipoteze SM o obstoju Higgsovega bozona. LHC pospeši dva žarka protonov v nasprotnih smereh skoraj do svetlobne hitrosti, tako da je ob trku skupna razpoložljiva energija dovolj visoka za nastanek Higgosvega bozona. Člani kolaboracije ATLAS v \cite{AadScience2012} poudarjajo, da med glavne izzive eksperimenta spada razločitev med signalom Higgsovega bozona med izjemno velikim ozadjem podobnih delcev, ki nastanejo ob trkih. To pa je proces, s katerim sem se seznanil s pripravo diplomskega dela.
+Veliki hadronski trkalnik (\textit{Large Hadron Collider} ali {LHC}) je največji in najmočnejši trkalnik delcev. Med njegove glavne fizikalne cilje se uvršča preizkus hipoteze SM o obstoju Higgsovega bozona. LHC pospeši dva žarka protonov v nasprotnih smereh skoraj do svetlobne hitrosti, tako da je ob trku skupna razpoložljiva energija dovolj visoka za nastanek Higgsovega bozona. Člani kolaboracije ATLAS v \cite{AadScience2012} poudarjajo, da med glavne izzive eksperimenta spada razločitev med signalom Higgsovega bozona in izjemno velikim ozadjem podobnih delcev, ki nastanejo ob trkih. 
 
 \section{Razpad $H \rightarrow \tau^+\tau^-$}
 
-Higgsov bozon z maso $125\text{GeV}$ lahko razpade na 5 različnih načinov. Med njimi je tudi razpad $H \rightarrow \tau^+\tau^-$, ki je predmet obravnave poenostavljenega problema razločevanja signala od ozadja v izzivu HiggsML. Pri prvem odkritju so sicer opazovali razpad Higgsovega bozona v pare bozonov ($\gamma\gamma$, $WW$, $ZZ$). V okviru projekta ATLAS razpada Higgsovega bozona v lažje leptone (e in $\mu$) ni mogoče opozovati \cite{ChallengeDoc}.
+Higgsov bozon z maso $125\text{GeV}$ lahko razpade na 5 različnih načinov. Med njimi je tudi razpad $H \rightarrow \tau^+\tau^-$, ki je predmet obravnave poenostavljenega problema razločevanja signala od ozadja v izzivu \textit{HiggsML}. Pri prvotnem odkritju delca so sicer opazovali razpad Higgsovega bozona v pare bozonov ($\gamma\gamma$, $WW$, $ZZ$). V okviru projekta ATLAS razpada Higgsovega bozona v lažje leptone ($e$ in $\mu$) ni mogoče opozovati\cite{ChallengeDoc}.
 
-Razpad $H \rightarrow \tau^+\tau^-$ je eksperimentalno zahteven. Ker se nevtrinov v detektorju ne meri, je težko ovrednotiti končno maso kandidata za Higgsov bozon na podlagi (nepopolnega) končnega stanja. Prav tako lahko tudi $Z$ bozon razpade v dva delca tau, pri čemer je verjetnost za takšen dogodek v detektorju ATLAS precej večja od verjetnosti za razpad iz $H$. Ker je masa $Z$ (91GeV) v bližini masse $H$ (125GeV), sta si razpada glede produktov zelo podobna in ju je zato težko ločiti.
+Razpad $H \rightarrow \tau^+\tau^-$ je eksperimentalno zahteven. Ker se nevtrinov v detektorju ne meri, je namreč na podlagi (nepopolnega) končnega stanja težko ovrednotiti končno maso kandidata za Higgsov bozon. Prav tako lahko tudi $Z$ bozon razpade v dva delca tau, pri čemer je verjetnost za takšen dogodek v detektorju ATLAS precej večja od verjetnosti za razpad iz $H$. Ker je masa $Z$ (91GeV) v bližini masse $H$ (125GeV), sta si razpada glede končnih produktov zelo podobna in ju je zato težko razločiti.
 
-V diplomskem delu smo si pogledali eno izmed topologij razpada, in sicer dogodke, kjer en delec tau razpade v elektron ali mion ter dva nevtrina, drugi tau pa razpade v hadrone in en nevtrino.
+V diplomskem delu sem si pogledal eno izmed topologij razpada, in sicer dogodke, kjer en delec tau razpade v elektron ali mion ter dva nevtrina, drugi tau pa razpade v hadrone in en nevtrino.
 
 \begin{figure}[ht]
 	\includegraphics[width=16.0cm]{physics/htautau.pdf}
 	
-	\caption{Primer dogodka $H \rightarrow \tau_l\tau_l$, kjer delca $\tau$ razpade na mion in elektron. Elektron je prikazan z modro sledjo, mion pa z rdečo. Približno vodoravna črtkana črta v ravnini $R-\phi$ prikazuje smer $E_T^{miss}$ vektorja, na sliki sta še dva VBF (\textit{vector boson fusion}) curka, označena s turkiznima stožcema\cite{atlas2015htautau}.  }
+	\caption{Primer dogodka $H \rightarrow \tau^+\tau^-$, kjer delca $\tau$ razpadeta na mion in elektron. Elektron je prikazan z modro sledjo, mion pa z rdečo. Približno vodoravna črtkana črta v ravnini $R-\phi$ prikazuje smer vektorja $\mathbf{E_T^{miss}}$, na sliki sta še dva VBF (\textit{vector boson fusion}) curka, označena s turkiznima stožcema\cite{atlas2015htautau}.  }
 	\label{htautau}
 \end{figure}
 
-Slika \ref{htautau} prikazuje primer dogodka $H \rightarrow \tau_l\tau_l$. Rezultati projekta ATLAS so bili prvič predstavljeni leta 2013 v \cite{atlas2013}, uradno pa leta 2015 v \cite{atlas2015htautau}. Pri analizi so avtorji uporabili poln set trkov protonov, ki jih je eksperiment ATLAS posnel na LHC med leti 2011 in 2012. Za ločitev dogodkov od ozadja so uporabili algoritem, ki je temeljil na BDT (\textit{boosted decision trees}). Članek poroča o opaženi siginifkanci odkritja $\sigma = 4.5$. Uporabili so vse kombinacije leptonskih in hadronskih tau razpadov.
+Slika \ref{htautau} prikazuje primer dogodka $H \rightarrow \tau^+\tau^-$. Rezultati projekta ATLAS so bili prvič predstavljeni leta 2013 v \cite{atlas2013}, uradno pa leta 2015 v \cite{atlas2015htautau}. Pri analizi so avtorji uporabili poln nabor trkov protonov, ki jih je eksperiment ATLAS posnel na LHC med leti 2011 in 2012. Za ločitev dogodkov od ozadja so uporabili algoritem, ki je temeljil na pospešenem gradientnem spustu nad ansambli odločitvenih dreves. Članek poroča o opaženi signifkanci odkritja $\sigma = 4.5$. Uporabili so vse kombinacije leptonskih in hadronskih tau razpadov.
 
 \section{ATLAS detektor}
 \label{sec:atlasdetector}
-V LHC se trki gruč protonov v vsakem od štirih eksperimentov dogajajo vsakih 50 nanosekund. Ob vsakem srečanju se zgodi naključno število trkov proton-proton (med 10 in 35), ki jih imenujemo dogodki \cite{ChallengeDoc}. Pri trku dveh protonov se kinetična energija delcev pretvori v nove delce. Večina nastalih delcev je zelo nestabilnih in zato hitro razpadejo v kaskade lažjih delcev. Detektor ATLAS (glej sliko \ref{detektoratlas}) meri tri lastnosti preživelih delcev (t.i. končnega stanja): tip delca (elektron, mion, foton ...), njegovo energijo in smer. Na podlagi teh količin sklepamo na lastnosti izvornega elementarnega delca.
+V LHC se trki gruč protonov v vsakem od štirih eksperimentov dogajajo vsakih 50 nanosekund. Ob vsakem srečanju se zgodi naključno število trkov proton-proton (med 10 in 35), ki jih imenujemo dogodki\cite{ChallengeDoc}. Pri trku dveh protonov se kinetična energija delcev pretvori v nove delce. Večina nastalih delcev je zelo nestabilnih in zato hitro razpadejo v kaskade lažjih delcev. Detektor ATLAS (glej sliko \ref{detektoratlas}) meri tri lastnosti preživelih delcev (t.i. končnega stanja): tip delca (elektron, mion, foton ...), njegovo energijo in smer. Na podlagi teh količin sklepamo na lastnosti izvornega elementarnega delca.
 
-Eksperiment se sooča z veliko količino dogodkov, ki jih mora klasificirati kot signal ali ozadje. Vsako sekundo je potrebno pregledati 20 000 000 dogodkov. Po klasifikaciji ostane približno 400 dogodkov, ki se shranijo. Na letni ravni to pomeni, da je potrebno shraniti približno milijardo dogodkov, ki v surovi obliki zasedejo približno 3 petabajte prostora.
+Eksperiment se sooča z veliko količino dogodkov, ki jih je potrebno klasificirati. Vsako sekundo je potrebno pregledati 20 000 000 dogodkov. Po klasifikaciji ostane približno 400 dogodkov, ki predstavljajo signal in se shranijo. Na letni ravni to pomeni, da je potrebno shraniti približno milijardo dogodkov, ki v surovi obliki zasedejo približno 3 petabajte prostora.
 
 \begin{figure}[ht]
 	\includegraphics[width=16.0cm]{physics/atlas_detector.jpg}
@@ -144,7 +145,7 @@ Eksperiment se sooča z veliko količino dogodkov, ki jih mora klasificirati kot
 	\label{detektoratlas}
 \end{figure}
 
-Vsak dogodek vsebuje v končnem stanju približno 10 delcev, ki nas zanimajo. Lastnosti delcev se rekonstruirajo iz stotin surovih signalov detektorja. V diplomskem delu so med relevantne delce spadali: elektroni, mioni, hadronski tau, žarki (jets) in manjkajoča tranzverzalna energija. Elektroni, mioni in delci tau so trije leptoni iz standardnega modela. Življenska doba elekronov in mionov je dovolj velika, da lahko ti delci dosežejo detektorje. Zaradi tega je moč njihove lasnosti (energijo in smer) izmeriti neposredno. Delci tau razpadejo skoraj hipoma po nastanku, bodisi v elektron in dva nevtrina, bodisi v mion in dva nevtrina ali collimated bunch nabitih delcev in nevtrino. Gručo hadronov lahko identificiramo kot psevdo delec, ki ga imenujemo hadronski tau. Žarki so psevdo delci; izvirajo iz visoko energijskih kvarkov ali gluonov; v detektorju se pojavijo kot collimated energy deposit povesan s charged tracks. Izmerjena gibalna količina vseh delcev v dogodku je najpomembnejša informacija, ki je na voljo pri klasifikaciji dogodkov.
+Vsak dogodek vsebuje v končnem stanju približno 10 delcev, ki nas zanimajo. Lastnosti delcev se rekonstruirajo iz stotin surovih signalov detektorja. V diplomskem delu so med relevantne delce spadali: elektroni, mioni, hadronski tau, curki (\textit{jets}) in manjkajoča tranzverzalna energija. Elektron, mion in delec tau so trije leptoni iz standardnega modela. Življenska doba elekronov in mionov je dovolj velika, da lahko ti delci dosežejo detektorje. Zaradi tega je moč njihove lastnosti (energijo in smer) izmeriti neposredno. Delci tau razpadejo skoraj hipoma, bodisi v elektron in dva nevtrina, bodisi v mion in dva nevtrina ali kolinearno gručo nabitih delcev in nevtrino. Gručo hadronov lahko identificiramo kot psevdo delec, ki ga imenujemo hadronski tau. Curki so psevdo delci. Izvirajo iz visoko energijskih kvarkov ali gluonov. Izmerjena gibalna količina vseh delcev v dogodku je najpomembnejša informacija, ki je na voljo pri klasifikaciji dogodkov.
 
 \begin{figure}[h!]
 	\centering
@@ -185,31 +186,31 @@ Vsak dogodek vsebuje v končnem stanju približno 10 delcev, ki nas zanimajo. La
 		\put(4.35,2.65){\makebox(0,0){$\phi$}}
 	
 	\end{picture}
-	\caption{Referenčni okvir detektorja ATLAS \cite{ChallengeDoc}.  }
+	\caption{Referenčni okvir detektorja ATLAS\cite{ChallengeDoc}.}
 	\label{detektoratlasokvir}
 \end{figure}
 
-V diplomskem delu bom uporabljal konvencionalni referenčni okvir detektorja ATLAS (glej sliko \ref{detektoratlasokvir}). Os $z$ kaže vzdolž horizontalne linije žarka, osi $x$ in $y$ razpenjata na žarek pravokotno ravnino, pri čemer je os $y$ usmerjena proti vrhu detektorja. $\theta$ je polarni kot, $\phi$ pa azimutalni kot. Prečne količine so tiste, ki jih projeciramo na ravnino $x-y$, torej tiste količine, kjer je koordinata $z$ izpuščena. Namesto koordinate $\theta$ pogosto uporabimo \textit{psevdorapidnost} $\eta = -\ln \tan(\theta, 2)$. Vrednost $\eta = 0$ opisuje delec v $x-y$ ravnini ($\theta = \pi/2$), $\eta = +\infty$ pa ustreza delcu, ki potuje vzdolž osi $z$ ($\theta = 0$). Delec, ki potuje v nasprotni smeri ima $\eta = -\infty$. Delce je možno v celoti identificirati (in jim določiti gibalno količino) v razponu psevdorapidnosti $\eta \in \left[-2,5, 2,5 \right]$. Pri vrednostih $|\eta| \in \left(2,5, 5\right]$ delcev v detektorju ni več mogoče indentificirati, je pa moč izmeriti njihovo gibalno količino. Delcev z $|\eta| > 5$ ni možno zaznati.
+V diplomskem delu bom uporabljal konvencionalni referenčni okvir detektorja ATLAS (glej sliko \ref{detektoratlasokvir}). Os $z$ kaže vzdolž horizontalne linije žarka, osi $x$ in $y$ razpenjata na žarek pravokotno ravnino, pri čemer je os $y$ usmerjena proti vrhu detektorja. $\theta$ je polarni kot, $\phi$ pa azimutalni kot. Prečne količine so tiste, ki jih projeciramo na ravnino $x\text{-}y$, torej tiste količine, kjer je koordinata $z$ izpuščena. Namesto koordinate $\theta$ pogosto uporabimo \textit{psevdorapidnost} $\eta = -\ln \tan(\theta/2)$. Vrednost $\eta = 0$ opisuje delec v $x\text{-}y$ ravnini ($\theta = \pi/2$), $\eta = +\infty$ pa ustreza delcu, ki potuje vzdolž osi $z$ ($\theta = 0$). Delec, ki potuje v nasprotni smeri ima $\eta = -\infty$. Delce je možno v celoti identificirati (in jim določiti gibalno količino) v razponu psevdorapidnosti $\eta \in \left[-\num{2,5}; \num{2,5} \right]$. Pri vrednostih $|\eta| \in \left(\num{2,5}; 5\right]$ delcev v detektorju ni več mogoče indentificirati, je pa moč izmeriti njihovo gibalno količino. Delcev z $|\eta| > 5$ ni možno zaznati.
 
-Manjkajoča prečna energija ($E^{miss}_t$) pripada psevdo delcu. Nevtrinov, ki nastanejo ob razpadu delca tau, detektor ne zazna. O njihovih lastnostih lahko sklepamo na podlagi zakona o ohranitvi gibalne količine. Zaradi merskih napak je sicer v praksi ta vsota precej slabo ocenjena. Veliko delcev, ki se pomikajo vzdolž osi $z$, tudi uide detekciji. Zaradi tega vsoto izračunamo le v prečni ravnini, predstavlja pa jo dvodimenzionalni vektor v ravnini, ki je pravokotna na os $z$.
+Manjkajoča prečna energija ($\mathbf{E^{miss}_t}$) pripada psevdo delcu. Nevtrinov, ki nastanejo ob razpadu delca tau, detektor ne zazna. O njihovih lastnostih lahko sklepamo na podlagi zakona o ohranitvi gibalne količine. Zaradi merskih napak je sicer v praksi ta vsota precej slabo ocenjena. Veliko delcev, ki se pomikajo vzdolž osi $z$, tudi uide detekciji. Zaradi tega vsoto izračunamo le v prečni ravnini, predstavlja pa jo dvodimenzionalni vektor v ravnini $x\text{-}y$.
 
 \section{Izpeljava relevantnih značilk}
-Podpoglavje opisuje nekaj osnovnih enačb iz posebne teorije relativnosti in sledi predvsem izpeljavi novih značilk iz surovih podatkov. Večina fizikalno pomembnih značilk je bila izpeljanih že v izvornih podatkih, ki sem jih uporabil v diplomi. Seznam izpeljanih značilk si je moč ogledati v razdelku \ref{ch:opis_podatkov}, spodnji opis pa je povzet po \cite{ChallengeDoc}.
+Podpoglavje opisuje nekaj osnovnih enačb iz posebne teorije relativnosti, ki so potrebne izpeljavi novih relevantnih značilk iz izmerjenih podatkov. Večina fizikalno pomembnih značilk je bila izračunanih že v izvornih podatkih, ki sem jih uporabil v diplomi. Seznam izpeljanih značilk si je moč ogledati v razdelku \ref{ch:opis_podatkov}, spodnji opis pa je povzet po \cite{ChallengeDoc}.
 
 \subsection{Gibalna količina, masa in energija}
-Fundamentalna enačba posebne teorije relativnostni
+Osnovna enačba posebne teorije relativnosti je
 \begin{equation}
 	E^2 = p^2c^2 + m^2c^4,
 	\label{eq:4momentum}
 \end{equation}
-kjer je $E$ energija delca, $p$ njegova gibalna količina, $m$ lastna masa (masa v mirovanju) in $c$ hitrost svetlobe v praznem prostoru. V primeru, ko delec miruje (in ima s tem gibalno količino enako $0$), se enačba poenostavi v znano $E = mc^2$. V fiziki delcev za enote običajno uporabimo: GeV za energijo in GeV/$c$ za gibalno količino, ter GeV/$c^2$ za maso. Z uporabo teh enot se enačba \ref{eq:4momentum} prevede v 
+kjer je $E$ energija delca, $p$ njegova gibalna količina, $m$ lastna masa (masa v mirovanju) in $c$ hitrost svetlobe v praznem prostoru. V primeru, ko delec miruje (in ima s tem gibalno količino enako $0$), se enačba poenostavi v znano $E = mc^2$. V fiziki delcev za enote običajno uporabimo: GeV za energijo, GeV/$c$ za gibalno količino ter GeV/$c^2$ za maso. Z uporabo teh enot se enačba \ref{eq:4momentum} prevede v 
 \begin{equation}
 	E^2 = p^2 + m^2.
 	\label{eq:4momentumsimplified}
 \end{equation}
 V literaturi se avtorji (vključno s sodelavci kolaboracij ATLAS in CMS) držijo dogovora o izpuščanju $c$ iz enot in tako za vse tri količine: energijo, gibalno količino in maso uporabljajo enote GeV. Ta dogovor je uporabljen tudi v diplomskem delu.
 
-Gibalna količina je povezana s hitrostjo $v$ delca. Za delec z neničelno maso v posebni teoriji relativnosti velja zveza $p = \gamma m v$, kjer je $p$ oznaka za gibalno količino, $m$ masa delca, $\gamma$ pa je definirana kot
+Gibalna količina je povezana s hitrostjo delca $v$.  Za delec z neničelno maso v posebni teoriji relativnosti velja zveza $p = \gamma m v$, kjer je $p$ oznaka za gibalno količino, $m$ masa delca, $\gamma$ pa je definirana kot
 \begin{equation}
 	\gamma = \frac{1}{\sqrt{1 - (v/c)^2}}.
 	\label{eq:gamma}
@@ -226,16 +227,16 @@ pri čemer je $\theta$ polarni kot vektorja gibalne količine (z osjo $z$). $p_T
 	p_T = \sqrt{p_x^2 + p_y^2}.
 	\label{eq:transversemomentum}
 \end{eqnarray}
-Zadnje tri količine so natančneje opisane v razelku \ref{sec:atlasdetector}.
+Zadnje tri količine so natančneje opisane v razdelku \ref{sec:atlasdetector}.
 
 \subsection{Invariantna masa}
-Masa delca je njegova notranja lastnost. Za vse dogodke, povezane s Higgsovim bozonom pričakujemo, da bodo imeli enako maso. Da bi maso Higgsovega bozona lahko izmerili, potrebujemo četverce $(p_x, p_y, p_z, E) = (\mathbf{p}, E)$ vseh razpadnih produktov. Denimo, da Higgsov bozon razpade v $i \in 1, 2, 3 ... N$ delcev, katerih četverce izmerimo s pomočjo detektorja. S pomočjo ohranitvenih zakonov za energijo in gibalno količino tako lahko zapišemo $E_H = E_1 + E_2 + E_3 + ... + E_N$ in $\mathbf{p}_H = \mathbf{p}_1 + \mathbf{p}_2 + \mathbf{p}_3 + ... + \mathbf{p}_N$. Invariantno maso kandidata za Higgsov bozon pa lahko izračunamo iz enačbe $m_H = \sqrt{E_H^2 - p_H^2}$.
+Masa delca je njegova notranja lastnost. Za vse dogodke, povezane s Higgsovim bozonom pričakujemo, da bodo imeli enako maso. Da bi maso Higgsovega bozona lahko izmerili, potrebujemo četverce $(p_x, p_y, p_z, E) = (\mathbf{p}, E)$ vseh razpadnih produktov. Denimo, da Higgsov bozon razpade v $N$ delcev, katerih četverce izmerimo s pomočjo detektorja. S pomočjo ohranitvenih zakonov za energijo in gibalno količino tako lahko zapišemo $E_H = E_1 + E_2 + E_3 + ... + E_N$ in $\mathbf{p}_H = \mathbf{p}_1 + \mathbf{p}_2 + \mathbf{p}_3 + ... + \mathbf{p}_N$. Invariantno maso kandidata za Higgsov bozon pa lahko izračunamo iz enačbe \ref{eq:4momentumsimplified}.
 
-V našem primeru končno stanje sestoji iz leptona, hadronskega tau in treh nevtrinov. Lastnosti leptona in hadronskega tau izmerimo s pomočjo detektorja, od nevtrinov pa poznamo samo manjkajočo prečno energijo ($E^{miss}_T$), ki predstavlja oceno vsote gibalnih količin treh nevtrinov v prečni ravnini. Mase $H$ torej ne moremo izmeriti, zato se moramo zanesti na oceno s pomočjo količin, ki so povezane z maso primarnih produktov razpada ($\tau\tau$).
+V našem primeru končno stanje sestavljajo lepton, hadronskegi tau in trije nevtrini. Lastnosti leptona in hadronskega tau izmerimo s pomočjo detektorja, od nevtrinov pa poznamo samo manjkajočo prečno energijo ($\mathbf{E^{miss}_T}$), ki predstavlja oceno vsote gibalnih količin treh nevtrinov v prečni ravnini. Mase $H$ torej ne moremo izmeriti, zato se moramo zanesti na oceno s pomočjo količin, ki so povezane z maso primarnih produktov razpada ($\tau^+\tau^-$).
 
 \subsection{Druge uporabne formule}
 
-Vektor gibalne količine lahko zapišemo s pomočjo zgoraj razloženih količin $p_T, \phi$ in $\eta$ kot
+Vektor gibalne količine lahko zapišemo s pomočjo predhodno razloženih količin $p_T, \phi$ in $\eta$ kot
 \begin{eqnarray}
 	\mathbf{p} = \left( 
 		\begin{array}{c}
@@ -255,6 +256,7 @@ Vektor gibalne količine lahko zapišemo s pomočjo zgoraj razloženih količin 
 Modulus $p$ je definiran kot
 \begin{eqnarray}
 	p_T \cosh \eta.
+	\label{eq:modulus}
 \end{eqnarray}
 Manjkajoča prečna energija $\mathbf{E}^{miss}_T$ je dvodimenzionalni vektor
 \begin{eqnarray}
@@ -298,7 +300,7 @@ Psevdorapidnostno ločitev med delcema $A$ in $B$ definiramo kot
 	|\eta_A - \eta_B|.
 	\label{eq:pseudorapidityseparation}
 \end{eqnarray}
-$R$ ločitev med delcema $A$ in $B$ zapišemo kot
+$R$-ločitev med delcema $A$ in $B$ zapišemo kot
 \begin{eqnarray}
 	\sqrt{(\eta_A - \eta_B)^2 + (\phi_A - \phi_B)^2},
 	\label{eq:rseparation}
@@ -313,40 +315,39 @@ Problem, s katerim sem se spopadel v diplomskem delu, sledi formulaciji na odprt
 
 \section{Formalna opredelitev problema}
 
-Naj ${\cal D} = \left\{({\mathbf x}_1, y_1, w_1), \dots, ({\mathbf x}_n, y_n, w_n) \right\}$ predstavlja učno podatkovno množico, kjer je $\mathbf{x}_i \in \mathbb{R}^d$ $d$-dimenzionalni vektor značilk, $y_i \in \{\text{b, s}\}$ je oznaka, $w_i \in \mathbb{R}^+$ pa je nenegativna utež. Naj bosta ${\cal S} = \{i : y_i = \text{s}\}$ in ${\cal B} = \{i : y_i = \text{b}$ množici indeksov dogodkov, ki predstavljajo signal in ozadje, $n_\text{s} = |{\cal S}|$ in $n_\text{b} = |{\cal B}|$ pa naj označujeta števili simuliranih dogodkov, ki predstavljata signal in ozadje.
+Naj ${\cal D} = \left\{({\mathbf x}^{(1)}, y^{(1)}, w^{(1)}), \dots, ({\mathbf x}^{(n)}, y^{(n)}, w^{(n)}) \right\}$ predstavlja učno podatkovno množico, kjer je $\mathbf{x}^{(i)} \in \mathbb{R}^d$ $d$-dimenzionalni vektor značilk, $y^{(i)} \in \{\text{b, s}\}$ je oznaka, $w^{(i)} \in \mathbb{R}^+$ pa je nenegativna utež. Naj bosta ${\cal S} = \{i : y^{(i)}\} = \text{s}\}$ in ${\cal B} = \{i : y^{(i)} = \text{b}\}$ množici indeksov dogodkov, ki predstavljajo signal in ozadje, $n_\text{s} = |{\cal S}|$ in $n_\text{b} = |{\cal B}|$ pa naj označujeta števili dogodkov. Z dvignjenimi indeksi v oklepaju označujemo količine v podatkovni množici, npr. z $\mathbf{x}^{(i)}$ označujemo $i$-ti vektor značilk, s spuščenimi indeksi pa označujemo komponente vektorjev, npr. $j$-to komponento vektorja značilk zapišemo z $x_j$.
 
-Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatkov}) in se razlikujejo od izmerjenih. Razmerje $n_\text{s} / n_\text{b}$ v podatkih tako ne odraža dejanskega razmerja dogodkov $P(y = s) / P(y = b)$. Glede ne nizko verjetnost, da pri nekem naravnem dogodku gre za signal \cite{Adam-Bourdarios14}, je tako učna podatkovna množica precej bolj uravnotežena in omogoča metodam, da se lahko naučijo razlikovati med dogodki, ki predstavljajo ozadje in tistimi, ki predstavljajo signal.
+Podatki, na katerih se učimo, so simulirani (glej poglavje \ref{analiza-podatkov}) in se razlikujejo od izmerjenih. Razmerje $n_\text{s} / n_\text{b}$ v podatkih tako ne odraža dejanskega razmerja dogodkov $P(y = s) / P(y = b)$. Glede ne nizko verjetnost, da pri nekem naravnem dogodku gre za signal\cite{Adam-Bourdarios14}, je tako učna podatkovna množica precej bolj uravnotežena in omogoča metodam, da se lahko naučijo razlikovati med dogodki, ki predstavljajo ozadje in tistimi, ki predstavljajo signal.
 
-Podatek, ki ga da simulacija, je tudi utež $w_i$, ki je mera za pomembnost nekega simuliranega dogodka. Ker je optimizacijska funkcija (\ref{en:ams}) odvisna od \textit{nenormalizirane vsote} uteži in ker želimo, da je naš sistem invarianten na števili simuliranih dogodkov $n_s$ in $n_b$, moramo vsoto vsake podatkovne množice (učne, validacijske ...) za vsak razred (signal ali ozadje) fiksirano:
+Podatek, ki ga da simulacija, je tudi utež $w^{(i)}$, ki je mera za verjetnost nekega dogodka v dejanskem eksperimentu. Ker je optimizacijska funkcija (\ref{en:ams}) odvisna od \textit{nenormalizirane vsote} uteži in ker želimo, da je naš sistem invarianten na števili simuliranih dogodkov $n_s$ in $n_b$, moramo vsoto vsake podatkovne množice (učne, potrjevalne ali testne) za vsak razred (signal ali ozadje) fiksirati:
 \begin{equation}
-\sum_{i \in \cal{S}}{w_i} = N_s
+\sum_{i \in \cal{S}}{w^{(i)}} = N_s
 \qquad\text{in}\qquad
-\sum_{i \in \cal{B}}{w_i} = N_b
+\sum_{i \in \cal{B}}{w^{(i)}} = N_b
 \label{eq:sumweights}
 \end{equation}
-Normalizacijski konstanti $N_s$ in $N_b$ imata fizikalni pomen in predstavljata \textit{pričakovano število} dogodkov ki predstavljajo signal in ozadje, med intervalom zajema podatkov (v našem primeru leta 2012). Individualne uteži so proporcionalne pogojnim gostotam, deljenimi z instrumentalnimi gostotami, uporabljenimi na simulatorju.
-
+Normalizacijski konstanti $N_s$ in $N_b$ imata fizikalni pomen in predstavljata \textit{pričakovano število} dogodkov, ki predstavljajo signal in ozadje v obdobju zajema podatkov na LHC (v našem primeru leta 2012). Individualne uteži so proporcionalne pogojnim gostotam, deljenimi z instrumentalnimi gostotami, uporabljenimi na simulatorju.
 \begin{equation}
-	w_i = \left\{\begin{array}{r}
-		p_s(\textbf{x}_i)/q_s(x_i),\qquad \text{če}\;y_i = s \\
-		p_b(\textbf{x}_i)/q_b(x_i),\qquad \text{če}\;y_i = b 
+	w^{(i)} = \left\{\begin{array}{r}
+		p_s(\textbf{x}^{(i)})/q_s(\mathbf{x}^{(i)}),\qquad \text{če}\;y^{(i)} = \text{s} \\
+		p_b(\textbf{x}^{(i)})/q_b(\mathbf{x}^{(i)}),\qquad \text{če}\;y^{(i)} = \text{b} 
 	\end{array}
 	\right.,
 	\label{eq:weightseparation}
 \end{equation}
 kjer sta
 \begin{equation*}
-p_s(\textbf{x}_i) = p(\textbf{x}_i|y = s) \qquad \text{in} \qquad p_b(\textbf{x}_i) = p(\textbf{x}_i|y = b)
+p_s(\textbf{x}^{(i)}) = p(\textbf{x}^{(i)}|y = \text{s}) \qquad \text{in} \qquad p_b(\textbf{x}^{(i)}) = p(\textbf{x}^{(i)}|y = \text{b})
 \end{equation*}
-pogojni gostoti signala in ozadja ter $q_s(\textbf{x}_i)$ in $q_b(\textbf{x}_i)$ instrumentalni gostoti.
+pogojni gostoti signala in ozadja ter $q_s(\textbf{x}^{(i)})$ in $q_b(\textbf{x}^{(i)})$ instrumentalni gostoti.
 
-Naj bo $g : \mathbb{R}^d \rightarrow \{b, s\}$ poljubna klasifikacijska funkcija. Naj bo izbrano področje ${\cal G} = \{\textbf{x} : g(\textbf{x}) = s\}$ množca točk, klasificirana kod signal, in naj $\hat{\cal G}$ označuje množico indeksov točk, ki jih $g$ izbere (klasificira kot signal).
+Naj bo $g : \mathbb{R}^d \rightarrow \{\text{b, s}\}$ poljubna klasifikacijska funkcija. Naj bo izbrano področje ${\cal G} = \{\textbf{x} : g(\textbf{x}) = \text{s}\}$ množca točk, klasificirana kod signal, in naj $\hat{\cal G}$ označuje množico indeksov točk, ki jih $g$ izbere (klasificira kot signal).
 \begin{equation*}
-\hat{\cal G} = \{ i : \textbf{x}_i \in {\cal G}\} = \{ i : g(\textbf{x}_i) = s \}.
+\hat{\cal G} = \{ i : \textbf{x}^{(i)} \in {\cal G}\} = \{ i : g(\textbf{x}^{(i)}) = \text{s} \}.
 \end{equation*}
 Iz enačb \ref{eq:sumweights} in \ref{eq:weightseparation} sledi, da je količina
 \begin{eqnarray}
-	s = \sum_{i \in {\cal S} \cap {\hat{\cal G}}} w_i
+	s = \sum_{i \in {\cal S} \cap {\hat{\cal G}}} w^{(i)}
 	\label{eq:s}
 \end{eqnarray}
 nepristranska ocena pričakovanega števila dogodkov signala, ki ga izbere klasifikator $g$,
@@ -355,14 +356,15 @@ nepristranska ocena pričakovanega števila dogodkov signala, ki ga izbere klasi
 \end{eqnarray}
 Na podoben način je
 \begin{eqnarray}
-	b = \sum_{i \in {\cal B} \cap {\cal G}} w_i
+	b = \sum_{i \in {\cal B} \cap {\cal G}} w^{(i)}
 	\label{eq:b}
 \end{eqnarray}
 nepristranska ocena pričakovanega števila dogodkov ozadja, izbranih s pomočjo klasifikatorja $g$,
 \begin{eqnarray}
 	\mu_b = N_b \int_{\cal G}p_b(\mathbf{x})d\mathbf{x}.
 \end{eqnarray}
-V terminologiji strojnega učenja sta količini $s$ in $b$ nenormalizirani oceni pravilno pozitivnih in pravilno negativnih primerov.
+V terminologiji strojnega učenja sta količini $s$ in $b$ nenormalizirani oceni pravilno pozitivnih in pravilno negativnih primerov (glej razdelek \ref{sec:ml_eval}).
+
 \section{AMS metrika}
 \label{sc:ams}
 Glede na klasifikator $g$ je metrika za oceno uspešnosti definirana kot ciljna funkcija $AMS$ (\textit{approximate median siginificance})
@@ -370,29 +372,29 @@ Glede na klasifikator $g$ je metrika za oceno uspešnosti definirana kot ciljna 
 \text{AMS} = \sqrt{2 \left( ( s + b + b_{reg} ) \ln \left( 1 +  \frac{s}{b + b_{reg}} \right) - s \right) },
 \label{en:ams}
 \end{equation}
-kjer sta $s$ in $b$ definirana z enačbama \ref{eq:s} in \ref{eq:b}, $b_reg$ pa je regularizacijska količina, nastavljena na konstantno vrednost $b_{reg} = 10$.
+kjer sta $s$ in $b$ definirana z enačbama \ref{eq:s} in \ref{eq:b}, $b_{reg}$ pa je regularizacijska količina, nastavljena na konstantno vrednost $b_{reg} = 10$.
 
-Rešitev problema predstavlja implementacija klasifikatorja $g$, ki ga naučimo s pomočjo podatkovne učne množice ${\cal D}$, in sicer tako, da maksimiziramo $AMS$ na testni podatkovni množici.
+Rešitev problema predstavlja implementacija klasifikatorja $g$, ki ga naučimo s pomočjo podatkovne učne množice ${\cal D}$, in sicer tako, da maksimiziramo $AMS$ na potrjevalni podatkovni množici.
 
 % -----------------------------------------------------------------------------
 % POGLAVJE: Metode strojnega učenja
 % -----------------------------------------------------------------------------
 \chapter{Strojno učenje}
 
-Strojno učenje zajema področje računalništva, ki se ukvarja z vprašanjem oblikovanja računalniških programov, katerih funkcija se samodejno izboljšuje z novimi izkušnjami \cite{Mitchell1997}\cite{Witten2005}. Med glavne rešitve, ki jih v vsakodnevnem življenju dandanes prinaša strojno učenje, so denimo filtri nezaželene elektronske pošte, programi za odkrivanje zlorab pri finančnih transakcijah, priporočilni sistemi, ki nam predlagajo za nas zanimive novice za branje ali izdelke za nakup ... V tehniki se velikokrat srečujemo z algoritmi za napovedovanje določenih časovnih vrst (npr. cene ali rabe energije) in klasifikacijo dogodkov (npr. ali je nek izdelek v proizvodnem procesu brez napak).
+Strojno učenje predstavlja področje računalništva, ki se ukvarja z vprašanjem oblikovanja računalniških programov, katerih funkcija se samodejno izboljšuje z novimi izkušnjami \cite{Mitchell1997}\cite{Witten2005}. Med glavne rešitve, ki jih v vsakodnevnem življenju dandanes prinaša strojno učenje, spadajo denimo filtri nezaželene elektronske pošte, programi za odkrivanje zlorab pri finančnih transakcijah, priporočilni sistemi, ki nam predlagajo za nas zanimive novice za branje ali izdelke za nakup ... V tehniki se velikokrat srečujemo z algoritmi za napovedovanje določenih časovnih vrst (npr. cene ali rabe energije) in klasifikacijo dogodkov (npr. ali je nek izdelek v proizvodnem procesu brez napak).
 
-V tem poglavju sem predstavil metode, ki so relevantne predvsem za razreševanje problema klasifikacije meritev detektorja ATLAS: raziskovalno analizo podatkov in klasifikacijske metode, ki so del širše družine metod nadzorovanega učenja. 
+V tem poglavju so predstavljene metode, ki so relevantne predvsem za reševanje problema klasifikacije meritev detektorja ATLAS: raziskovalna analiza podatkov in klasifikacijske metode, ki so del širše družine metod nadzorovanega učenja. 
 
 \section{Raziskovalna analiza podatkov}
-Raziskovalna analiza podatkov predstavlja enega od pristopov k začetni analizi množice podatkov predvsem s pomočjo vizualnih metod. Vizualne metode temeljijo na sposobnosti človeških možganov, da prepoznajo strukturo v podatkih. Namen analize je pregledati osnovne lastnosti podatkov, ki pomagajo pri določanju scenarijev za implementacijo metod strojnega učenja. Poleg omenjenega so vizualne metode na področju rudarjenja podatkov pomembne tudi zato, ker je mogoče z njihovo pomočjo odkriti nove, nepričakovane zakonitosti v podatkih. Metode raziskovalne analize imajo pri visoko-dimenzionalnih naborih podatkov očitne omejitve. Opisi v diplomskem delu so povzeti po \cite{hand2001}.
+Raziskovalna analiza podatkov predstavlja enega od pristopov k začetni analizi množice podatkov predvsem s pomočjo vizualnih metod. Vizualne metode temeljijo na sposobnosti človeških možganov, da prepoznajo strukturo v podatkih. Namen analize je pregledati osnovne lastnosti podatkov, ki pomagajo pri določanju scenarijev za implementacijo metod strojnega učenja. Poleg tega so vizualne metode na področju rudarjenja podatkov pomembne tudi zato, ker je mogoče z njihovo pomočjo odkriti nove, nepričakovane zakonitosti v podatkih. Metode raziskovalne analize imajo pri visoko-dimenzionalnih naborih podatkov očitne omejitve. Opisi v diplomskem delu so, kjer ni drugače navedeno, povzeti po \cite{hand2001}.
 
-Metoda odraža pristop k reševanju problema, ki temelji na podatkih in ne na predhodnem znanju. S pomočjo takega pristopa lahko odkrijemo nove značilnosti v podatkih in s tem novo znanje. Metodologija je bila razvita že v začetku šestdesetih let prejšnjega stoletja, je pa svoj preporod doživela z razvojem računalništva, ki je močno olajšalo izdelavo vizualizacij. 
+Opisani pristop temelji na podatkih in ne na predhodnem domenskem znanju. Metodologija je bila razvita že v začetku šestdesetih let prejšnjega stoletja, je pa svoj preporod doživela z razvojem računalništva, ki je močno olajšalo izdelavo vizualizacij. 
 
-\textbf{Osnovni pregled značilk} se nanaša na pregled po eni posamezni značilki. Zajema \textbf{pregled manjkajočih vrednosti} v podatkih, \textbf{pregled osnovnih agregatov} in natančnejši \textbf{pregled porazdelitev} določenih značilk s pomočjo histogramov. Pregled osnovnih agregatov zajema: povprečja, standardno deviacijo, minimum, maksimum, število vrednosti, kvantile ... Ponazoritev posamezhnih značilk s pomočjo histogramov pa nam da lepši grafični pregled in informacijo o porazdelitvi posamezne značilke.
+\textbf{Osnovni pregled značilk} se nanaša na pregled po eni značilki. Zajema \textbf{pregled manjkajočih vrednosti} v podatkih, \textbf{pregled osnovnih agregatov} in natančnejši \textbf{pregled porazdelitev} določenih značilk s pomočjo histogramov. Pregled osnovnih agregatov zajema: povprečja, standardno deviacijo, minimum, maksimum, število vrednosti, kvantile ... Ponazoritev posameznih značilk s pomočjo histogramov pa nam da lepši grafični pregled in informacijo o porazdelitvi posamezne značilke.
 
-\textbf{Razpršeni grafi} se nanašajo na 2 značilki. Podatke ponazorimo s točkami, katerih eno koordinato predstavlja vrednost ene, drugo pa druge značilke. Grafe ponavadi prikažemo v matriki 2, 3 ali 4 različnih značilk, tako da jih lahko primerjamo med sabo. Takšen prikaz nam lahko razkrije skrito strukturo v podatkih, ki je po pregledu ene same značilke ne zasledimo. V primeru klasifikacije lahko npr. opazimo, če določena kombinacija značilk bolje loči oba razreda kot ena sama, prav tako pa lahko s temi grafi opazimo medsebojno korelacijo posameznih značilk, ki se odraža na urejenosti/razpršenosti točk.
+\textbf{Razpršeni grafi} se nanašajo na 2 značilki. Podatke ponazorimo s točkami, katerih koordinate predstavljajo vrednosti obeh značilk. Grafe ponavadi prikažemo v matriki 2, 3 ali 4 različnih značilk, tako da jih lahko primerjamo med sabo. Takšen prikaz nam lahko razkrije skrito strukturo v podatkih, ki je po pregledu ene same značilke ne zasledimo. V primeru klasifikacije lahko npr. opazimo, če določena kombinacija značilk bolje loči oba razreda kot ena sama. Opazimo lahko tudi medsebojno korelacijo posameznih značilk, ki se odraža na urejenosti/razpršenosti točk.
 
-\textbf{Korelacijska matrika značilk} je zelo učinkovita metoda za hiter in celosten pregled nad podatki. V matriki dimenzije $d \times d$, kjer je $d$ število značilk, s pomočjo barvne lestvice ponazorimo korelacijo med parom značilk. S pomočjo kompletnega pivotiranja, ki ga naredimo s pomočjo hierarhičnega grozdenja značilk, lahko značilke, ki so si med seboj podobne glede na korelacijo z drugimi, smiselno uredimo. Metoda je še zlasti uporabna pri izločanju linearno odvisnih značilk, ki modelom ne prinašajo dodatne vrednosti. 
+\textbf{Korelacijska matrika značilk} je zelo učinkovita metoda za hiter in celosten pregled nad podatki. V matriki dimenzije $d \times d$, kjer je $d$ število značilk, s pomočjo barvne lestvice ponazorimo korelacijo med parom značilk. S pomočjo kompletnega pivotiranja, ki ga naredimo s hierarhičnim grozdenjem, lahko značilke, ki so si med seboj podobne, smiselno uredimo. Metoda je še zlasti uporabna pri izločanju linearno odvisnih značilk, ki modelom ne prinašajo dodatne vrednosti. 
 
 \textbf{Analiza glavnih komponent} (\textit{Principal component analysis}, PCA) je definirana kot ortogonalna linearna transformacija, ki transformira nabor podatkov v nov koordinatni sistem, in sicer tako, da komponenta z največjo varianco neke projekcije podatkov leži na prvi koordinati, druga največja na drugem mestu in tako naprej. Metoda je poenostavitev metode večdimenzionalnega skaliranja (\textit{Multi-dimensional scaling}, MDS).
 
@@ -400,11 +402,11 @@ Praktična uporaba opisanih metod z razultati na podatkih iz detektorja ATLAS je
 
 \section{Metode za nadzorovano učenje}
 
-Na področju strojnega učenja v grobem ločimo dva različna razreda metod: (1) \textbf{metode za nadzorovano učenje} in (2) \textbf{metode za nenadzorovano učenje}. Zadnji razred metod se ponavadi izvaja na podatkih, ki ne vsebujejo oznake $y^{(i)}$, torej parametra, ki nas zanima (npr. oznaka razreda). Zakonitosti iščemo torej samo v strukturi, ki jo oblikuje množica točk $x^{(i)}$ v faznem prostoru. Osnovni primer take metode je grozdenje, ki poskuša točke povezati s smiselne zaključene množice - grozde. Metoda grozdenja je lahko tudi učinkovita metoda generiranja novih značilk, pri čemer oznaka grozda služi kot dodatna značilka v nadzorovanem učnem problemu.
+Na področju strojnega učenja v grobem ločimo dva različna razreda metod: (1) \textbf{metode za nadzorovano učenje} in (2) \textbf{metode za nenadzorovano učenje}. Zadnji razred metod se ponavadi izvaja na podatkih, ki ne vsebujejo oznake $y^{(i)}$, torej parametra, ki nas zanima. Zakonitosti iščemo torej samo v strukturi, ki jo oblikuje množica točk $x^{(i)}$ v faznem prostoru. Osnovni primer take metode je grozdenje, ki poskuša točke glede na izbrano definicijo razdalje povezati s smiselne zaključene množice - grozde. Metoda grozdenja je lahko tudi učinkovita metoda generiranja novih značilk, pri čemer oznaka grozda služi kot dodatna značilka v nadzorovanem učnem problemu.
 
 Metode za nadzorovano učenje (1) delujejo na podatkih z znanim parametrom, ki nas zanima ($y^{(i)}$). Ločimo regresijske in klasifikacijske metode. Pri \textbf{regresijskih metodah} je ponavadi parameter $y^{(i)} \in \mathbb{R}$. Cilj regresijskih metod je za neznano točko $x^{(i)}$ oceniti realno vrednost $y^{(i)}$. 
 
-V tipičnem \textbf{klasifikacijskem problemu}, ki je tudi sicer predmet diplomskega dela, imamo množico vektorjev v prostoru $x^{(i)} \in \mathbb{R}^d$ (vektor značilk) in pripadajočih oznak $y^{(i)} \in {1, 2, 3, \ldots, N}$, kjer $N$ označuje število različnih razredov. Oznaka $y^{(i)}$ nam pove, v kateri razred spada vektor $x^{(i)}$. Cilj klasifikacijskega problema je predvideti oznake neznanih vektorjev, in sicer tako, da bo pri tem napaka najmanjša.
+V tipičnem \textbf{klasifikacijskem problemu}, ki je tudi sicer predmet diplomskega dela, imamo množico vektorjev v prostoru $x^{(i)} \in \mathbb{R}^d$ (vektor značilk) in pripadajočih oznak $y^{(i)} \in \{1, 2, 3, \ldots, N\}$, kjer $N$ označuje število različnih razredov. Oznaka $y^{(i)}$ nam pove, v kateri razred spada vektor $x^{(i)}$. Cilj klasifikacijskega problema je predvideti oznake neznanih vektorjev, in sicer tako, da bo pri tem napaka najmanjša.
 
 Za binarne klasifikacijske probleme velja $N = 2$. V takih primerih obstajata 2 razreda: pozitivni in negativni. S takšnim problemom se srečujemo tudi v tem diplomskem delu.
 
@@ -416,7 +418,7 @@ Pri pregledu klasifikacijskih metod sem se omejil na naslednje metode: osnovne m
 
 \subsection{Logistična regresija}
 
-Linearno regresijo je moč, ko imamo opravka z numeričnimi značilkami, uporabiti kot klasifikacijsko metodo. Pravzaprav lahko vsako regresijsko tehniko uporabimo za klasifikacijo. Prenos regresijske tehnike v klasifikacijsko domeno lahko naredimo s pomočjo preprostega trika, in sicer da pozitivno klasificiranim točkam pripišemo vrednost 1, negativno klasificiranim pa vrednost 0. Ko poskusimo s pomočjo naučenega modela klasificirati neznano točko, lahko vrednost, ki jo vrne linearna regresija, interpretiramo kot funkcijo članstva v določenem razredu. \cite{Witten2005}
+Linearno regresijo je moč, ko imamo opravka z numeričnimi značilkami, uporabiti kot klasifikacijsko metodo. Pravzaprav lahko vsako regresijsko tehniko uporabimo za klasifikacijo. Prenos regresijske tehnike v klasifikacijsko domeno lahko naredimo s pomočjo preprostega trika, in sicer da pozitivno klasificiranim točkam pripišemo vrednost 1, negativno klasificiranim pa vrednost 0. Ko poskusimo s pomočjo naučenega modela klasificirati neznano točko, lahko vrednost, ki jo vrne linearna regresija, interpretiramo kot funkcijo članstva v določenem razredu\cite{Witten2005}.
 
 Težava tega pristopa je, da se funkcija članstva ne nanaša na verjetnost pripadnosti vzorca določenemu razredu (saj je lahko večja od 1 ali manjša od 0), hkrati pa je binarna porazdelitev vrednosti točk daleč od normalne, ki jo zahteva metoda.
 
@@ -431,8 +433,7 @@ kjer se
 \begin{equation}
 	g(z) = \frac{1}{1 + e^{-z}}
 \end{equation}
-imenuje \textbf{logistična funkcija} ali {sigmoid}. Graf funkcije je prikazan na sliki \ref{sl:standardna_logisticna}.
-$h(x)$ predstavlja linearno kombinacijo značilk $h(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \dots + \theta_nx_n$. Če privzamemo $x_0^{(i)} = 1$, lahko zapišemo $h(x) = \theta \cdot x$.
+imenuje \textbf{logistična funkcija} ali \textbf{sigmoid}. $h(x)$ predstavlja linearno kombinacijo značilk $h(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \dots + \theta_nx_n$. Če privzamemo $x_0^{(i)} = 1$, lahko zapišemo $h(x) = \theta \cdot x$.
 
 Interpretacija hipoteze je verjetnostna. Vrednost hipoteze je $P(y=1|x;\theta)$ - torej verjetnost, da je $y = 1$ pri danem $x$ in $\theta$.
 
@@ -440,7 +441,7 @@ Naloga učnega algoritma je določitev parametrov $\theta_i$. Najprej moramo def
 \begin{equation}
 	J(\theta) = \frac{1}{m} \sum^m_{i = 1} \frac{1}{2} \left( h_\theta(x^{(i)}) - y^{(i)}\right)^2.
 \end{equation}
-Parametre $\theta$ izberemo tako, da je vsota kvadratnih členov kar najmanjša. Pri logistični regresiji sumand nadomestimo s \textit{cost} funkcijo $\text{Cost}(h_\theta(x), y)$. Zapišimo \textit{cost} funkcijo
+Parameter $\theta$ določimo tako, da je vsota kvadratnih členov kar najmanjša. Pri logistični regresiji sumand nadomestimo s stroškovno funkcijo $\text{Cost}(h_\theta(x), y)$. Zapišimo stroškovno funkcijo
 \begin{equation}
 	\text{Cost}(h_\theta(x), y) = \left\{
 	\begin{array}{rl}
@@ -459,14 +460,14 @@ Vemo, da je $y \in \{0, 1\}$. Zdaj lahko v eni sapi zapišemo $J(\theta)$
 \end{equation}
 Naša učna naloga je poiskati tak $\theta$, da bo $J(\theta)$ najmanjši. Napoved za nov nepoznani $x$ izračunamo s pomočjo enačbe (\ref{en:standardna_log_funkcija}), ki nam predstavlja verjetnost, da dani primerek spada v pozitivni razred $P(y = 1 | x;\theta)$. $\theta$ bomo poiskali s pomočjo minimizacije $J(\theta)$, in sicer s pomočjo gradientnega spusta.
 
-Ena pomembnih tehnik pri zagotavljanju uspešnega gradientnega spusta je skaliranje značilk. S tem se izognemo nepotrebnim oscilacijam, ki upočasnjujejo konvergenco. Oscilacije so posledica dejstva, da je velikostni red nekaterih značilk precej nižji od ostalih.
+Ena pomembnih tehnik pri zagotavljanju uspešnega gradientnega spusta je skaliranje značilk. S tem se izognemo nepotrebnim oscilacijam, ki upočasnjujejo konvergenco. Oscilacije so posledica dejstva, da je velikostni red nekaterih značilk precej nižji ali višji od ostalih.
 
 Osnovni algoritem gradientnega spusta je zelo preprost. Potrebno je izračunati parcialne odvode $\frac{\partial}{\partial x_i}J(\theta)$. Upoštevajoč enačbo (\ref{en:j_theta}) lahko zapišemo posamezni korak naše minimizacije
 \begin{equation}
 	\theta_j := \theta_j - \alpha \sum^m_{i = 1}(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)},
 	\label{en:log_reg_update}
 \end{equation}  
-pri čemer velja $j \in {1, 2, ...,  d}$, popravki pa se izvršijo simultano (torej ne vplivajo drug na drugega).
+pri čemer velja $j \in \{1, 2, \ldots, d\}$, popravki pa se izvršijo simultano (torej ne vplivajo drug na drugega).
 
 
 
@@ -483,24 +484,137 @@ Denimo, da imamo binarni klasifikacijski problem in da sta razreda točk v naše
 	\label{svmseparable}
 \end{figure}
 
-Metoda podpornih vektorjev (\textit{angl. Support Vector Machine} oz. SVM) se imenuje tudi klasifikator maksimalnega razmika. Prej opisani problem binarne klasifikacije s tem dobi enolično rešitev. Primer klasifikatorja z maksimalnim razmikom je ilustriran na sliki \ref{svmmaxclass}.
+Metoda podpornih vektorjev (\textit{angl. Support Vector Machine} oz. SVM) se imenuje tudi klasifikator maksimalnega razmika. Prej opisani problem binarne klasifikacije s tem dobi enolično rešitev. Primer klasifikatorja z maksimalnim razmikom je ilustriran na sliki \ref{sl:svmmaxclass}.
 
-\comment{Pripravi sliko!}
+\begin{figure}[h!]
+	\centering
+	\setlength{\unitlength}{1cm}
+	\begin{picture}(10,8)
+	% separating plane
+	\color{black}
+	\put(1, 1){	\line(1, 1){6} }
+	\color{blue}
+	\put(0, 1.5){ \line(1, 1){6} }
+	\put(2, 0.5){ \line(1, 1){6} }
+	
+	\color{black}
+	\put(6.63, 6.5){\vector(1, -1){0.76}}
+	\put(7.29, 5.84){\vector(-1, 1){0.67}}
+	\put(7.45, 6.55){\makebox(0,0){razmik}}
+	\put(2, 2.4){\rotatebox{45}{ločujoča}}	
+	\put(2.2, 1.6){\rotatebox{45}{hiperravnina}}		
+	
+	% green class	
+	\color{green}
+	\put(1, 7){\circle{0.1}}
+	\put(2.5, 6){\circle{0.1}}
+	\put(3, 5){\circle{0.1}}
+	\put(1.2, 3.3){\circle{0.1}}
+	\put(5.2, 7.5){\circle{0.1}}
+	\put(0.7, 5.3){\circle{0.1}}
+	\put(2.5, 4.8){\circle{0.1}}
+	\put(4.2, 7){\circle{0.1}}
 
-\comment{Vključi komentar o več dimenzijah in uporabo kernelov.}
+
+	\put(5.63, 7){\circle{0.1}}
+	\put(2.63, 4){\circle{0.1}}
+	\put(1.63, 3){\circle{0.1}}
+	
+	% red class
+	\color{red}
+	\put(5.63, 4){\circle{0.1}}
+	\put(2.63, 1){\circle{0.1}}
+	
+	\put(5, 0.7){\circle{0.1}}
+	\put(7, 4.7){\circle{0.1}}
+	\put(5, 2.7){\circle{0.1}}
+	\put(3.5, 1.4){\circle{0.1}}
+	\put(2.5, 0.4){\circle{0.1}}
+	\put(6, 3.2){\circle{0.1}}
+	\put(5.5, 1.9){\circle{0.1}}
+	\put(4.5, 1.4){\circle{0.1}}
+	\put(6.5, 2.9){\circle{0.1}}
+	
+	\end{picture}
+	\caption{Maksimalni razmik ločujoče hiper ravnine pri metodi podpornih vektorjev.}
+	\label{sl:svmmaxclass}
+\end{figure}
 
 Hiperravnino, ki ločuje različna razreda primerkov označimo s $H$. Enačbo ravnine lahko zapišemo kot
 \begin{equation}
-  w^T x + b = 0,
+  H(w, b) = w^T x + b = 0,
 \end{equation}
-kjer je $w$ normalni vektor (v našem kontekstu ga bomo imenovali \textit{vektor uteži}), $b$ pa odmik ravnine v izhodišču.
+kjer je $w$ normalni vektor (v našem kontekstu ga bomo imenovali \textit{vektor uteži}), $b$ pa odmik ravnine v izhodišču. Opazimo, da v primeru množenja obeh parametrov z enakim pozitivnim koeficientom dobimo enako hiperravnino. Za enolično reprezentacijo hiperravnine je potrebno zato normalizirati faktorja $w$ in $b$ glede na podatke iz učne podatkovne množice. Reprezentaciji z normaliziranima $w$ in $b$ pravimo tudi kanonična reprezentancija.
 
-Za enolično reprezentacijo hiperravnine je potrebno normalizirati faktorja $w$ in $b$. Taki reprezentaciji pravimo tudi kanonična reprezentancija.
+Formalno zapišemo
+\begin{equation}
+	\min |w^T x + b| = 1
+\end{equation}
+in glede na prejšnji odstavek definiramo dva podporna vektorja v točkah $(x^{(1)}, 1)$ in $(x^{(2)}, -1)$:
+\begin{eqnarray}
+	w^Tx^{(1)} + b &=& 1 
+	\label{eq:svm_vectors_1} \\
+	w^Tx^{(2)} + b &=& -1
+	\label{eq:svm_vectors_minus1}
+\end{eqnarray}
+Razdaljo med neko točko $x$ in hiperravnino $H$ izračunamo s pomočjo
+\begin{eqnarray}
+	d(x, H(w, b)) = \frac{w^Tx + b}{||w||}.
+	\label{eq:svm_distance}
+\end{eqnarray}
+Cilj metode je maksimizirati razdaljo med podpornima vektorjema glede na $w$ in $b$. Upoštevajoč enačbe \ref{eq:svm_vectors_1}, \ref{eq:svm_vectors_minus1} in \ref{eq:svm_distance}, lahko izračunamo razmik, ki je $2 / ||w||$. Pri metodi podpornih vektorjev želimo ta razmik maksimizirati, kar pomeni, da moramo minimizirati $||w||$, kar je ekvivalentno minimizaciji $||w^2||/2$. Pri tem velja robni pogoj $y^{(i)}(w^Tx^{(i)} + b) > 1$ za $i = 1, 2, \ldots, n$. Takšen problem znamo rešiti z uporabo Lagrangeovih multiplikatorjev $\alpha_i$. Zapišimo Lagrangeovo funkcijo
+\begin{eqnarray}
+	L(w, b, \alpha) = \frac{1}{2}||w||^2 - \sum^n_{i=1} \alpha_i(y^{(i)}(w^Tx^{(i)} + b) - 1),
+\end{eqnarray}
+kjer je $y^{(i)} \in \{-1, 1\}$ oznaka razreda točke $x^{(i)}$. Prvi del funkcije poskrbi za maskimizacijo razmika, drugi del pa za minimizacijo napake pri učenju.
 
-\comment{Pride nekje do AMS 2,7.}
-\comment{https://www.kaggle.com/c/higgs-boson/forums/t/10165/has-anyone-tried-the-support-vector-machine-for-this-problem}
-\comment{Tu se splača igrat s kerneli.}
+Zanimajo nas parcialni odvodi Lagrangeve funkcije, ki jih postavimo na nič: $\frac{d}{db}L(w, b, \alpha) = 0$ in $\frac{d}{dw}L(w, b, \alpha)$. Dobimo
+\begin{eqnarray}
+	\sum^n_{i=1}\alpha_iy^{(i)} = 0 \qquad \text{in} \qquad
+	w = \sum^n_{i=1}\alpha_iy^{(i)}x^{(i)}.
+	\label{eq:svm_w}
+\end{eqnarray}
+Lagrangeovo funkcijo in zadnji rezultat lahko uporabimo za formulacijo t.i. Lagrangeovega dualnega problema, s katerim izračunamo $\alpha_i$. Zapišemo dualno Lagrangeovo funkcijo
+\begin{eqnarray}
+	D(\alpha) = \sum^n_{i=1} \alpha_i - \frac{1}{2}\sum^n_{i=1} \sum^n_{j=1} \alpha_i\alpha_j y^{(i)}y^{(j)} \left<x^{(i)},x^{(j)} \right>,
+	\label{eq:svm_dual_lagrange}
+\end{eqnarray}
+pri čemer velja $\alpha_i \geq 0$ in $\sum^n_{i=1}\alpha_iy^{(i)} = 0$.
 
+Z minimizacijo \ref{eq:svm_dual_lagrange} dobimo vrednosti koeficientov $\alpha_i$, ki jih uporabimo za izračun vektorja $w$, pri čemer uporabimo enačbo \ref{eq:svm_w}. Klasifikacijsko funkcijo lahko enostavno zapišemo kot
+\begin{eqnarray}
+	g(x) = \text{sign} \left(\sum^n_{i=1} \alpha y^{(i)} \left<x^{(i)},x\right> + b\right).
+\end{eqnarray}
+
+\subsubsection{Jedra in projekcija v prostor z več dimenzijami}
+Separabilnosti primerov v učni množici včasih ni mogoče doseči v prostoru značilk. Metoda omogoča projekcijo iz nizko-dimenzionalnega prostora značilk v visoko-dimenzionalni prostor s pomočjo uporabe t. i. jeder. Uporaba jeder temelji na uporabi skalarnega produkta $\left<x^{(i)}, x^{(j)}\right>$ v formulaciji dualnega problema iz enačbe \ref{eq:svm_dual_lagrange}. 
+
+Denimo, da imamo funkcijo $\phi$, ki preslika značilko $x$ v visoko-dimenzionalni prostor $\mathbb{R}^{N_v}$, pri čemer je $N_v$ število dimenzij tega prostora. Z uporabo jeder $K$, ki so definirana v nizko-dimenzionalnem prostoru značilk, se izognemo včasih težavnemu izračunu skalarnega produkta v visoko-dimenzionalnem prostoru.
+
+Jedro $K$ je definirano z
+\begin{eqnarray}
+	K(x^{(p)}, x^{(q)} = \left<\phi(x^{(p)}), \phi(x^{(q)})\right>,
+\end{eqnarray}
+kjer sta $x^{(p)}$ in $x^{(q)}$ definirana v prostoru značilk. Za jedro $K$ velja nekaj posebnih lastnosti (Mercerjev teorem): mora biti pozitivno definitno in simetrično. Zdaj lahko formulacijo dualnega problema iz \ref{eq:svm_dual_lagrange} prepišemo v 
+\begin{eqnarray}
+	W(\alpha) = \sum^n_{i = 1}\alpha_i - \frac{1}{2} \sum^n_{i=1} \sum^n_{j=1} \alpha_i \alpha_j K(x^{(i)}, x^{(j)}),
+\end{eqnarray}
+klasifikacijsko funkcijo pa v
+\begin{eqnarray}
+	g(x) = \text{sign} \left(\sum^n_{i=1}\alpha y_i K(x^{(i)}, x) + b \right).
+\end{eqnarray}
+
+Obstaja veliko tipov jeder, med najbolj običajne spadajo:
+\begin{itemize}
+	\item linearno: $K(x^{(i)}, x^{(j)}) = x^{(i)T}x^{(j)}$
+	\item polinomsko: $K(x^{(i)}, x^{(j)}) = (\gamma x^{(i)T}x^{(j)} + c)^d$, $\gamma > 0$ 
+	\item gaussovsko (RBF - \textit{radial basis function}): $K(x^{(i)}, x^{(j)}) = \tanh(\gamma x^{(i)T}x^{(j)} + 1)$, $\gamma > 0$ 
+\end{itemize}
+
+\subsubsection{Mehki razmik}
+Kljub transformaciji značilk v visoko-dimenzionalni prostor je včasih nemogoče najti hiperravnino, ki bi lahko ločila med seboj primere različnih razredov iz učne množice podatkov. V takem primeru, je mogoče uporabiti metodo mehkega razmika, ki bo ob upoštevanju morebitne napake v klasifikaciji znala poiskati tako hiperravnino.
+
+Problem lahko preprišemo v minimizacijo izraza $||w||^2 + C\sum^n_{i=1}\xi_i$, pri čemer velja robni pogoj $y^{(i)}(w^Tx^{(i)} + b) > 1 - \xi_i$, za $i = 1, 2, ..., n$, kjer je $\xi$ označuje mero za napačno klasifikacijo, $C$ pa je parameter, ki nadzira vpliv $\xi$. Izbira regularizacijskega parametra $C$ ima velik vpliv na končni rezultat.
 
 \subsection{Odločitvena drevesa}
 \label{sc:decisiontrees}
@@ -508,7 +622,7 @@ Odločitvena drevesa (s tem mislimo na učenje le-teh) so metoda za aproksimacij
 
 Odločitvena drevesa klasificirajo različne primere tako, da jih razporedijo v drevesno obliko od korena do listov. Vsako vozlišče v drevesu definira test določene značilke, vsaka veja, ki iz tega vozlišča izhaja, ustreza določenim vrednostim te značilke. Klasifikacjo določenega primera pričnemo pri korenu. Glede na izid vozliščnega testa se pomaknemo v eno od vej. Postopek ponavljamo, dokler ne dosežemo končnega vozlišča (lista).
 
-Na sliki \ref{sl:algo-id3} je prikazan algoritem \texttt{ID3}, prilagojen učenju diskretnih funkcij. Algoritem gradi drevo od korena proti listom, v vsakem vozlišču izbere značilko, ki najbolje klasificira lokalno učno množico. Proces se izvaja, dokler se naučeno drevo v popolnosti ne prilagaja učni množici ali do izrabe vseh značilk.
+Na sliki \ref{sl:algo-id3} je prikazan algoritem \texttt{ID3}, prilagojen učenju diskretnih funkcij. Algoritem gradi drevo od korena proti listom. V vsakem vozlišču izbere značilko, ki najbolje klasificira lokalno učno množico. Proces se izvaja, dokler se naučeno drevo v popolnosti ne prilagaja učni množici ali do izrabe vseh značilk.
 
 \SetStartEndCondition{ }{}{}
 \SetKwProg{Fn}{function}{\string:}{}
@@ -525,9 +639,9 @@ Na sliki \ref{sl:algo-id3} je prikazan algoritem \texttt{ID3}, prilagojen učenj
 			\Begin{
 				izberi značilko $Z$, ki najbolje klasificira primere iz {\cal D}\;
 				odločitveni atribut za korensko vozlišče je $Z$\;
-				\For{vse možne vrednosti $v_i$ značilke $Z$\;} {
+				\For{vse možne vrednosti $v_i$ značilke $Z$\,} {
 					dodaj novo vejo, ki ustreza testu $Z = v_i$\;
-					naj bo ${\cal D}_{v_i}$ podmnožica ${\cal D}$ vrednostjo $Z = v_i$\;
+					naj bo ${\cal D}_{v_i}$ podmnožica ${\cal D}$ z vrednostjo $Z = v_i$\;
 					\uIf{${\cal D}_{v_i} = \{\}\;$} {
 						veji dodaj končno vozlišče z najpogostejšo oznako primerov iz ${\cal D}$\;
 					} \Else {
@@ -558,11 +672,11 @@ kjer je $Z$ izbrana značilka, ${\cal Z}_Z$ množica vrednosti značilke $Z$, ${
 
 \subsection{Ansambli klasifikacijskih algoritmov}
 
-Odločitve ponavadi sprejemamo na podlagi enega modela, lahko pa kombiniramo več (ponavadi šibkejših) modelov in končno odločitev sprejmemo na podlagi njihovih rezultatov. Poznamo več vrst kombiniranja ansamblov modelov, in sicer: zlaganje (\textit{bagging}), pospeševanje (\textit{boosting}) in nalaganje (\textit{stacking}). \cite{Witten2005} Metode kombiniranja modelov so doživele razcvet šele v zadnjih dveh desetletjih, rezultati njihove uporabe pa so ponavadi presenetljivo dobri. Izmed vseh treh metod se je pospeševanje izkazalo za najbolj uspešno, tudi v primeru klasifikacije dogodkov na detektorju ATLAS in mu zato namenjam razdelek \ref{sec:boosting}.
+Odločitve ponavadi sprejemamo na podlagi enega modela, lahko pa kombiniramo več (ponavadi šibkejših) modelov in končno odločitev sprejmemo na podlagi njihovih rezultatov. Poznamo več vrst kombiniranja ansamblov modelov, in sicer: zlaganje (\textit{bagging}), pospeševanje (\textit{boosting}) in nalaganje (\textit{stacking}). \cite{Witten2005} Metode kombiniranja modelov so doživele razcvet šele v zadnjih dveh desetletjih, rezultati njihove uporabe pa so ponavadi presenetljivo dobri. Izmed vseh treh metod se je pospeševanje izkazalo za najbolj uspešno, tudi v primeru klasifikacije dogodkov na detektorju ATLAS in mu je zato namenjen poseben razdelek \ref{sec:boosting}.
 
 V literaturi pogosto zasledimo, da so metode kombiniranja modelov najbolj uspešne pri ansamblih odločitvenih dreves. Argumentacija pravi, da je generiranje odločitvenih dreves precej nestabilno. Na podobnih (vendar različnih podatkih) lahko dobimo modele, ki so si med seboj zelo različni. Zato vsak model nosi drugačno informacijo.
 
-Zlaganje je poseben primer povprečenja rezultatov množice modelov. Algoritem je opisan na sliki \ref{sl:algo-bagging}. Pri zlaganju na prvotni učni množici podatkov naučimo $t$ različnih modelov, pri čemer učno podatkovno množico vedno generiramo z naključnimi izbirami vzorcev iz prvotne učne podatkovne množice. Novi meta-algoritem nam poda kot rezultat tisti razred izbranega vzorca, za katerega je \textit{glasovalo} več osnovnih algoritmov.
+Zlaganje je poseben primer povprečenja rezultatov množice modelov. Algoritem je opisan na sliki \ref{sl:algo-bagging}. Pri zlaganju na prvotni učni množici podatkov naučimo $t$ različnih šibkih modelov, pri čemer učno podatkovno množico vedno generiramo npr. z deležem naključno izbranih vzorcev iz prvotne učne podatkovne množice. Novi algoritem nam kot rezultat poda tisti razred izbranega vzorca, za katerega je \textit{glasovalo} več osnovnih algoritmov.
 
 \begin{figure}[h!]
 	\begin{algorithm}[H]
@@ -570,50 +684,50 @@ Zlaganje je poseben primer povprečenja rezultatov množice modelov. Algoritem j
 		$n$ je število vrstic v učni množici podatkov\;
 		$t$ je število modelov\;
 		${\cal D}$ je učna množica podatkov\;
-		\For{vsak $i$ od $1$ do $t$}{
-			${\cal D}_i$ določi z izbiro $n$ naključnih dogodkov iz ${\cal D}$\;
+		\For{vsak $i$ od $1$ do $t$\,}{
+			${\cal D}_i$ določi npr. z izbiro $n$ naključnih dogodkov iz ${\cal D}$ (pri čemer se lahko le-ti podvajajo)\;
 			izvedi učni del metode na množici ${\cal D}_i$\;
 			zapomni si model $M_i$
 		}
 
 		\texttt{/* klasifikacija */} \\
-		\For{vsak $i$ od $1$ do $t$}{
+		\For{vsak $i$ od $1$ do $t$\,}{
 			napovej razred $r_i$ s pomočjo modela $M_i$\;
 		}
 		vrni razred, ki je bil največkrat izbran
 	\end{algorithm}
-	\caption{Algoritem za zlaganje \textit{bagging}.}
+	\caption{Algoritem za zlaganje.}
 	\label{sl:algo-bagging}	
 \end{figure}
 
 \subsection{Pospešeni gradientni spust}
 \label{sec:boosting}
-Razdelek \ref{sc:decisiontrees} je bil namenjen predvsem razumevanju osnovnega algoritma, nad katerim izvajamo naslednjo ansambelsko metodo - pospeševanje (\textit{boosting}). Metodi je namenjen poseben razdelek predvsem zaradi njene uspešne rabe pri ločevanju signala od ozadnja v meritvah na detektorju ATLAS.
+Razdelek \ref{sc:decisiontrees} je bil namenjen predvsem razumevanju osnovnega algoritma, nad katerim izvajamo naslednjo ansambelsko metodo - pospeševanje (\textit{boosting}).
 
-Tako kot ostale ansambelske metode tudi pospeševanje združuje množico šibkejših modelov\cite{Witten2005}. Namen metode je zgraditi klasifikacijsko funkcijo $F$, ki zna predvideti vrednosti $\hat{y} = F(x)$, pri čemer minimizira izbrano funkcijo napake $L(y, F(x))$.
+Tako kot ostale ansambelske metode tudi pospeševanje združuje množico šibkejših modelov\cite{Witten2005}. Namen metode je zgraditi klasifikacijsko funkcijo $g$, ki zna predvideti vrednosti $\hat{y} = g(x)$, pri čemer minimizira izbrano funkcijo napake $L(y, g(x))$.
 
-Algoritem inicializiramo s konstantno vrednostjo napovedanega razreda, in sicer tako, da je funkcija napake najmanjša. Rezultat tega koraka je osnovna klasifikacijska funkcija $F_0(x) = \gamma$. Optimizacijski problem zapišemo z enačbo
+Algoritem inicializiramo s konstantno vrednostjo napovedanega razreda, in sicer tako, da je funkcija napake najmanjša. Rezultat tega koraka je osnovna klasifikacijska funkcija $g_0(x) = \gamma$. Optimizacijski problem zapišemo z enačbo
 \begin{eqnarray}
-	F_0(x) = \underset{\gamma}{\mathrm{arg\,min}} \sum_{i=1}^n L(y^{(i)}, \gamma).
+	g_0(x) = \underset{\gamma}{\mathrm{arg\,min}} \sum_{i=1}^n L(y^{(i)}, \gamma).
 	\label{eq:gbtopt0}
 \end{eqnarray}
 Celoten proces nato iteriramo. V vsakem koraku najprej izračunamo psevdo ostanke za vsakega izmed $i = 1, 2, ..., n$ primerov
 \begin{eqnarray}
 	r_{im} = -\left[
-		\frac{\partial L(y_i, F(x_i))}{\partial F(x_i)}
-	\right]_{F(x)=F_{m-1}(x)},
+		\frac{\partial L(y^{(i)}, g(x^{(i)}))}{\partial g(x^{(i)})}
+	\right]_{g(x)=g_{m-1}(x)},
 \end{eqnarray}
 pri čemer je $m = 1, 2, ..., M$ zaporedna številka iteracije. S tem pridobimo novo učno množico ${\cal D}_m = \{(x^{(i)}, r^{(im)})\}_{i=1}^n$. Na tej množici ostankov naučimo nov algoritem $h_m(x)$. Naš model bomo tako zapisali kot
 \begin{eqnarray}
-	F_m(x) = F_{m-1}(x) + \gamma_m h_m(x),
+	g_m(x) = g_{m-1}(x) + \gamma_m h_m(x),
 \end{eqnarray}
 kjer pa še ne poznamo optimalnega parametra $\gamma_m$, ki ga izračunamo s pomočjo optimizacije, podobne kot v \ref{eq:gbtopt0}, in sicer
 \begin{eqnarray}
-	\gamma_m = \underset{\gamma}{\mathrm{arg\,min}} \sum_{i=1}^n L(y^{(i)}, F_{m-1}(x^{(i)}) + \gamma h_m(x^{(i)}).
+	\gamma_m = \underset{\gamma}{\mathrm{arg\,min}} \sum_{i=1}^n L(y^{(i)}, g_{m-1}(x^{(i)}) + \gamma h_m(x^{(i)}).
 \end{eqnarray}
-Rezultat algoritma je funkcija $F_m(x)$.
+Rezultat algoritma je funkcija $g_m(x)$.
 
-Avtorji nagrajene metode XGBoost\cite{chen2014}, \cite{chenG16} predlagajo za ciljno optimizacijsko funkcijo 
+Avtorji nagrajene metode \texttt{XGBoost}\cite{chen2014}\cite{chenG16} predlagajo za ciljno optimizacijsko funkcijo 
 \begin{eqnarray}
 	L(\phi) = \sum_i l(\hat{y}^{(i)}, y^{(i)}) + \Omega,
 	\label{eq:gbtoptimization}
@@ -628,10 +742,10 @@ kjer $l$ predstavlja odvedljivo konveksno funkcijo napake, za katero predlagajo 
 $\Omega$ v enačbi \ref{eq:gbtoptimization} predstavlja regularizacijski del končne optimizacijske funkcije in je namenjen preprečevanju prenasičenja v končni klasifikacijski funkciji. Podrobnejša razprava je na voljo v \cite{chen2014}.
 
 \section{Evalvacija klasifikacijskih metod}
+\label{sec:ml_eval}
+Pri učenju in evalvaciji metod strojnega učenja moramo biti pazljivi, da različnih delov učnega in evalvacijskega procesa ne izvajamo na istih podatkih. Pravilnost napovedi modela bo praviloma večja na podatkih, na katerih se je model učil. Običajno celotno množico podatkov, ki jih imamo na voljo, razdelimo na dva dela. Prvi del zajema učno podatkovno množico, drugi del pa potrjevalno množico. Učno množico lahko dodatno razdelimo na podmnožice predvsem takrat, ko naš algoritem zahteva več faz (v eni fazi klasifikacijski algoritem naučimo, v drugi izvedemo optimizacijo parametrov). Obstaja še precej naprednejših tehnik, ki so opisane v \cite{Mitchell1997} in \cite{Witten2005}. Predvsem zaradi časovne zahtevnosti algoritma SVM sem se v diplomskem delu posluževal samo zgoraj opisane delitve podatkov.
 
-Pri učenju in evalvaciji metod strojnega učenja moramo biti pazljivi, da različnih delov učnega in evalvacijskega procesa ne izvajamo na istih podatkih. Pravilnost napovedi modela bo praviloma večja na podatkih, na katerih se je model učil. Običajno celotno množico podatkov, ki jih imamo na voljo, razdelimo na dva dela. Prvi del zajema učno podatkovno množico, drugi del pa validacijsko množico. Učno množico lahko dodatno razdelimo na podmnožice predvsem takrat, ko naš algoritem zahteva več faz (v eni fazi klasifikacijski algoritem naučimo, v drugi izvedemo optimizacijo parametrov). Obstaja še precej naprednejših tehnik, ki so opisane v \cite{Mitchell1997} in \cite{Witten2005}. Predvsem zaradi časovne zahtevnosti algoritma SVM sem se v diplomskem delu posluževal samo zgoraj opisane delitve podatkov.
-
-Uspešnost metod strojnega učenja ocenimo na podlagi različnih metrik. Poleg metrike, ki je razložena v razdelku \ref{sc:ams} in je specifična problemu ločevanja signala in ozadja v primeru podatkov iz detektorja ATLAS, je v splošnem za razumevanje delovanja in izbiro klasifikacijskih metod priporočljivo uporabiti še nekaj bolj standardnih. Pregled metrik, ki sem jih uporabil v diplomskem delu, je povzet po \cite{wiki:precision_and_recall}.
+Uspešnost metod strojnega učenja ocenimo na podlagi različnih metrik. Poleg metrike, ki je razložena v razdelku \ref{sc:ams} in je specifična za problem ločevanja signala in ozadja v primeru podatkov iz detektorja ATLAS, je v splošnem za razumevanje delovanja in izbiro klasifikacijskih metod priporočljivo uporabiti še nekaj bolj standardnih. Pregled metrik, ki sem jih uporabil v diplomskem delu, je povzet po \cite{wiki:precision_and_recall}:
 
 \begin{itemize}
 	\item \textbf{pravilno pozitivni (\textit{true positive}, TP)}, predstavlja število pravilno klasificiranih pozitivnih dogodkov (signal)
@@ -642,13 +756,13 @@ Uspešnost metod strojnega učenja ocenimo na podlagi različnih metrik. Poleg m
 	\begin{equation}	
 	PPV = \frac{TP}{TP + FP}
 	\end{equation}
-	\item \textbf{priklic (\textit{recall} ali \textit{true positive rate}, TNR)} (ali občutljivost), definiran kot
+	\item \textbf{priklic (\textit{recall} ali \textit{true positive rate}, TPR)} (ali občutljivost), definiran kot
 	\begin{equation}	
 	TNR = \frac{TP}{TP + FN}
 	\end{equation}
-	\item \textbf{$F_1$ score} povezuje natančnost in priklic v geometrijskem povprečju. 
+	\item \textbf{ocena $F_1$} povezuje natančnost in priklic v geometrijskem povprečju. 
 	\begin{equation}
-	F_1 = 2 \cdot \frac{PPV \cdot TNR}{PPV + TTR} = \frac{2TP}{2TP + FP + FN}
+	F_1 = 2 \cdot \frac{PPV \cdot TPR}{PPV + TTR} = \frac{2TP}{2TP + FP + FN}
 	\end{equation}
 	\item \textbf{točnost (\textit{accuracy}, ACC)}
 	\begin{equation}
@@ -661,18 +775,18 @@ Uspešnost metod strojnega učenja ocenimo na podlagi različnih metrik. Poleg m
 % -----------------------------------------------------------------------------
 \chapter{Podatki}
 \label{analiza-podatkov}
-Podatki, ki sem jih uporabil v diplomskem delu, so bili uporabljeni za izvedbo \textit{HiggsML Challenge}. Podatki predstavljajo dogodke, ki so bili simulirani na uradnem simulatorju polnega detektorja kolaboracija ATLAS\cite{Adam-Bourdarios14}. Podatki iz simulatorja imajo lastnosti, ki posnemajo statistične lastnosti dejanskih dogodkov - tako signala, kakor tudi ozadja.
+Podatki, ki sem jih uporabil v diplomskem delu, so bili prvič objavljeni in uporabljeni za izvedbo \textit{HiggsML} izziva. Podatki predstavljajo dogodke, ki so bili simulirani na uradnem simulatorju polnega detektorja ATLAS\cite{Adam-Bourdarios14}. Podatki iz simulatorja imajo lastnosti, ki posnemajo statistične lastnosti dejanskih dogodkov - tako signala, kakor tudi ozadja.
 
-Vzorec signala zajema dogodke, v katerih naj bi nastal Higgsov bozon (katrega masa je bila nastavljena na $m_H = 125\,\text{GeV}$). Vzorec, ki predstavlja ozadje, vsebuje dogodke, ki odražajo druge znane procese, ki lahko proizvajajo dogodke z vsaj enim elektronom ali mionom in hadronskim tau, ki posnemajo signal.
+Vzorec signala zajema dogodke, v katerih naj bi nastal Higgsov bozon (katrega masa je bila nastavljena na $m_H = 125\,\text{GeV}$). Vzorec, ki predstavlja ozadje, vsebuje dogodke, ki odražajo druge znane procese, ki lahko proizvajajo dogodke z vsaj enim elektronom ali mionom in hadronskim tau, s čimer posnemajo signal.
 
-V simuliranih podatkov so predstavljeni samo trije procesi ozadja. Prvi prihaja od razpada $Z \rightarrow \tau^+\tau^-$ (masa z bozona je $m_Z = 91.2\,\text{GeV}$). Ta razpad proizvaja dogodke s topologijo, ki je zelo podobna tisti pri razpadu Higgsovega bozona. Druga množica dogodkov vsebuje par $t$ kvarkov, ki imata lahko med svojimi razpadnimi produkti lepton ali hadronski tau. Tretja množica vsebuje razpad $W$ bozona, kjer lahko nastaneta en elektron ali mion in hadronski tau. 
+V simuliranih podatkih so predstavljeni samo trije procesi ozadja. Prvi prihaja iz razpada $Z \rightarrow \tau^+\tau^-$ (masa $Z$ bozona je $m_Z = 91,2\,\text{GeV}$). Ta razpad proizvaja dogodke s topologijo, ki je zelo podobna tisti pri razpadu Higgsovega bozona. Druga množica dogodkov vsebuje par $t$ kvarkov, ki imata lahko med svojimi razpadnimi produkti lepton ali hadronski tau. Tretja množica vsebuje razpad $W$ bozona, kjer lahko nastaneta en elektron ali mion in hadronski tau. 
 
 \section{Opis podatkov}
 \label{ch:opis_podatkov}
 
-V učni podatkovni množici je na voljo 250.000 dogodkov, od teh jih je 85.667 predstavljalo signal, 164.333 pa ozadje. Vsak dogodek je predstavljen z $d = 30$ značilkami, ki so dodatno opisane v \ref{sec:opis-znacilk}, in 3 metapodatki: oznako razreda ($s$ - signal ali $b$ - ozadje), utežjo $w_i$ in zaporedno številko dogodka. Raziskovalna analiza podatkov je predstavljena v \ref{sec:raziskovalna-analiza}.
+V učni podatkovni množici je na voljo 250.000 dogodkov, od teh jih 85.667 predstavlja signal, 164.333 pa ozadje. Vsak dogodek je predstavljen z $d = 30$ značilkami, ki so dodatno opisane v \ref{sec:opis-znacilk}, in 3 metapodatki: oznako razreda (s - signal ali b - ozadje), utežjo $w^{(i)}$ in zaporedno številko dogodka. Raziskovalna analiza podatkov je predstavljena v \ref{sec:raziskovalna-analiza}.
 
-Potrjevalna podatkovna množica vsebuje 100.000 dogodkov, ki pa niso opremljeni z oznako razreda ali utežjo $w_i$. 
+Potrjevalna podatkovna množica vsebuje 1.000.000 dogodkov, ki pa niso opremljeni z oznako razreda ali utežjo $w^{(i)}$. 
 
 \subsection{Opis značilk}
 \label{sec:opis-znacilk}
@@ -683,38 +797,38 @@ Stolpci brez predpone imajo posebno vlogo in se ne uporabljajo kot značilke:
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
 	\item [EventId] 	Zaporedna številka dogodka.
-	\item [Weight]  	Utež dogodka $w_i$, kakor je opisana v podpoglavju \ref{utez}.
-	\item [Label] 		Oznaka dogodka (niz) $y_i \in \{\text{s}, \text{b}\}$ (s za signal, b za ozadje).	
+	\item [Weight]  	Utež dogodka $ww^{(i)}$.
+	\item [Label] 		Oznaka dogodka (niz) $y^{(i)} \in \{\text{s}, \text{b}\}$ (s za signal, b za ozadje).	
 \end{description}
 \end{changemargin}
 
 Stolpci s predpono \textbf{PRI} označujejo \textit{surove} podatke, ki jih detektor izmeri pri trku:
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
-	\item[PRI\_tau\_pt] Prečni (transverse???) moment $\sqrt{p_x^2 + p_y^2}$ hadronskega tau.
+	\item[PRI\_tau\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ hadronskega tau.
 	\item[PRI\_tau\_eta] Psevdorapidnost $\eta$ hadronskega tau.
 	\item[PRI\_tau\_phi] Azimutalni kot $\phi$ hadronskega tau.
 	
-	\item[PRI\_lep\_pt] Prečni moment $\sqrt{p_x^2 + p_y^2}$ leptona (elektrona ali miona).
+	\item[PRI\_lep\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ leptona (elektrona ali miona).
 	\item[PRI\_lep\_eta] Psevdorapidnost $\eta$ leptona.
 	\item[PRI\_lep\_phi] Azimutalni kot $\phi$ leptona.
 	
-	\item[PRI\_met] Manjkajoča prečna energija $\vec{E}_T^{\text{miss}}$.
+	\item[PRI\_met] Manjkajoča prečna energija $\mathbf{E_T^{\text{miss}}}$.
 	\item[PRI\_met\_phi] Azimutalni kot $\phi$ manjkajoče prečne energije.
 	
 	\item[PRI\_met\_sumet] Celotna prečna energija v detektorju.
 	
-	\item[PRI\_jet\_num] Število vseh žarkov ($\in {1, 2, 3}$), vednosti, večje od $3$ so bile zamenjane s 3
+	\item[PRI\_jet\_num] Število vseh curkov ($\in \{1, 2, 3\}$), vrednosti, večje od $3$ so bile zamenjane s 3.
 	
-	\item[PRI\_jet\_leading\_pt] Prečni moment $\sqrt{p_x^2 + p_y^2}$ glavnega žarka, t. j. žarka z največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
-	\item[PRI\_jet\_leading\_eta] Psevdorapidnost $\eta$ glavnega žarka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
-	\item[PRI\_jet\_leading\_phi] Azimutalni kot $\phi$ glavnega žarka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	\item[PRI\_jet\_leading\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ glavnega curka, t. j. curka z največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	\item[PRI\_jet\_leading\_eta] Psevdorapidnost $\eta$ glavnega curka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	\item[PRI\_jet\_leading\_phi] Azimutalni kot $\phi$ glavnega curka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
 	
-	\item[PRI\_jet\_subleading\_pt] Prečni moment $\sqrt{p_x^2 + p_y^2}$ prvega pomožnega žarka, t. j. žarka z drugo največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 0$).
-	\item[PRI\_jet\_subleading\_eta] Psevdorapidnost $\eta$ prvega pomožnega žarka, t. j. žarka z drugo največjo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 0$).
-	\item[PRI\_jet\_subleading\_phi] Azimutalni kot $\phi$ prvega pomožnega žarka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 0$).
+	\item[PRI\_jet\_subleading\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ prvega pomožnega curka, t. j. curka z drugo največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
+	\item[PRI\_jet\_subleading\_eta] Psevdorapidnost $\eta$ prvega pomožnega curka, t. j. curka z drugo največjo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
+	\item[PRI\_jet\_subleading\_phi] Azimutalni kot $\phi$ prvega pomožnega curka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
 	
-	\item[PRI\_jet\_all\_pt] Skalarna vsota prečnih momentov vseh žarkov pri dogodkih.
+	\item[PRI\_jet\_all\_pt] Skalarna vsota prečnih gibalnih količin vseh curkov v dogodku.
 \end{description}
 \end{changemargin}
 
@@ -722,18 +836,19 @@ Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količ
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
 	\item[DER\_mass\_MMC] Ocenjena masa kandidata za Higgsov bozon $m_H$ (vrednost ni definirana v primeru, da topologija dogodka preveč odstopa od pričakovane)
-	\item[DER\_mass\_transverse\_met\_lep] Prečna masa med manjkajočo prečno energijo in leptonom (\ref{eq:transversemomentum}).
+	\item[DER\_mass\_transverse\_met\_lep] Prečna masa med manjkajočo prečno energijo in leptonom (\ref{eq:invmasstransverse}).
 	\item[DER\_mass\_vis] Invarianta masa hadronskega $\tau$ in leptona (\ref{eq:invmass}).
-	\item[DER\_pt\_h] Modulus (\ref{eq:modulus}) vektorske vsote prečne gibalne količine in hadronskega tau, leptona in manjkajoče prečne energije.
-	\item[DER\_deltaeta\_jet\_jet] Absolutna vrednost psevdorapidnostne separacije (\ref{eq:pseudorapidityseparation}) med obema žarkoma (vrednost ni definirana v primeru $PRI\_jet\_num \le 1$).
-	\item[DER\_mass\_jet\_jet] Invariantna masa obeh žarkov (vrednost ni definirana pri $PRI\_jet\_num \le 1$).
-	\item[DER\_prodeta\_jet\_jest] Produkt psevdorapidnosti obeh žarkov (vrednost ni definirana pri $PRI\_jet\_num \le 1$).
-	\item[DER\_deltar\_tau\_lep] $R$ separacija (\ref{eq:rseparation}) med hadronskim tau in leptonom.
-	\item[DER\_pt\_tot] Modulus vektorske vsote manjkajoče prečne gibalne količine in prečne gibalne količine hadronskega tau, leptona in vodilnega in drugega žarka (če obstajata).
-	\item[DER\_sum\_pt] Vsota modulusa prečne gibalne količine hadronskega tau, leptona in žarkov.
+	\item[DER\_pt\_h] Modulus (\ref{eq:modulus}) vektorske vsote prečne gibalne količine hadronskega tau, leptona in manjkajoče prečne energije.
+	\item[DER\_deltaeta\_jet\_jet] Absolutna vrednost psevdorapidnostne ločitve (\ref{eq:pseudorapidityseparation}) med obema curkoma (vrednost ni definirana v primeru $\textbf{PRI\_jet\_num} \le 1$).
+	\item[DER\_mass\_jet\_jet] Invariantna masa obeh curkov (vrednost ni definirana pri \\
+		$\textbf{PRI\_jet\_num} \le 1$).
+	\item[DER\_prodeta\_jet\_jet] Produkt psevdorapidnosti obeh curkov (vrednost ni definirana pri $\textbf{PRI\_jet\_num} \le 1$).
+	\item[DER\_deltar\_tau\_lep] $R$-ločitev (\ref{eq:rseparation}) med hadronskim tau in leptonom.
+	\item[DER\_pt\_tot] Modulus vektorske vsote manjkajoče prečne gibalne količine in prečne gibalne količine hadronskega tau, leptona in vodilnega ter drugega curka (če obstajata).
+	\item[DER\_sum\_pt] Vsota modulusov prečne gibalne količine hadronskega tau, leptona in curkov.
 	\item[DER\_pt\_ratio\_lep\_tau] Razmerje prečne gibalne količine leptona in hadronskega tau.
 	\item[DER\_met\_phi\_centrality] Centralnost azimutalnega kota manjkajoče prečne energije glede na hadronskegi tau in lepton (natančneje razloženo v \cite{ChallengeDoc}).
-	\item[DER\_lep\_eta\_centrality] Centralnost psevdorapidnosti leptona glede na oba žarka (glej \cite{ChallengeDoc}).
+	\item[DER\_lep\_eta\_centrality] Centralnost psevdorapidnosti leptona glede na oba curka (glej \cite{ChallengeDoc}).
 	
 \end{description}
 \end{changemargin}
@@ -752,7 +867,7 @@ V drugem koraku sem si ogledal \textbf{porazdelitev uteži} $w^{(i)}$ pri obeh r
 	\label{sl:weight}		
 \end{figure}
 
-Množica podatkov vsebuje veliko manjkajočih vrednosti. Gre za značilke, ki jih pri določenih topologijah ni bilo mogoče izmeriti ali izračunati. Rezultati so predstavljeni v tabeli \ref{tb:manjkajoce_vrednosti}. V celotni množici več kot $70\%$ točk nima vseh podatkov. Strategije pristopov pri reševanju težav, ki nastanejo zaradi manjkajočih vrednosti, so opisane v poglavju \ref{ch:razvoj_lastne_metode}.
+Množica podatkov vsebuje veliko manjkajočih vrednosti, ki se nanašajo na značilke, ki jih pri določenih topologijah ni mogoče izmeriti ali izračunati. Rezultati so predstavljeni v tabeli \ref{tb:manjkajoce_vrednosti}. V celotni množici več kot $70\%$ točk nima vseh podatkov. Strategije pristopov pri reševanju težav, ki nastanejo zaradi manjkajočih vrednosti, so opisane v poglavju \ref{ch:razvoj_lastne_metode}.
 
 \begin{table}[ht]
 	\centering
@@ -760,25 +875,23 @@ Množica podatkov vsebuje veliko manjkajočih vrednosti. Gre za značilke, ki ji
 		\hline
 		\textbf{Značilka} &         \textbf{Signal} &         \textbf{ozadje} \\
 		\hline
-		DER\_mass\_MMC            &  3.3\%  &  21.5\% \\
-		DER\_deltaeta\_jet\_jet   &  62.1\% &  75.6\% \\
-		DER\_mass\_jet\_jet       &  62.1\% &  75.6\% \\
-		DER\_prodeta\_jet\_jet    &  62.1\% &  75.6\% \\
-		DER\_lep\_eta\_centrality &  62.1\% &  75.6\% \\
-		PRI\_jet\_leading\_pt     &  29.8\% &  45.3\% \\
-		PRI\_jet\_leading\_eta    &  29.8\% &  45.3\% \\
-		PRI\_jet\_leading\_phi    &  29.8\% &  45.3\% \\
-		PRI\_jet\_subleading\_pt  &  62.1\% &  75.6\% \\
-		PRI\_jet\_subleading\_eta &  62.1\% &  75.6\% \\
-		PRI\_jet\_subleading\_phi &  62.1\% &  75.6\% \\
+		DER\_mass\_MMC            &  3,3\%  &  21,5\% \\
+		DER\_deltaeta\_jet\_jet   &  62,1\% &  75,6\% \\
+		DER\_mass\_jet\_jet       &  62,1\% &  75,6\% \\
+		DER\_prodeta\_jet\_jet    &  62,1\% &  75,6\% \\
+		DER\_lep\_eta\_centrality &  62,1\% &  75,6\% \\
+		PRI\_jet\_leading\_pt     &  29,8\% &  45,3\% \\
+		PRI\_jet\_leading\_eta    &  29,8\% &  45,3\% \\
+		PRI\_jet\_leading\_phi    &  29,8\% &  45,3\% \\
+		PRI\_jet\_subleading\_pt  &  62,1\% &  75,6\% \\
+		PRI\_jet\_subleading\_eta &  62,1\% &  75,6\% \\
+		PRI\_jet\_subleading\_phi &  62,1\% &  75,6\% \\
 	\end{tabular}
 	\caption{Nedefinirane vrednosti v dogodkih, ki označujejo signal in ozadje, normalizirane na število dogodkov v posameznem razredu.}
 	\label{tb:manjkajoce_vrednosti}
 \end{table}
 
-Pregled povzetka značilk nam pove, da so značilke, ki se med razredi najbolj razlikujejo (npr. DER\_mass\_MMC, DER\_mass\_transverse\_met\_lep, DER\_deltaeta\_jet\_jet, PRI\_jet\_leading\_eta). Povzetek vseh značilk je prikazan v tabeli \ref{tb:5figuresum}. Natančnejši pogled posamičnih značilk je možen s pomočjo histogramov. Nekaj predstavnikov, pri katerih se porazdelitve med razredi najbolj razlikujejo, je predstaviljenih na sliki \ref{sl:histogrami}, celoten pregled izmerjenih in izračunanih značilk pa je na voljo na slikah \ref{sl:histogram_izmerjene} in \ref{sl:histogram_izpeljane}.
-
-\begin{figure}[ht]
+\begin{figure}[ht!]
 	\includegraphics[width=7.7cm]{exploratory/ea_hist_der_mass_mmc.pdf}
 	\includegraphics[width=7.8cm]{exploratory/ea_hist_der_mass_transverse_met_lep.pdf}	
 	\includegraphics[width=7.8cm]{exploratory/ea_hist_der_deltaeta_jet_jet.pdf}		
@@ -786,6 +899,8 @@ Pregled povzetka značilk nam pove, da so značilke, ki se med razredi najbolj r
 	\caption{Nekaj tipičnih histogramov za značilke, katerih porazdelitev se med razredoma razlikuje. Rumena barva prikazuje signal, zelena pa ozadje.}
 	\label{sl:histogrami}			
 \end{figure}
+
+Pregled povzetka značilk nam pove, katere so značilke, ki se med razredi najbolj razlikujejo: DER\_mass\_MMC, DER\_mass\_transverse\_met\_lep, DER\_deltaeta\_jet\_jet, s tem pa so to tiste značilke, ki bodo prinesle največjo informacijo pri klasifikaciji. Povzetek vseh značilk je na voljo na GitHub odložišču\footnote{\url{https://github.com/klemenkenda/HiggsML/blob/master/HiggsML/solutions/ExploratoryAnalysis/dataDescriptionStats.html}}. Natančnejši pregled posamičnih značilk je možen s pomočjo histogramov. Na sliki \ref{sl:histogrami} so predstavljeni tisti, pri katerih se porazdelitve med razredi najbolj razlikujejo. Celoten pregled izmerjenih in izračunanih značilk pa je na voljo na slikah \ref{sl:histogram_izpeljane} in \ref{sl:histogram_izmerjene} v dodatku.
 
 Korelacijo dveh značilk in njun potencial pri ločevanju signala od ozadja si lahko ogledamo na razpršenih grafih. Trije primeri so prikazani v dodatku, in sicer dva, ki ponazarjata močno korelirane značilke (glej sliki \ref{sl:scatter_corr} in \ref{sl:scatter_corr2}), in en, ki ponazarja nekorelirane značilke (slika \ref{sl:scatter_noncorr}).
 
@@ -800,7 +915,7 @@ Slika korelacij nam že sama po sebi da zelo informativen vpogled v podatke, pri
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=12cm]{exploratory/ea_corr_clustermap.pdf}
-	\caption{Koreliranost značilk v simuliranih (merjenih) podatkih. Značilke so urejene urejenost na podlagi hierarhičnega grozdenja.}
+	\caption{Koreliranost značilk v simuliranih (merjenih) podatkih. Značilke so urejene na podlagi hierarhičnega grozdenja.}
 	\label{sl:corr_clust_matrix}
 \end{figure}
 
@@ -826,7 +941,7 @@ Nekaj slik iz podrobnejše raziskovalne analize podatkov je na voljo v dodatku \
 % -----------------------------------------------------------------------------
 \chapter{Rezultati osnovnih metod}
 
-Osnovne metode so bile predlagane in vsaj delno implementirane že v spremljevalnem gradivu HiggsML izziva. Vse teste in dopolnitve sem sicer naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn}. Za pospešena odločitvena drevesa sem poleg implementacije v \texttt{scikit-learn} uporabil še nagrajeni paket \texttt{XGBoost}\cite{chen2014}.
+Osnovne metode so bile predlagane in vsaj delno implementirane že v spremljevalnem gradivu \textit{HiggsML} izziva. Vse teste in dopolnitve sem sicer naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn}\cite{scikit-learn}. Za pospešeni gradientni spust na odločitvenih drevesih sem poleg implementacije v \texttt{scikit-learn} preizkusil še paket \texttt{XGBoost}\cite{chen2014}, ki ga uporabljajo na detektorju ATLAS.
 
 	
 \section{Preprosto okno}
@@ -854,7 +969,7 @@ Metoda preprostega okna temelji na izbiri preprostega okna s pomočjo ene same s
 	\label{tb:preprosto_okno}
 \end{table}
 
-Preprosta metoda doseže na potrjevalni množici podatkov oceno $AMS_{2(test)} = 1.535$, to oceno je moč razbrati tudi iz zadnje vrstice tabele \ref{tb:preprosto_okno}. Naključna rešitev, ki služi kot osnovna metoda, da rezultat $AMS_2{(test)} = 0.586$.
+Preprosta metoda doseže na testni množici podatkov oceno $AMS_{2(test)} = 1.535$, to oceno je moč razbrati tudi iz zadnje vrstice tabele \ref{tb:preprosto_okno}. Naključna rešitev, ki služi kot osnovna metoda, da rezultat $AMS_{2{(test)}} = 0.586$.
 
 Pristop sicer kliče po optimizaciji in izboljšanju metode. V prvem koraku lahko na podlagi mere ($AMS_2$) izboljšamo vrednost praga. Glede na porazdelitev značilke DER\_mass\_MMC glede na oba razreda pa lahko sklepamo, da bi lahko optimizirali tudi sredino okna. Optimizacija po pragu je prikazana na sliki \ref{sl:simple_optimization_threshold}.
 
@@ -879,18 +994,18 @@ Izbira praga pri ($\pm 22\,\text{GeV}$) ni bila optimalna. Metoda prag postavlja
 		pravilno negativni & 43,0\% \\
 		napačno pozitivni & 22,5\% \\
 		napačno negativni & 6,3\% \\
-		natančnost & 0.556 \\
-		priklic & 0.819 \\
-		točnost & 0.712 \\
-		ocena $F_1$ & 0.662 \\
-		ocena $AMS_2$ & 1.573 \\
-		ocena $AMS_{2(test)}$ & 1.583 		
+		natančnost & 0,556 \\
+		priklic & 0,819 \\
+		točnost & 0,712 \\
+		ocena $F_1$ & 0,662 \\
+		ocena $AMS_2$ & 1,573 \\
+		ocena $AMS_{2(test)}$ & 1,583 		
 	\end{tabular}
 	\caption{Rezultati metode preprostega okna na podlagi $m_H$ z optimiziranim pragom za mero $AMS_2$.}
 	\label{tb:preprosto_okno_optimized}
 \end{table}
 
-Optimizacija po dveh parametrih (prah in $m_H$) je prikazan na sliki \ref{sl:simple_optimization_2d}. Po pregledu faznega prostora sem izluščil območje, kjer je $AMS_2$ najvišji. Določil sem $m_H = 127,25\,\text{GeV} \pm 32.25\,\text{GeV}$. Na levem grafu je celostni pregled zanimivega faznega prostora, na desnem pa povečan del z najvišjimi vrednostmi $AMS_2$. Na $x$ osi je prikazan prag, na $y$ osi je prikazana $m_H$. $AMS_2$ je predstavljen ob plastnicah. Modra barva predstavlja plastnice z nižjo, rdeča pa plastnice z višjo vrednostjo $AMS_2$.
+Optimizacija po dveh parametrih (prag in $m_H$) je prikazan na sliki \ref{sl:simple_optimization_2d}. Po pregledu faznega prostora sem izluščil območje, kjer je $AMS_2$ najvišji. Določil sem $m_H = 127,25\,\text{GeV} \pm 32.25\,\text{GeV}$. Na levem grafu je celostni pregled zanimivega faznega prostora, na desnem pa povečan del z najvišjimi vrednostmi $AMS_2$. Na $x$ osi je prikazan prag, na $y$ osi je prikazana $m_H$. $AMS_2$ je predstavljen ob plastnicah. Modra barva predstavlja plastnice z nižjo, rdeča pa plastnice z višjo vrednostjo $AMS_2$.
 
 \begin{figure}[h]
 	\centering	
@@ -913,12 +1028,12 @@ Rezultati tako optimizirane metode so prikazani v tabeli \ref{tb:preprosto_okno_
 		pravilno negativni & 43,2\% \\
 		napačno pozitivni & 22,3\% \\
 		napačno negativni & 6,1\% \\
-		natančnost & 0.560 \\
-		priklic & 0.824 \\
-		točnost & 0.716 \\
-		ocena $F_1$ & 0.667 \\
-		ocena $AMS_2$ & 1.579 \\
-		ocena $AMS_{2(test)}$ & 1.587 		
+		natančnost & 0,560 \\
+		priklic & 0,824 \\
+		točnost & 0,716 \\
+		ocena $F_1$ & 0,667 \\
+		ocena $AMS_2$ & 1,579 \\
+		ocena $AMS_{2(test)}$ & 1,587 		
 	\end{tabular}
 	\caption{Rezultati metode preprostega okna na podlagi $m_H$ z optimiziranim pragom in $m_H$ za mero $AMS_2$.}
 	\label{tb:preprosto_okno_2d_optimized}
@@ -951,12 +1066,12 @@ Napovedno vrednost klasifikacijskega algoritma bomo torej znatno lahko izboljša
 		pravilno negativni & 56,4\% \\
 		napačno pozitivni & 9,1\% \\
 		napačno negativni & 16,1\% \\
-		natančnost & 0.668 \\
-		priklic & 0.535 \\
-		točnost & 0.749 \\
-		ocena $F_1$ & 0.594 \\
-		ocena $AMS_2$ & 2.015 \\
-		ocena $AMS_{2(test)}$ & 1.998 		
+		natančnost & 0,668 \\
+		priklic & 0,535 \\
+		točnost & 0,749 \\
+		ocena $F_1$ & 0,594 \\
+		ocena $AMS_2$ & 2,015 \\
+		ocena $AMS_{2(test)}$ & 1,998 		
 	\end{tabular}
 	\caption{Rezultati neoptimizirane logistične regresije.}
 	\label{tb:logisticna}
@@ -965,9 +1080,9 @@ Napovedno vrednost klasifikacijskega algoritma bomo torej znatno lahko izboljša
 
 \section{Pospešena odločitvena drevesa}
 
-Na projektu ATLAS so pred izvedbo HiggsML izziva uporabljali interno knjižnico z implementacijo pospešenega gradientnega spusta (TMVA\footnote{\url{https://root.cern.ch/tmva}}). Prav z izzivom pa je v ospredje prišla knjižnica XGBoost\footnote{\url{https://github.com/dmlc/xgboost/}}, ki je ob hitrem algoritmu dala tudi izjemno dobre rezultate.
+Na projektu ATLAS so pred izvedbo HiggsML izziva uporabljali interno knjižnico z implementacijo pospešenega gradientnega spusta (TMVA\footnote{\url{https://root.cern.ch/tmva}}). Prav z izzivom pa je v ospredje prišla knjižnica \texttt{XGBoost}\footnote{\url{https://github.com/dmlc/xgboost/}}, ki je ob hitrem algoritmu dala tudi izjemno dobre rezultate.
 
-V sklopu diplomskega dela sem preizkusil metodo GBC iz paketa \texttt{scikit\_learn} ter zmagovalno metodo XGBoost.
+V sklopu diplomskega dela sem preizkusil metodo GBC iz paketa \texttt{scikit\_learn} ter zmagovalno metodo XGBoost. Metoda XGBoost je bila pognana s parametri, kot jih predlagajo avtorji, sicer nagrajenci izziva \textit{HiggsML} (120 dreves, globine 6). Rezultati so prikazani v tabeli \ref{tb:gbt}.
 
 \begin{table}[h!]
 	\centering
@@ -984,22 +1099,24 @@ V sklopu diplomskega dela sem preizkusil metodo GBC iz paketa \texttt{scikit\_le
 		\rotatebox[origin=l]{90}{ocena $AMS_2$} \\
 		\hline	
 		
-		GBC (1) & 24,3\% & 58,8\% & 6,8\% & 10,2\% & 
+		*GBC (1) & 24,3\% & 58,8\% & 6,8\% & 10,2\% & 
 		0,782 & 0,704 & 0,831 & 0,741 & 
 		2,796 \\		
 		*GBC (8) & 24,2\% & 59,0\% & 6,5\% & 10,2\% &
 		0,787 & 0,703 & 0,832 & 0,742 &
 		2,856 \\
-		GBC (17) & 24,3\% & 58,8\% & 6,7\% & 10,1\% &
-		0.783 & 0.706 & 0.831 & 0.743 &
-		2.819 \\
+		*GBC (17) & 24,3\% & 58,8\% & 6,7\% & 10,1\% &
+		0,783 & 0,706 & 0,831 & 0,743 &
+		2,819 \\
 		*XGBoost (1) & 27,8\% & 51,6\% & 14,0\% & 6,7\% &
 			0,665 & 0,806 & 0,793 & 0,729 &
 			3,735 \\
 	\end{tabular}
-	\caption{Rezultati različnih implementacij gradientnega spusta.}
+	\caption{Rezultati različnih implementacij gradientnega spusta. * označuje metode, ki so bile naučene na celotnem delu učne množice podatkov.}
 	\label{tb:gbt}
 \end{table}
+
+V tabeli vidimo veliko razliko v oceni $AMS_2$ med rezultati metod GBC in XGBoost. XGBoost ima predvsem boljši priklic (na račun manjšega števila napačno negativnih primerov), ostale standardne mere za uspešnost klasifikacijskih modelov pa so večinoma slabše. Interpretacija je podana v zaključnem razdelku naslednjega poglavja.
 	
 % -----------------------------------------------------------------------------
 % POGLAVJE: Izboljševanje metod in razvoj lastne metode
@@ -1007,17 +1124,17 @@ V sklopu diplomskega dela sem preizkusil metodo GBC iz paketa \texttt{scikit\_le
 \chapter{Razvoj lastne metode}
 \label{ch:razvoj_lastne_metode}
 
-Metodi, ki sta se pri reševanju danega problema odrezali najbolje, sta bili metodo globokih nevronskih mrež in pa pospešena odločitvena drevesa. Kljub temu, da je bil najboljši rezultat $AMS$ dosežen s pomočjo globokih nevronskih mrež, je izbrana metoda pri ločevanju signala od ozadja na projektu ATLAS metoda, ki temelji na pospošenih odločitvenih drevesih. Značilnost obeh metod je, da v sistem vpeljeta nelinearnost. 
+Metodi, ki sta se pri reševanju danega problema odrezali najbolje, sta bili metodo globokih nevronskih mrež in pa pospešeni gradientni spust. Kljub temu, da je bil najboljši rezultat $AMS$ dosežen s pomočjo globokih nevronskih mrež, je predvsem zaradi potrebe po hitrem algoritmu izbrana metoda pri ločevanju signala od ozadja na projektu ATLAS metoda, ki temelji na pospešenem gradientnem spustu na ansamblu odločitvenih dreves. Značilnost obeh metod je, da v sistem spontano vpeljeta nelinearnost. 
 
 Nekaj poročil je bilo o uporabi metode podpornih vektorjev (SVM)\footnote{\url{https://www.kaggle.com/c/higgs-boson/forums/t/10165/}}, vendar so tekmovalci poročali o precej nižjem rezultati, kakor je bil npr. osnovni rezultat metode pospešenih odločitvenih dreves.
 
-Nelinearnost lahko v SVM modele pripeljemo s pomočjo jeder (\textit{kernel}) ali neposredno - s pomočjo generiranjem večjega nabora novih značilk, ki temeljijo na izvirnih značilkah. V grobem lahko zapišemo $x_j = f(x_{k_1}, x_{k_2}, ..., x_{k_l})$, pri čemerj je $l$ celo število in indeks izpeljane značilke $j > d$. Ponavadi velja $l \in \{1, 2, 3\}$. Funkcija $f$ je lahko poljubna. Pri vrednosti $l = 1$ lahko vpeljemo kvadrat, kub, logaritem, eksponent ali kakšno drugo podobno funkcijo. Pri večjem naboru se osredotočimo predvsem na produkte, vsote, diference, eksponente značilk v kombinaciji s prej omenjenimi funkcijami. 
+Nelinearnost lahko v SVM modele pripeljemo s pomočjo jeder (\textit{kernel}) ali neposredno - z generiranjem večjega nabora novih značilk, ki temeljijo na izvirnih značilkah. V grobem lahko zapišemo $x_j = f(x_{k_1}, x_{k_2}, ..., x_{k_l})$, pri čemerj je $l$ celo število in indeks izpeljane značilke $j > d$. Ponavadi velja $l \in \{1, 2, 3\}$. Funkcija $f$ je lahko poljubna. Pri vrednosti $l = 1$ lahko vpeljemo kvadrat, kub, logaritem, eksponent ali kakšno drugo podobno funkcijo. Pri večjem naboru se osredotočimo predvsem na produkte, vsote, diference, eksponente značilk v kombinaciji s prej omenjenimi funkcijami. 
 
-Pri generiranju novih značilk šteje iznajdljivost in inovativnost. Zanimiv pristop je npr. uporaba metode grozdenja (npr. KMeans) in uporaba zaporedne številke grozda kot nove značilke.
+Pri generiranju novih značilk štejeta iznajdljivost in inovativnost. Zanimiv pristop je npr. uporaba metode grozdenja ter uporaba zaporedne številke grozda kot nove značilke.
 
 Lepa lastnost metode SVM je, da se dobro obnese v primerih, ko imamo veliko število značilk. Še več, SVM zna najti \textit{iglo v kopici sena}. Zna torej v ogromnem naboru značilk poiskati tisto, ki najbolje odraža dinamiko modela. S pomočjo poskusov in napak je moč ob sistematičnem pregledu sicer neomejenega prostora izpeljanih značlik najti tiste, ki največ prispevajo k izboljšanju modela. Še ena lepa prednost metode SVM pred npr. nevronskimi mrežami je, da ne gre za \textit{črno škatlo}, pač pa je moč rezultate in končni SVM model interpretirati.
 
-Glede na to, da globoke nevronske mreže nimajo višje izrazne vrednosti kot SVM obogaten z gornjimi izpeljanimi značilkami, je cilj razvoja algoritma, da se približa rezultatom pospešnih odločitvenih dreves in da preseže rezultate, o katerih so poročali drugi tekmovalci ($AMS > 2.7$).
+Glede na to, da globoke nevronske mreže nimajo višje izrazne vrednosti kot SVM obogaten z gornjimi izpeljanimi značilkami, je cilj razvoja algoritma, da se približa rezultatom pospešnih odločitvenih dreves in da preseže rezultate, o katerih so poročali drugi tekmovalci ($AMS \approx \num{2,8}$).
 
 
 \section{Osnovna implementacija}
@@ -1043,7 +1160,7 @@ Ker gre za nepregledno množico značilk je praktično nemogoče v omejenem čas
 	\label{sl:svm_xy_weights}
 \end{figure}
 
-Primer relevantnosti posameznih značilk v modelu SVM je prikazan na sliki \ref{sl:svm_xy_weights}. Izbral sem nekaj najbolj relevantnih značilk, mejo pa postavil tam, kjer se je število značilk potem znatno zgostilo. V primeru s prejšnje slike sem mejo postavil pri uteži SVM 0.9 in tako izbral najpomebnejših 6 značilk.
+Primer relevantnosti posameznih značilk v modelu SVM je prikazan na sliki \ref{sl:svm_xy_weights}. Izbral sem nekaj najbolj relevantnih značilk, mejo pa postavil tam, kjer se je število značilk potem znatno zgostilo. V primeru s prejšnje slike sem mejo postavil pri uteži $\num{0,9}$ in tako izbral najpomebnejših 6 značilk.
 
 \begin{table}[h!]
 	\centering
@@ -1058,20 +1175,20 @@ Primer relevantnosti posameznih značilk v modelu SVM je prikazan na sliki \ref{
 		(6) & Filtrirane manjkajoče vrednosti, $x^2$, $x^3$, $e^x$ in vse $\sqrt{x}$. \\
 		(7) & Filtrirane manjkajoče vrednosti, $x^2$, $x^3$, $e^x$, $\sqrt{x}$ in vse $\log(x)$. \\
 		(8) & Izbor najboljših značilk po eni spremenljivki: manjkajoče, $x^2$, $e^x$, $\sqrt{x}$. \\
-		(9) & Nefitriran set vseh značilk po eni spremenljivki. \\
-		(10) & Nefiltriran set $x_ix_j$ (435 značilk). \\
+		(9) & Nefiltriran nabor vseh značilk po eni spremenljivki. \\
+		(10) & Nefiltriran nabor $x_ix_j$ (435 značilk). \\
 		(11) & Nabor značilk, kot jih predlaga en od zmagovalcev HiggsML Tim Salimans.\footnote{Tim Salimans, \url{https://github.com/TimSalimans/HiggsML/}} \\
-		(12) & Nefiltriran set $x_i^2 + y_i^2$. \\
-		(13) & Nefiltriran set $e^{x_i^2 + y_i^2}$. \\		
-		(14) & Nefiltriran set $\sqrt{x_i^2 + y_i^2}$. \\
-		(15) & Nefiltriran set $(1 + x_ix_j)^2$. \\
-		(16) & Filtriran set značilk po eni in dveh spremenljivkah. \\
-		(17) & (8) z dodanino značilko clustra iz algoritma KMeans. \\
+		(12) & Nefiltriran nabor $x_i^2 + y_i^2$. \\
+		(13) & Nefiltriran nabor $e^{x_i^2 + y_i^2}$. \\		
+		(14) & Nefiltriran nabor $\sqrt{x_i^2 + y_i^2}$. \\
+		(15) & Nefiltriran nabor $(1 + x_ix_j)^2$. \\
+		(16) & Filtriran nabor značilk po eni in dveh spremenljivkah. \\
+		(17) & (8) z dodano oznako grozda. \\
 	\end{tabular}
 	\caption{Nabor značilk pri metodi SVM.}	
 	\label{tb:feature_sets}
 \end{table}
-
+\newpage
 Izbrane transformiranke ene značilke:
 \begin{itemize}
 	\item \textbf{Manjkajoče vrednosti}: Manjkajoči DER\_mass\_MMC
@@ -1109,7 +1226,7 @@ Nabori značilk, ki sem jih uporabil pri razvoju lastne metode, so razvidni iz t
 
 Najboljše rezultate pri klasifikaciji z linearnim jedrom (glej tabelo \ref{tb:svm}) so prinesli nefiltrirani nabori značilk (435 in več značilk). Posledica velikega nabora značilk je bil časovno potraten algoritem. Zmagovalni nabor značilk (11) je bil pri metodi SVM opazno slabši. 
 
-Ideja z vključevanjem zaporedne številke grozdov iz algoritma KMeans ni prinesla posebnega uspeha. 
+Ideja z vključevanjem oznake grozda ni prinesla izboljšanja rezultata. 
 
 \begin{table}[h!]
 	\centering
@@ -1170,14 +1287,14 @@ Ideja z vključevanjem zaporedne številke grozdov iz algoritma KMeans ni prines
 		2,553 \\	
 				
 	\end{tabular}
-	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev.}
+	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev z linearnim jedrom.}
 	\label{tb:svm}
 \end{table}
 
 
 \section{Jedra}
 
-Preskusil sem naslednja standardna jedra SVM: (1) linearnega, (2) polinomskega in (3) RBF (Gaussovskega). Rezultati so zabeleženi v tabeli \ref{tb:svm_kernel},
+Preskusil sem naslednja standardna jedra SVM: (1) linearnega, (2) polinomskega in (3) RBF (gaussovskega). Rezultati so zabeleženi v tabeli \ref{tb:svm_kernel}. Jedra pri metodi podpornih vektorjev lahko razumemo tudi v luči razširitve nabora značilk z značilkami dveh parametrov. Zato ni presenetljiva razlika, ki jo opazimo glede na linearni SVM, in sicer, da uporaba dodatnega nabora značilk (dveh parametrov) bistveno ne vpliva na uspešnost algoritma. 
 
 \begin{table}[h!]
 	\centering
@@ -1253,9 +1370,11 @@ Preskusil sem naslednja standardna jedra SVM: (1) linearnega, (2) polinomskega i
 		
 		
 	\end{tabular}
-	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev. * označuje metodo, ki je bila naučena s celotno učno podatkovno množico.}
+	\caption{Rezultati metod, razvitih na podlagi metode podpornih vektorjev z uporabo različnih jeder. * označuje metodo, ki je bila naučena s celotno učno podatkovno množico.}
 	\label{tb:svm_kernel}
 \end{table}
+
+Nabor značilk s transformirankami dveh parametrov je prinesel slabši rezultat kot nabor s transformirankami po enem samem parametru.
 
 \section{Ansambli}
 
@@ -1304,18 +1423,18 @@ Pri poskusu implementacije ansambla metod na podlagi več SVM klasifikatorjev, s
 			0,773 & 0,698 & 0,825 & 0,734 &
 			2,769 \\
 	\end{tabular}
-	\caption{Rezultati metode RBF(8) naučene na različnih delih učne podatkovne množice.}
+	\caption{Rezultati metode SVM-RBF z naborom podatkov (8) naučene na različnih delih učne podatkovne množice.}
 	\label{tb:svm-ensemble-part}
 \end{table}
 
-Uporabil sem ansambelski metodi zlaganja in kaskade. Pri zlaganju sem vsak vzorec iz testne podatkovne množice ovrednotil z vsakim od 9 šibkih algoritmov, končni rezultat pa podal na podlagi glasovanja. Rezultati so prikazani v tabeli \ref{tb:svm-ensemble}. Rezultat metode je v konkretnem malenkost boljši od posameznih šibkih metod, hkrati pa opazno slabši od SVM metode, pognane na celotni razpoložljivi učni množici podatkov. Zlaganje torej ni prineslo izboljšanja.
+Uporabil sem ansambelski metodi zlaganja in nalaganja. Pri zlaganju sem vsak vzorec iz testne podatkovne množice ovrednotil z vsakim od 9 šibkih algoritmov, končni rezultat pa podal na podlagi glasovanja. Rezultati so prikazani v tabeli \ref{tb:svm-ensemble}. Rezultat metode je nekoliko boljši od posameznih šibkih metod, hkrati pa opazno slabši od SVM metode, pognane na celotni razpoložljivi učni množici podatkov. Zlaganje torej ni prineslo izboljšanja.
 
-Pri kaskadi sem uporabil 8 šibkih algoritmov, kjer sem algoritem SVM pognal na podlagi njihovih rezultatov (kot značilkami) pri drugostopenjski SVM klasifikaciji na 9. delu učne podatkovne množice. Rezultati te metode so bili še slabši od zlaganja.
+Pri nalaganju sem uporabil 8 šibkih algoritmov. Na podlagi njihovih rezultatov (kot novih značilk), sem 9. del učne podatkovne množice uporabil za učenje drugostopenjske SVM klasifikacije. Rezultati te metode so bili še slabši od zlaganja.
 
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{r|cccc|cccc|c}		
-		\textbf{Jedro \hfill \break (značilke)} & 
+		\textbf{Metoda} & 
 		\rotatebox[origin=l]{90}{pravilno pozitivni} & 
 		\rotatebox[origin=l]{90}{pravilno negativni} & 
 		\rotatebox[origin=l]{90}{napačno pozitivni} & 
@@ -1330,7 +1449,7 @@ Pri kaskadi sem uporabil 8 šibkih algoritmov, kjer sem algoritem SVM pognal na 
 	zlaganje (glasovanje) & 24,4\% & 58,7\% & 6,9\% & 10,0\% &
 		0,780 & 0,708 & 0,831 & 0,743 &
 		2,854 \\
-	kaskada (SVM) & 24,4\% & 58,5\% & 7,0\% & 10,0\% &
+	nalaganje (SVM) & 24,4\% & 58,5\% & 7,0\% & 10,0\% &
 		0,776 & 0,710 & 0,830 & 0,741 &
 		2,842 \\
 	
@@ -1343,11 +1462,61 @@ Pri kaskadi sem uporabil 8 šibkih algoritmov, kjer sem algoritem SVM pognal na 
 
 Linerani učni algoritem SVM je pri 476 značilkah na učni množici 25.000 primerkov potreboval približno 1 uro. Ker je zahtevnost algoritma ${\cal O}^3(n)$, kjer je $n$ število primerkov, eksperimentov nisem izvajal na polni učni množic (225.000 primerkov). Na polni učni množici sem pognal samo najbolj obetavne izmed kombinacij jeder in naborov značilk.
 
-Vsi rezultati so prikazani v tabeli \ref{tb:svm}. Osnovni nabor značilk je v kombinaciji z linearnim jedrom dal podoben rezultat kakor logistična regresija. Z dodajanjem izpeljanih značilk se rezultat algoritma hitro zelo izboljša. Pri dodajanju izpeljank iz parov značilk opazimo, da rezultat s filtriranim izborom značilk (16), ni boljši kot rezultat s filtriranim naborov transformiranih značilk po eni sami komponenti. To lahko pomeni, da smo izpeljane značilke glede na njihovo utež prehitro rezali.
+Vsi rezultati so prikazani v tabeli \ref{tb:svm}. Osnovni nabor značilk je v kombinaciji z linearnim jedrom dal podoben rezultat kakor logistična regresija. Z dodajanjem izpeljanih značilk se rezultat algoritma hitro zelo izboljša. Pri dodajanju izpeljank iz parov značilk opazimo, da rezultat s filtriranim izborom značilk (16), ni dosti boljši kot rezultat s filtriranim naborov transformiranih značilk po eni sami komponenti. To lahko pomeni, da sem izpeljane značilke glede na njihovo utež prehitro rezali.
 
-Za najbolj obetavno kombinacijo jedra in značilk sem algoritem pognal na celotni učni množici podatkov. Če primerjamo RBF (16) in *RBF (16) iz tabele \ref{tb:svm} vidimo, da da metoda, označena z *, ki je bila pognana na celotni razpoložljivi učni množici, $AMS_2$, ki je za slabi 2 desetinki boljši.
+Pri uporabi jeder se je efekt mešanih značilk izničil, rezultati pa so bili v splošnem boljši. Prikazani so v tabeli \ref{tb:svm_kernel}. Za najbolj obetavno kombinacijo jedra in značilk sem algoritem pognal na celotni učni množici podatkov. Če primerjamo RBF (16) in *RBF (16) iz tabele \ref{tb:svm} vidimo, da da metoda, označena z *, ki je bila pognana na celotni razpoložljivi učni množici, $AMS_2$, ki je za slabi 2 desetinki boljši.
 
+V naslednjem koraku sem poskusil izboljšati najboljšo kombinacijo jedra in značilk pri metodi podpornih vektorjev s pomočjo ansambelskih pristopov. Rezultati so bili slabši, kakor v primeru, ko sem en sam klasifikacijskih algoritem učil na celotni zbirki podatkov.
 
+Izbrani - najboljši algoritem, ki temelji na metodi podpornih vektorjev, uporablja gaussovsko jedro in izbor značilk (8) - izbor najboljših značilk po eni spremenljivki: manjkajoče, $x^2$, $e^x$, $\sqrt{x}$.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{r|cccc|cccc|c}		
+		\textbf{Metoda \hfill \break (značilke)} & 
+		\rotatebox[origin=l]{90}{pravilno pozitivni} & 
+		\rotatebox[origin=l]{90}{pravilno negativni} & 
+		\rotatebox[origin=l]{90}{napačno pozitivni} & 
+		\rotatebox[origin=l]{90}{napačno negativni} &
+		\rotatebox[origin=l]{90}{natančnost} & 
+		\rotatebox[origin=l]{90}{priklic} & 
+		\rotatebox[origin=l]{90}{točnost} & 
+		\rotatebox[origin=l]{90}{ocena $F_1$} & 
+		\rotatebox[origin=l]{90}{ocena $AMS_2$} \\
+		\hline	
+		preprosto okno & 28,4\% & 43,2\% & 22,3\% & 6,1\% &
+			0,560 & 0,824 & 0,716 & 0,667 &
+			1,579 \\
+		logistična regresija (1) & 18,4\% & 56,4\% & 9,1\% & 16,1\% &
+			0.668 & 0.535 & 0.749 & 0.594
+			& 2.015 \\
+		SVM-LIN (16) & 23,6\% & 57,3\% & 8,3\% & 10.9\% &
+		0,740 & 0,684 & 0,809 & 0,711 &
+		2,553 \\
+		zlaganje SVM-RBF (8) & 24,4\% & 58,7\% & 6,9\% & 10,0\% &
+		0,780 & 0,708 & 0,831 & 0,743 &
+		2,854 \\		
+		GBC (8) & 24,2\% & 59,0\% & 6,5\% & 10,2\% &
+		0,787 & 0,703 & 0,832 & 0,742 &
+		2,856 \\
+		SVM-RBF (8) & 24,7\% & 59,0\% & 6,5\% & 9,7\% &
+		0,791 & 0,718 & 0,837 & 0,752 &
+		2,940 \\
+		XGBoost (1) & 27,8\% & 51,6\% & 14,0\% & 6,7\% &
+		0,665 & 0,806 & 0,793 & 0,729 &
+		3,735 \\
+	\end{tabular}
+	\caption{Primerjava izbranih metod z lastno metodo.}
+	\label{tb:bestof}
+\end{table}
+
+Primerjava rešitve na podlagi metode podpornih vektorjev z ostalimi metodami je predstavljena v tabeli \ref{tb:bestof}.
+
+S pomočjo razširitve in izbora značilk ter izbire ustreznega jedra je v diplomskem delu razvita metoda krepko presegla osnovne metode, hkrati pa uspela doseči celo boljši rezultat od neoptimizirane metode pospešenega gradientnega spusta na odločitvenih drevesih (GBC iz paketa \texttt{scikit-learn}). Metoda je tudi presegla rezultate, o katerih so pri uporabi metode podpornih vektorjev poročali drugi tekmovalci v izzivu HiggsML (ocena $AMS_2 < 2,8$)\footnote{\url{https://www.kaggle.com/c/higgs-boson/forums/t/10165/}}.
+
+Razlika do rezultatov optimizirane nagrajene metode XGBoost je kljub vsemu precej velika. Podrobnejši pogled v tabelo \ref{tb:bestof} nam razkriva razliko pri deležu napačno pozitivno in napačno negativno klasificiranih primerih. Pri XGBoost metodi gre razlika v prid manjšega števila napačno negativnih in večjega števila napačno pozitivnih primerov. Razen priklica (in seveda $AMS_2$) ima v diplomskem delu razvita metoda ostale standardne metrike krepko boljše. Hiter pregled pove, da je SVM metoda napačno klasificirala $16,2\%$ primerov, XGBoost pa kar $20,7\%$. 
+
+Razlika namiguje na dejstvo, da smo SVM algoritem optimizirali s pomočjo metrike, ki se precej razlikuje od $AMS_2$. Razpravo na to temo zasledimo pri avtorjih paketa \texttt{XGBoost} v \cite{chen2014} in je lahko dobra motivacija za bodoče delo pri izboljšavi klasifikacijske metode.
 
 % -----------------------------------------------------------------------------
 % POGLAVJE: Zaključek
@@ -1355,17 +1524,15 @@ Za najbolj obetavno kombinacijo jedra in značilk sem algoritem pognal na celotn
 \chapter*{Zaključek}
 \addcontentsline{toc}{chapter}{Zaključek}
 
-Pričakovanja glede na favorizirano metodo.
+Strojno učenje je področje, ki je (pre)dolgo časa iskalo svojo pot v fiziko. Z razvojem senzorjev, ki merijo dogajanje v kompleksnih sistemih in proizvajajo izjemno velike količine podatkov, pa so prednosti metod pred analitično in interpretacijsko elegantnejšimi postale precej bolj izrazite. 
 
-Lekcije: do kod pride linearnost, kaj pomeni nelinearnost
+Na primeru analize podatkov iz detektorja ATLAS delo povzema pregled nekaterih osnovnih metod nadzorovanega strojnega učenja in poskuša pokazati, kakšen je pristop \textit{podatkovnega inženirja} k reševanju kompleksnih problemov. Vse opisane metode, vključno z metodo pospešenega gradientnega spusta na podlagi ansamblov odločitvenih dreves (konkretno implementacijo \texttt{XGBoost}, ki jo trenutno uporabljajo pri eksperimentu ATLAS), so bile tudi preizkušene pri ločevanju signala in ozadja pri razpadu $H \rightarrow \tau^+\tau^-$.
 
-Težave: počasen SVM, težava pri izbiri značilk pri mešanju
+V diplomskem delu sem razvil lasten pristop, ki temelji na metodi podpornih vektorjev (SVM). Ob tem je bilo največ dela namenjenega generiranju novih in izboru najustreznejših značilk. Z metodo sem presegel rezultate, o katerih so poročali drugi, hkrati pa dosegel boljše rezultate, kot jih daje neoptimizirana osnovna implementacija pospešenega gradientnega spusta na podlagi ansamblov odločitvenih dreves.
 
-Ideje: kako daleč pridemo samo s primarnimi značilkami, če bi kombiniral SVM z gradientnim spustom
+Glavna razlika med obema pristopoma je v obravnavi nelinearnosti pri določanju zanimivih delov faznega prostora. Pri metodi podpornih vektorjev je potrebno nelinearnost v sistem vpeljati \textit{ročno}, in sicer z dodajanjem izpeljank osnovnih značilk ali z uvajanjem različnih jeder.
 
-Uvrstitev na končni lestvici z lastnim algoritmom
-
-\cite{Baldi2014}
+Končna primerjava rezultatov sicer kaže na veliko premoč metode XGBoost nad metodo podpornih vektorjev. Primerjava ostalih standardnih mer za uspešnost klasifikacijskih algoritmov pa gre krepko v prid metodi SVM. Potencial za izboljšavo in doseganje primerljivih rezultatov na podlagi metode SVM je zato velik. V prvi fazi bi se kazalo posvetiti dodatnemu uglaševanju parametrov, nato pa težavnejši rešitvi implementacije ustrezne optimizacijske funkcije v algoritmu.
 
 % -----------------------------------------------------------------------------
 % ZAKLJUČNE STRANI
