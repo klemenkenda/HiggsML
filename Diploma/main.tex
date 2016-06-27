@@ -584,7 +584,9 @@ Z minimizacijo \ref{eq:svm_dual_lagrange} dobimo vrednosti koeficientov $\alpha_
 \end{eqnarray}
 
 \subsubsection{Mehki razmik}
-Kljub transformaciji značilk v visoko-dimenzionalni prostor je včasih nemogoče najti hiperravnino, ki bi lahko ločila med seboj primere različnih razredov iz učne množice podatkov. V takem primeru, je mogoče uporabiti metodo mehkega razmika, ki bo ob upoštevanju morebitne napake v klasifikaciji znala poiskati tako hiperravnino. Problem lahko preprišemo v minimizacijo izraza $||w||^2 + C\sum^n_{i=1}\xi_i$, pri čemer velja robni pogoj $y^{(i)}(w^Tx^{(i)} + b) > 1 - \xi_i$, za $i = 1, 2, ..., n$, kjer je $\xi$ označuje mero za napačno klasifikacijo, $C$ pa je parameter, ki nadzira vpliv $\xi$. Izbira regularizacijskega parametra $C$ ima velik vpliv na končni rezultat.
+Kljub transformaciji značilk v visoko-dimenzionalni prostor je včasih nemogoče najti hiperravnino, ki bi lahko ločila med seboj primere različnih razredov iz učne množice podatkov. V takem primeru, je mogoče uporabiti metodo mehkega razmika, ki bo ob upoštevanju morebitne napake v klasifikaciji znala poiskati tako hiperravnino. 
+
+Problem lahko preprišemo v minimizacijo izraza $||w||^2 + C\sum^n_{i=1}\xi_i$, pri čemer velja robni pogoj $y^{(i)}(w^Tx^{(i)} + b) > 1 - \xi_i$, za $i = 1, 2, ..., n$, kjer je $\xi$ označuje mero za napačno klasifikacijo, $C$ pa je parameter, ki nadzira vpliv $\xi$. Izbira regularizacijskega parametra $C$ ima velik vpliv na končni rezultat.
 
 \subsubsection{Jedra in projekcija v prostor z več dimenzijami}
 Separabilnosti primerov v učni množici včasih ni mogoče doseči v prostoru značilk. Metoda omogoča projekcijo iz nizko-dimenzionalnega prostora značilk v visoko-dimenzionalni prostor s pomočjo uporabe t. i. jeder. Uporaba jeder temelji na uporabi skalarnega produkta $\left<x^{(i)}, x^{(j)}\right>$ v formulaciji dualnega problema iz enačbe \ref{eq:svm_dual_lagrange}. 
@@ -720,7 +722,7 @@ kjer pa še ne poznamo optimalnega parametra $\gamma_m$, ki ga izračunamo s pom
 \begin{eqnarray}
 	\gamma_m = \underset{\gamma}{\mathrm{arg\,min}} \sum_{i=1}^n L(y^{(i)}, g_{m-1}(x^{(i)}) + \gamma h_m(x^{(i)}).
 \end{eqnarray}
-Rezultat algoritma je funkcija $g_m(x)$.
+Rezultat algoritma je klasifikacijska funkcija $g_M(x)$.
 
 Avtorji nagrajene metode \texttt{XGBoost} \cite{chen2014, chenG16} predlagajo za ciljno optimizacijsko funkcijo 
 \begin{eqnarray}
@@ -753,11 +755,11 @@ Uspešnost metod strojnega učenja ocenimo na podlagi različnih metrik. Poleg m
 	\end{equation}
 	\item \textbf{priklic (\textit{recall} ali \textit{true positive rate}, TPR)} (ali občutljivost), definiran kot
 	\begin{equation}	
-	TNR = \frac{TP}{TP + FN}
+	TPR = \frac{TP}{TP + FN}
 	\end{equation}
 	\item \textbf{ocena $F_1$} povezuje natančnost in priklic v geometrijskem povprečju. 
 	\begin{equation}
-	F_1 = 2 \cdot \frac{PPV \cdot TPR}{PPV + TTR} = \frac{2TP}{2TP + FP + FN}
+	F_1 = 2 \cdot \frac{PPV \cdot TPR}{PPV + TPR} = \frac{2TP}{2TP + FP + FN}
 	\end{equation}
 	\item \textbf{točnost (\textit{accuracy}, ACC)}
 	\begin{equation}
@@ -781,7 +783,7 @@ V simuliranih podatkih so predstavljeni samo trije procesi ozadja. Prvi prihaja 
 
 V učni podatkovni množici je na voljo 250.000 dogodkov, od teh jih 85.667 predstavlja signal, 164.333 pa ozadje. Vsak dogodek je predstavljen z $d = 30$ značilkami, ki so dodatno opisane v \ref{sec:opis-znacilk}, in 3 metapodatki: oznako razreda (s - signal ali b - ozadje), utežjo $w^{(i)}$ in zaporedno številko dogodka. Raziskovalna analiza podatkov je predstavljena v \ref{sec:raziskovalna-analiza}.
 
-Potrjevalna podatkovna množica vsebuje 1.000.000 dogodkov, ki pa niso opremljeni z oznako razreda ali utežjo $w^{(i)}$. 
+Testna podatkovna množica vsebuje 1.000.000 dogodkov, ki pa niso opremljeni z oznako razreda ali utežjo $w^{(i)}$. 
 
 \subsection{Opis značilk}
 \label{sec:opis-znacilk}
@@ -953,18 +955,18 @@ Metoda preprostega okna temelji na izbiri preprostega okna s pomočjo ene same s
 		pravilno negativni & 50,8\% \\
 		napačno pozitivni & 14,8\% \\
 		napačno negativni & 11,2\% \\
-		natančnost & 0.611 \\
-		priklic & 0.673 \\
-		točnost & 0.740 \\
-		ocena $F_1$ & 0.641 \\
-		ocena $AMS_2$ & 1.514 \\
-		ocena $AMS_{2(test)}$ & 1.535 		
+		natančnost & 0,611 \\
+		priklic & 0,673 \\
+		točnost & 0,740 \\
+		ocena $F_1$ & 0,641 \\
+		ocena $AMS_2$ & 1,514 \\
+		ocena $AMS_{2(test)}$ & 1,535 		
 	\end{tabular}
 	\caption{Rezultati predlagane metode preprostega okna na podlagi $m_H$.}
 	\label{tb:preprosto_okno}
 \end{table}
 
-Preprosta metoda doseže na testni množici podatkov oceno $AMS_{2(test)} = 1.535$, to oceno je moč razbrati tudi iz zadnje vrstice tabele \ref{tb:preprosto_okno}. Naključna rešitev, ki služi kot osnovna metoda, da rezultat $AMS_{2{(test)}} = 0.586$.
+Preprosta metoda doseže na testni množici podatkov oceno $AMS_{2(test)} = \num{1,535}$, to oceno je moč razbrati tudi iz zadnje vrstice tabele \ref{tb:preprosto_okno}. Naključna rešitev, ki služi kot osnovna metoda, da rezultat $AMS_{2{(test)}} = \num{0,586}$.
 
 Pristop sicer kliče po optimizaciji in izboljšanju metode. V prvem koraku lahko na podlagi mere ($AMS_2$) izboljšamo vrednost praga. Glede na porazdelitev značilke DER\_mass\_MMC glede na oba razreda pa lahko sklepamo, da bi lahko optimizirali tudi sredino okna. Optimizacija po pragu je prikazana na sliki \ref{sl:simple_optimization_threshold}.
 
@@ -1000,7 +1002,7 @@ Izbira praga pri ($\pm 22\,\text{GeV}$) ni bila optimalna. Metoda prag postavlja
 	\label{tb:preprosto_okno_optimized}
 \end{table}
 
-Optimizacija po dveh parametrih (prag in $m_H$) je prikazan na sliki \ref{sl:simple_optimization_2d}. Po pregledu faznega prostora sem izluščil območje, kjer je $AMS_2$ najvišji. Določil sem $m_H = 127,25\,\text{GeV} \pm 32.25\,\text{GeV}$. Na levem grafu je celostni pregled zanimivega faznega prostora, na desnem pa povečan del z najvišjimi vrednostmi $AMS_2$. Na $x$ osi je prikazan prag, na $y$ osi je prikazana $m_H$. $AMS_2$ je predstavljen ob plastnicah. Modra barva predstavlja plastnice z nižjo, rdeča pa plastnice z višjo vrednostjo $AMS_2$.
+Optimizacija po dveh parametrih (prag in $m_H$) je prikazan na sliki \ref{sl:simple_optimization_2d}. Po pregledu faznega prostora sem izluščil območje, kjer je $AMS_2$ najvišji. Določil sem $m_H = \num{127,25}\,\text{GeV} \pm \num{32,25}\,\text{GeV}$. Na levem grafu je celostni pregled zanimivega faznega prostora, na desnem pa povečan del z najvišjimi vrednostmi $AMS_2$. Na $x$ osi je prikazan prag, na $y$ osi je prikazana $m_H$. $AMS_2$ je predstavljen ob plastnicah. Modra barva predstavlja plastnice z nižjo, rdeča pa plastnice z višjo vrednostjo $AMS_2$.
 
 \begin{figure}[h]
 	\centering	
