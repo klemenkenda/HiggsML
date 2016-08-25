@@ -34,7 +34,8 @@
 % -----------------------------------------------------------------------------
 \input{intropages}
 
-
+\setlength{\parindent}{0.7cm}
+\setlength{\parskip}{0.1cm}
 
 
 % -----------------------------------------------------------------------------
@@ -53,14 +54,33 @@ Uspešnost razvitega algoritma presega nekatere osnovne implementacije metode po
 
 \vspace{1.3cm}
 
+\noindent {\large \bf Ključne besede:}
 
-
-{\large \bf Ključne besede:}
-
-\vspace{0.5cm}
+\vspace{0.1cm}
 \noindent strojno učenje, nadzorovano učenje, klasfikacijske metode, logistična regresija, pospešeni gradientni spust, odločitvena drevesa, metoda podpornih vektorjev, SVM, Higgsov bozon
 
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\vspace{1.3cm}
+\noindent Diplomma is focused on the problem of separating signal from the background of decay $H \rightarrow \tau^+\tau^-$ in the ATLAS experiment. Solution of the problem is based algorithms that belong to the field of \textit{machine learning} in  computer science. Algorithms are successful and efficient at searching the phase space of ATLAS measurements that correspond to the signal.
 
+Due to similarities with other decays, the signal from decay $H \rightarrow \tau^+\tau^-$ is particularly difficult to classify. Diplomma work is based on the data and some of the achievements from the public \textit{HiggsML} challenge, which was organised by the ATLAS staff in order to find better algorithms to classify decays $H \rightarrow \tau^+\tau^-$.
+
+A short description of the problem is provided in the diplomma. Selected relevant machine learning methods that have been suggested by the challenge organisers, were described and tested on the data from the ATLAS detector simulator. I have also developed my own algorithm for solving the problem of separating signal from the background, that is based on the support vector machine method.
+
+Accuracy of the developed algorithm exceeds some of the basic implementation of the gradient boosted trees, which are currenty used at the event classification in the ATLAS detector. However, in the selected metric it performs much worse than the winning methods.
+\vspace{1.3cm}
+
+\noindent {\large \bf Keywords:}
+\vspace{0.1cm}
+
+\noindent machine learning, supervised learning, classification methods, logistic regression, gradient boosting, decision trees, support vector machines, SVM, Higgs boson
+\vspace{1.3cm}
+
+\noindent {\large \bf PACS:}
+\vspace{0.1cm} 
+
+\noindent 89.20.Ff, 14.80.Bn
 
 
 
@@ -72,22 +92,18 @@ Uspešnost razvitega algoritma presega nekatere osnovne implementacije metode po
 \chapter*{Uvod}
 \addcontentsline{toc}{chapter}{Uvod}
 
-Eksperimenta ATLAS in CMS sta leta 2012 objavila odkritje Higgsovega bozona \cite{Aad20121,Chatrchyan201230}. Odkritju je leta 2013 sledila Nobelova nagrada za fiziko, ki sta jo prejela François Englert in Peter Higgs. Obstoj delca, katerega vloga je, da daje maso ostalim elementarnim delcem, je bil predviden pred skoraj petdesetimi leti. Eksperimenti so potekali (in še vedno potekajo) na Velikem hadronskem trkalniku (\textit{Large Hadron Collider}, LHC) v CERN-u (Evropski organizaciji za jedrske raziskave) v Ženevi \cite{ChallengeDoc}.
+Eksperimenta ATLAS in CMS sta leta 2012 objavila odkritje Higgsovega bozona \cite{Aad20121,Chatrchyan201230}. Eksperimenti so potekali (in še vedno potekajo) na Velikem hadronskem trkalniku (\textit{Large Hadron Collider}, LHC) v CERN-u (Evropski organizaciji za jedrske raziskave) v Ženevi \cite{ChallengeDoc}. Odkritju je leta 2013 sledila Nobelova nagrada za fiziko, ki sta jo prejela François Englert in Peter Higgs. Obstoj delca, katerega vloga je, da daje maso ostalim elementarnim delcem, je bil predviden pred skoraj petdesetimi leti. 
 
-Higgsov bozon lahko razpade s pomočjo različnih procesov, ki jim v fiziki osnovnih delcev pravimo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v treh različnih razpadnih kanalih, v katerih vedno nastanejo pari bozonov. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare, predvsem v $\tau$ leptone in $b$ kvarke. Prvi dokazi o $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013}, končni rezultati pa v \cite{atlas2015htautau}.
+Higgsov bozon razpade na različne načine, ki jih v fiziki osnovnih delcev imenujemo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v razpadnih kanalih $H \rightarrow \gamma\gamma$, $H \rightarrow Z^0Z^0$ in $H \rightarrow W^+W^-$. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare, predvsem v leptone $\tau$ in kvarke $b$. Prvi dokazi o razpadih $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013,atlas2015htautau}.
 
 Pri analizi eksperimentalnih podatkov je potrebno določiti relevantno območje faznega prostora izmerjenih značilk, v katerem je velika verjetnost, da smo naleteli na dogodke, ki nas zanimajo (v našem primeru na razpad $H \rightarrow \tau^+\tau^-$). V preteklosti so ta področja določali eksperti \textit{ročno} \cite{Adam-Bourdarios14}. Napredne klasifikacijske metode, ki temeljijo na strojnem učenju, pa se danes rutinirano uporabljajo za reševanje tega in podobnih problemov \cite{atlas2013}.
 
-Področje dela tesno povezuje fiziko z računalništvom, natančneje - s strojnim učenjem. 
-
-Namen diplomskega dela je predvsem seznaniti se z uporabo metod strojnega učenja pri ločevanju signala in ozadja pri razpadu $H \rightarrow \tau^+\tau^-$, preveriti in ovrednotiti različne klasifikacijske metode na podatkih simulatorja ATLAS in preveriti proces optimizacije teh metod, ki izhaja iz podatkov (in ne nujno domenskega znanja). Sekundarni cilj je razvoj lastne klasifikacijske metode, ki bo temeljila na metodi podpornih vektorjev (SVM).
-
-Še enkrat velja izpostaviti, da se diplomsko delo nanaša predvsem na uporabo metod strojnega učenja pri analizi zahtevnih in analitično neobvladljivih problemov, in ne na fiziko osnovnih delcev in razlago standardnega modela (SM).
+Področje dela tesno povezuje fiziko z računalništvom, natančneje s strojnim učenjem. Namen diplomskega dela je predvsem seznaniti se z uporabo metod strojnega učenja pri ločevanju signala in ozadja pri razpadu $H \rightarrow \tau^+\tau^-$, preveriti in ovrednotiti različne klasifikacijske metode na podatkih simulatorja ATLAS in preveriti proces optimizacije teh metod, ki izhaja iz podatkov (in ne nujno domenskega znanja fizike osnovnih delcev). Sekundarni cilj je razvoj lastne klasifikacijske metode, ki bo temeljila na metodi podpornih vektorjev (SVM).
 
 \section*{Izziv HiggsML}
-Z namenom, da bi izboljšali uporabljene klasifikacijske metode za reševanje prej omenjenega problema ločevanja signala od ozadja, so sodelavci kolaboracije ATLAS pripravili mednarodno tekmovanje \textit{Higgs Boson Machine Learning Challenge} (ali krajše \textit{Izziv HiggsML}) \cite{HiggsMLChallenge}, s katerim so k sodelovanju privabili zajetno množico strokovnjakov s področja strojnega učenja. Na izzivu je sodelovalo 1942 oseb, ki so skupaj pripravile 35772 rešitev. Rezultati neoptimizirane metode iz knjižnice TMVA (ki so jo je razvili in prvotno uporabljali v CERN-u) so bili premagani že prvi dan izziva, kar 781 rešitev pa je bilo boljših tudi od najbolje optimizirane TMVA metode \cite{Adam-Bourdarios14}.
+Z namenom, da bi izboljšali uporabljene klasifikacijske metode za reševanje prej omenjenega problema ločevanja signala od ozadja, so sodelavci kolaboracije ATLAS pripravili mednarodno tekmovanje \textit{Higgs Boson Machine Learning Challenge} (ali krajše \textit{Izziv HiggsML}) \cite{HiggsMLChallenge}, s katerim so k sodelovanju privabili zajetno množico strokovnjakov s področja strojnega učenja. Na izzivu je sodelovalo 1942 oseb, ki so skupaj pripravile 35772 rešitev. Rezultate neoptimizirane metode iz knjižnice TMVA, ki so jo je razvili in prvotno uporabljali v CERN-u, so izzivalci premagali že prvi dan izziva, kar 781 rešitev pa je bilo boljših tudi od najbolje optimizirane metode TMVA \cite{Adam-Bourdarios14}.
 
-Pri pripravi diplomskega dela sem si pomagal s podatki, ki so bili pripravljeni (in prvič javno objavljeni) posebej za omenjeni izziv, hkrati pa sem za primerjavo lastne metode in namige za izboljšavo uporabil javno dostopne rešitve, forume in druge vire v okivru izziva.
+Pri pripravi diplomskega dela sem si pomagal s podatki, ki so bili pripravljeni posebej za omenjeni izziv, hkrati pa sem za primerjavo lastne metode in namige za izboljšavo uporabil javno dostopne rešitve, forume in druge vire v okivru izziva.
 
 Izziv je bil namenjen širokemu naboru predvsem strokovnjakov s področja strojnega učenja, zato so sodelavci ATLAS-a surove podatke meritev že obogatili z večino relevantnimi izpeljankami, ki izhajajo iz domenskega znanja fizike visokih energij. Ob tem se je izkazalo, da nadaljnje poglabljanje v izpeljavo fizikalno relevantnih značilk načeloma ni prineslo znatnega izboljšanja končnih rezultatov\footnote{\url{https://www.kaggle.com/c/higgs-boson/forums/t/10350/how-physicists-fared}}.
 
@@ -104,21 +120,48 @@ Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru m
 % -----------------------------------------------------------------------------
 \chapter{Fizikalne osnove}
 \label{ch:basics}
-Prvo poglavje diplomskega dela se nanaša na kratek opis fizikalnih osnov, povzetih po \cite{AadScience2012} in \cite{ChallengeDoc}, ki vsebino diplomskega dela  postavljajo v fizikalni kontekst. 
+Standardni model (SM) osnovnih delcev opisuje osnovne gradnike snovi in interakcije med njimi. V SM interakcije potekajo z izmenjavo bozonov s spinom 1. Bozoni se izmenjujejo med elektromagnetnimi, šibkimi in močnimi naboji. Delci polja, ki posredujejo elektromagnetno in močno interakcijo (foton in gluoni), so bozoni brez mase. Nosilci šibke interakcije, bozoni $W^+$, $W^-$ in $Z^0$, pa imajo maso približno 100-krat večjo od protona. Nosilci naboja so elementarni fermioni s spinom $\frac{1}{2}$: šest kvarkov in šest leptonov (ter pripadajočih antidelcev). Shematski prikaz SM je na sliki \ref{sl:sm}.
 
-Standardni model (SM) osnovnih delcev določa osnovne delce in interakcije med njimi. V SM interakcije potekajo preko delcev s spinom, imenovanih bozoni. Bozoni se izmenjujejo med elektromagnetnimi, šibkimi in močnimi naboji. Nosilci naboja so elementarni delci, ki jih imenujemo fermioni: šest kvarkov in šest leptonov (ter pripadajočih antidelcev). Delci polja, ki ustvarjajo elektromagnetno in močno interakcijo (foton in gluoni), so bozoni brez mase. Nosilci šibke interakcije, $W$ in $Z$ bozoni, pa imajo maso približno 100-krat večjo od protona. 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=12.0cm]{physics/sm.pdf}
+	
+	\caption{ Standardni model elementarnih delcev, s tremi generacijami gradnikov snovi in z bozoni s spinom 1 v četrtem stolpcu in Higgsovim bozonom v petem \cite{WikiSM}. }
+	\label{sl:sm}
+\end{figure}
 
-Teoretični fiziki so pred petimi desetletji napovedali obstoj polja, ki prežema prostor in daje energijo vakuumu. Obstoj polja je bil potreben za pojasnitev mas $W$ in $Z$ bozonov. Standardni model predvideva tudi, da bi v primeru zadostne količine razpoložljive energije lahko z vzbuditvijo tega polja nastal masiven delec s spinom 0: Higgsov bozon, ki ga označujemo s $H$. Higgsov bozon je nestabilen, zato hitro razpade v druge delce. 
+Teoretični fiziki so pred petimi desetletji napovedali obstoj polja, ki prežema prostor in daje energijo vakuumu. Obstoj polja je bil potreben za pojasnitev mas bozonov $W^+$, $W^-$ in $Z^0$. V primeru zadostne količine razpoložljive energije bi lahko z vzbuditvijo tega polja nastal masiven delec s spinom 0: Higgsov bozon, ki ga označujemo s $H$. Higgsov bozon je nestabilen, zato hitro razpade v druge delce \cite{AadScience2012, ChallengeDoc}. 
 
-Veliki hadronski trkalnik (\textit{Large Hadron Collider} ali {LHC}) je največji in najmočnejši trkalnik delcev. Med njegove glavne fizikalne cilje se uvršča preizkus hipoteze SM o obstoju Higgsovega bozona. LHC pospeši dva žarka protonov v nasprotnih smereh skoraj do svetlobne hitrosti, tako da je ob trku skupna razpoložljiva energija dovolj visoka za nastanek Higgsovega bozona. Člani kolaboracije ATLAS v \cite{AadScience2012} poudarjajo, da med glavne izzive eksperimenta spada razločitev med signalom Higgsovega bozona in izjemno velikim ozadjem podobnih delcev, ki nastanejo ob trkih. 
+Standardni model ne napoveduje mase $H$. Napoveduje pa, ob določeni masi $H$, relativno pogostost (razvejitvena razmerja) posameznih razpadnih načinov Higgsovega bozona, ki so prikazana v tabeli \ref{tb:pdghiggs}. Različna razmerja eksperimentalno izmerimo in jih primerjamo z napovedmi standardnega modela, s tem pa preverimo, ali je delec, ki smo ga opazili, v resnici Higgsov bozon.
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lr}
+		\hline
+		\textbf{Razpadni kanal} & \textbf{Razmejitveno razmerje} \\
+		\hline
+		$H \rightarrow \gamma\gamma$ & $\num{2,28} \times 10^{-3}$ \\	
+		$H \rightarrow Z^0Z^0$ & $\num{2,64} \times 10^{-2}$ \\
+		$H \rightarrow W^+W^-$ & $\num{2,15} \times 10^{-1}$ \\
+		$H \rightarrow \tau^+\tau^-$ & $\num{6,32} \times 10^{-2}$ \\
+		$H \rightarrow b\bar{b}$ & $\num{5,77} \times 10^{-1}$ \\
+		$H \rightarrow Z^0\gamma$ & $\num{1,54} \times 10^{-3}$ \\
+		$H \rightarrow \mu^+\mu^-$ & $\num{2,19} \times 10^{-4}$
+	\end{tabular}
+	\caption{Razmejitvena razmerja za Higgsov bozon z maso $m_H = 125\text{GeV}$ po standardnem modelu\cite{PDGHiggs}.}
+	\label{tb:pdghiggs}
+\end{table}
+ 
 
 \section{Razpad $H \rightarrow \tau^+\tau^-$}
 
-Higgsov bozon z maso $125\text{GeV}$ lahko razpade na 5 različnih načinov. Med njimi je tudi razpad $H \rightarrow \tau^+\tau^-$, ki je predmet obravnave poenostavljenega problema razločevanja signala od ozadja v izzivu \textit{HiggsML}. Pri prvotnem odkritju delca so sicer opazovali razpad Higgsovega bozona v pare bozonov ($\gamma\gamma$, $WW$, $ZZ$). V okviru projekta ATLAS razpada Higgsovega bozona v lažje leptone ($e$ in $\mu$) ni mogoče opozovati \cite{ChallengeDoc}.
+Higgsov bozon z maso $125\text{GeV}$ lahko razpade na različne načine, ki so prikazani v tabeli \ref{tb:pdghiggs}. V letih 2011 in 2012 so se pri eksperimentu ATLAS osredotočili na dva najbolj karakteristična kanala: $H \rightarrow \gamma\gamma$ in $H \rightarrow ZZ^{(*)} \rightarrow \ell\ell\ell\ell$. Higgsov bozon na dva fotona razpade samo v $\num{0,228}\%$ primerih. Kljub nizkemu razmejitvenemu razmerju je prednost tega razpada, da v detektorju ni drugih zaznavnih procesov, in tako dobimo jasen signal.
 
-Razpad $H \rightarrow \tau^+\tau^-$ je eksperimentalno zahteven. Ker se nevtrinov v detektorju ne meri, je namreč na podlagi (nepopolnega) končnega stanja težko ovrednotiti končno maso kandidata za Higgsov bozon. Prav tako lahko tudi $Z$ bozon razpade v dva delca tau, pri čemer je verjetnost za takšen dogodek v detektorju ATLAS precej večja od verjetnosti za razpad iz $H$. Ker je masa $Z$ (91GeV) v bližini mase $H$ (125GeV), sta si razpada glede končnih produktov zelo podobna in ju je zato težko razločiti.
+Med njimi je tudi razpad $H \rightarrow \tau^+\tau^-$, ki je predmet obravnave poenostavljenega problema razločevanja signala od ozadja v izzivu \textit{HiggsML}. Pri prvotnem odkritju delca so sicer opazovali razpad Higgsovega bozona v pare bozonov $\gamma\gamma$, $WW$, $ZZ$. V okviru projekta ATLAS razpada Higgsovega bozona v lažje leptone ($e$ in $\mu$) ni mogoče opazovati \cite{ChallengeDoc}.
 
-V diplomskem delu sem si pogledal eno izmed topologij razpada, in sicer dogodke, kjer en delec tau razpade v elektron ali mion ter dva nevtrina, drugi tau pa razpade v hadrone in en nevtrino.
+Razpad $H \rightarrow \tau^+\tau^-$ je eksperimentalno zahteven. Ker se nevtrinov v detektorju ne meri, je namreč na podlagi (nepopolnega) končnega stanja težko ovrednotiti končno maso kandidata za Higgsov bozon. Prav tako lahko tudi bozon $Z$ razpade v dva delca tau, pri čemer je verjetnost za takšen dogodek v detektorju ATLAS precej večja od verjetnosti za razpad iz $H$. Ker je masa $Z$ (91GeV) v bližini mase $H$ (125GeV), sta si razpada glede končnih produktov zelo podobna in ju je zato težko razločiti.
+
+V diplomskem delu sem obravnaval eno izmed topologij razpada, in sicer dogodke, kjer en delec $\tau$ razpade v elektron ali mion ter dva nevtrina, drugi $\tau$ pa v hadrone in en nevtrino.
 
 \begin{figure}[ht]
 	\includegraphics[width=16.0cm]{physics/htautau.pdf}
@@ -127,11 +170,15 @@ V diplomskem delu sem si pogledal eno izmed topologij razpada, in sicer dogodke,
 	\label{htautau}
 \end{figure}
 
-Slika \ref{htautau} prikazuje primer dogodka $H \rightarrow \tau^+\tau^-$. Rezultati projekta ATLAS so bili prvič predstavljeni leta 2013 v \cite{atlas2013}, uradno pa leta 2015 v \cite{atlas2015htautau}. Pri analizi so avtorji uporabili poln nabor trkov protonov, ki jih je eksperiment ATLAS posnel na LHC med leti 2011 in 2012. Za ločitev dogodkov od ozadja so uporabili algoritem, ki je temeljil na pospešenem gradientnem spustu nad ansambli odločitvenih dreves. Članek poroča o opaženi signifkanci odkritja $\sigma = 4.5$. Uporabili so vse kombinacije leptonskih in hadronskih tau razpadov.
+Slika \ref{htautau} prikazuje primer dogodka $H \rightarrow \tau^+\tau^-$. Rezultati projekta ATLAS so bili prvič predstavljeni leta 2013 v \cite{atlas2013}, uradno pa leta 2015 v \cite{atlas2015htautau}. Pri analizi so avtorji uporabili poln nabor trkov protonov, ki jih je eksperiment ATLAS posnel na LHC med leti 2011 in 2012. Za ločitev dogodkov od ozadja so uporabili algoritem, ki je temeljil na pospešenem gradientnem spustu nad ansambli odločitvenih dreves. Uporabili so vse kombinacije leptonskih in hadronskih razpadov tau.
 
-\section{ATLAS detektor}
+\section{Detektor ATLAS}
 \label{sec:atlasdetector}
-V LHC se trki gruč protonov v vsakem od štirih eksperimentov dogajajo vsakih 50 nanosekund. Ob vsakem srečanju se zgodi naključno število trkov proton-proton (med 10 in 35), ki jih imenujemo dogodki \cite{ChallengeDoc}. Pri trku dveh protonov se kinetična energija delcev pretvori v nove delce. Večina nastalih delcev je zelo nestabilnih in zato hitro razpadejo v kaskade lažjih delcev. Detektor ATLAS (glej sliko \ref{detektoratlas}) meri tri lastnosti preživelih delcev (t. i. končnega stanja): tip delca (elektron, mion, foton ...), njegovo energijo in smer. Na podlagi teh količin sklepamo na lastnosti izvornega elementarnega delca.
+Veliki hadronski trkalnik (\textit{Large Hadron Collider} ali {LHC}) je doslej največji trkalnik delcev. Med njegove glavne fizikalne cilje se uvršča preizkus hipoteze SM o obstoju Higgsovega bozona. LHC pospeši dva žarka protonov v nasprotnih smereh skoraj do svetlobne hitrosti, tako da je ob trku skupna razpoložljiva energija dovolj visoka za nastanek Higgsovega bozona. Med leti 2010 in 2013 je razpoložljiva težiščna energija pri trku protonov znašala $7\,\text{TeV}$, v letu 2015 pa je bila dosežena rekordna vrednost $13\,\text{TeV}$ \cite{WikiLHC}. Člani kolaboracije ATLAS v \cite{AadScience2012} poudarjajo, da med glavne izzive eksperimenta spada razločitev med signalom Higgsovega bozona in izjemno velikim ozadjem podobnih delcev, ki nastanejo ob trkih.
+
+Glavni mehanizem za nastanek Higgsovega bozona ob trku dveh protonov imenujemo gluonska fuzija. Higgsov bozon nastane iz para gluonov preko kvantne zanke najtežjega kvarka $t$ \cite{AadScience2012}. 
+
+V LHC se trki gruč protonov dogajajo vsakih 50 nanosekund. Ob vsakem srečanju se zgodi naključno število trkov proton-proton (med 10 in 35), ki jih imenujemo dogodki \cite{ChallengeDoc}. Pri trku dveh protonov se kinetična energija delcev pretvori v nove delce. Večina nastalih delcev je zelo nestabilnih in zato hitro razpadejo v kaskade lažjih delcev. Detektor ATLAS (glej sliko \ref{detektoratlas}) meri tri lastnosti preživelih delcev (t. i. končnega stanja): tip delca (elektron, mion, foton ...), njegovo energijo in smer. Na podlagi teh količin sklepamo na lastnosti izvornega elementarnega delca.
 
 Eksperiment se sooča z veliko količino dogodkov, ki jih je potrebno klasificirati. Vsako sekundo je potrebno pregledati $2 \cdot 10^7$ dogodkov. Po klasifikaciji ostane približno 400 dogodkov, ki predstavljajo signal in se shranijo. Na letni ravni to pomeni, da je potrebno shraniti približno milijardo dogodkov, ki v surovi obliki zasedejo približno 3 petabajte prostora.
 
@@ -142,7 +189,11 @@ Eksperiment se sooča z veliko količino dogodkov, ki jih je potrebno klasificir
 	\label{detektoratlas}
 \end{figure}
 
-Vsak dogodek vsebuje v končnem stanju približno 10 delcev, ki nas zanimajo. Lastnosti delcev se rekonstruirajo iz stotin surovih signalov detektorja. V diplomskem delu so med relevantne delce spadali: elektroni, mioni, hadronski tau, curki (\textit{jets}) in manjkajoča prečna energija. Elektron, mion in delec tau so trije leptoni iz standardnega modela. Življenjska doba elektronov in mionov je dovolj velika, da lahko ti delci dosežejo detektorje. Zaradi tega je mogoče njihove lastnosti (energijo in smer) izmeriti neposredno. Delci tau razpadejo skoraj hipoma, bodisi v elektron in dva nevtrina, bodisi v mion in dva nevtrina ali kolinearno gručo nabitih delcev in nevtrino. Gručo hadronov lahko identificiramo kot psevdo delec, ki ga imenujemo hadronski tau. Curki so psevdo delci. Izvirajo iz visoko energijskih kvarkov ali gluonov. Izmerjena gibalna količina vseh delcev v dogodku je najpomembnejša informacija, ki je na voljo pri klasifikaciji dogodkov.
+Zgradba detektorja, ki v višino meri 25, v dolžino pa 44 metrov, je prikazana na sliki \ref{detektoratlas}. Zgrajen je iz velikega števila komponent, ki so potrebne za merjenje različnih tipov delcev, ki nastanejo ob trkih, in njihovih gibalnih količin. Sredica detektorja zaznava sledi nabitih delcev, ki se ukrivijo zaradi magnetnega polja tankih selenoidnih magnetov. V srednji plasti se nahajata dva kalorimetra, elektromagnetni in hadronski, ki merita energijo delcev. Na zunanji strani mionski spektrometer meri sledi mionov, ki se ukrivijo zaradi magnetnega polja superprevodnih toroidnih magnetov.
+
+Elektron v sredici pusti sled in se zaustavi v elektromagnetnem kalorimetru. Foton se obnaša podobno, le da v sredici ne pusti sledi. Proton pusti sled, interagira pa v hadronskem kalorimetru. Nevtron se obnaša podobno, a za seboj ne pušča sledi. Mion potuje skozi detektor in za seboj pušča sled. Nevtrino pa potuje skozi detektor ATLAS ne da bi ga le-ta zaznal \cite{CerknLHCParticles}.
+
+Vsak dogodek vsebuje v končnem stanju približno 10 delcev, ki nas zanimajo. Lastnosti delcev se rekonstruirajo iz stotin surovih signalov detektorja. V diplomskem delu med relevantne delce spadajo: elektroni, mioni, hadronski tau, pljuski (\textit{jets}) in manjkajoča prečna energija. Elektron, mion in delec $\tau$ so trije leptoni iz standardnega modela. Življenjska doba elektronov in mionov je dovolj velika, da lahko ti delci dosežejo detektorje. Zaradi tega je mogoče njihove lastnosti (energijo in smer) izmeriti neposredno. Delci $\tau$ razpadejo skoraj hipoma, bodisi v elektron in dva nevtrina, bodisi v mion in dva nevtrina ali kolinearno gručo nabitih delcev in nevtrino. Gručo hadronov imenujemo hadronski tau. Pljuski izvirajo iz visoko energijskih kvarkov ali gluonov. Izmerjena gibalna količina vseh delcev v dogodku je najpomembnejša informacija, ki je na voljo pri klasifikaciji dogodkov.
 
 \begin{figure}[h!]
 	\centering
@@ -189,7 +240,7 @@ Vsak dogodek vsebuje v končnem stanju približno 10 delcev, ki nas zanimajo. La
 
 V diplomskem delu bom uporabljal konvencionalni referenčni okvir detektorja ATLAS (glej sliko \ref{detektoratlasokvir}). Os $z$ kaže vzdolž horizontalne linije žarka, osi $x$ in $y$ razpenjata na žarek pravokotno ravnino, pri čemer je os $y$ usmerjena proti vrhu detektorja. $\theta$ je polarni kot, $\phi$ pa azimutalni kot. Prečne količine so tiste, ki jih projiciramo na ravnino $x\text{-}y$, torej tiste količine, kjer je koordinata $z$ izpuščena. Namesto koordinate $\theta$ pogosto uporabimo \textit{psevdorapidnost} $\eta = -\ln \tan(\theta/2)$. Vrednost $\eta = 0$ opisuje delec v $x\text{-}y$ ravnini ($\theta = \pi/2$), $\eta = +\infty$ pa ustreza delcu, ki potuje vzdolž osi $z$ ($\theta = 0$). Delec, ki potuje v nasprotni smeri ima $\eta = -\infty$. Delce je možno v celoti identificirati (in jim določiti gibalno količino) v razponu psevdorapidnosti $\eta \in \left[-\num{2,5}; \num{2,5} \right]$. Pri vrednostih $|\eta| \in \left(\num{2,5}; 5\right]$ delcev v detektorju ni več mogoče identificirati, je pa moč izmeriti njihovo gibalno količino. Delcev z $|\eta| > 5$ ni možno zaznati.
 
-Manjkajoča prečna energija ($\mathbf{E^{miss}_t}$) pripada psevdo delcu. Nevtrinov, ki nastanejo ob razpadu delca tau, detektor ne zazna. O njihovih lastnostih lahko sklepamo na podlagi zakona o ohranitvi gibalne količine. Zaradi merskih napak je sicer v praksi ta vsota precej slabo ocenjena. Veliko delcev, ki se pomikajo vzdolž osi $z$, tudi uide detekciji. Zaradi tega vsoto izračunamo le v prečni ravnini, predstavlja pa jo dvodimenzionalni vektor v ravnini $x\text{-}y$.
+Manjkajoča prečna energija ($\mathbf{E^{miss}_t}$) pripada psevdo delcu. Nevtrinov, ki nastanejo ob razpadu delca $\tau$, detektor ne zazna. O njihovih lastnostih lahko sklepamo na podlagi zakona o ohranitvi gibalne količine. Zaradi merskih napak je sicer v praksi ta vsota precej slabo ocenjena. Veliko delcev, ki se pomikajo vzdolž osi $z$, tudi uide detekciji. Zaradi tega vsoto izračunamo le v prečni ravnini, predstavlja pa jo dvodimenzionalni vektor v ravnini $x\text{-}y$.
 
 \section{Izpeljava relevantnih značilk}
 Podpoglavje opisuje nekaj osnovnih enačb iz posebne teorije relativnosti, ki so potrebne izpeljavi novih relevantnih značilk iz izmerjenih podatkov. Večina fizikalno pomembnih značilk je bila izračunanih že v izvornih podatkih, ki sem jih uporabil v diplomi. Seznam izpeljanih značilk si je moč ogledati v razdelku \ref{ch:opis_podatkov}, spodnji opis pa je povzet po \cite{ChallengeDoc}.
@@ -200,16 +251,17 @@ Osnovna enačba posebne teorije relativnosti je
 	E^2 = p^2c^2 + m^2c^4,
 	\label{eq:4momentum}
 \end{equation}
-kjer je $E$ energija delca, $p$ njegova gibalna količina, $m$ lastna masa (masa v mirovanju) in $c$ hitrost svetlobe v praznem prostoru. V primeru, ko delec miruje (in ima s tem gibalno količino enako $0$), se enačba poenostavi v znano $E = mc^2$. V fiziki delcev za enote običajno uporabimo: GeV za energijo, GeV/$c$ za gibalno količino ter GeV/$c^2$ za maso. Z uporabo teh enot se enačba \ref{eq:4momentum} prevede v 
+kjer je $E$ energija delca, $p$ njegova gibalna količina, $m$ lastna masa (masa v mirovanju) in $c$ hitrost svetlobe v praznem prostoru. V literaturi se avtorji velikokrat držijo dogovora o izpuščanju $c$ iz izrazov kot je enačba \ref{eq:4momentum}, ki s tem preide v 
 \begin{equation}
 	E^2 = p^2 + m^2.
 	\label{eq:4momentumsimplified}
 \end{equation}
-V literaturi se avtorji (vključno s sodelavci kolaboracij ATLAS in CMS) držijo dogovora o izpuščanju $c$ iz enot in tako za vse tri količine: energijo, gibalno količino in maso uporabljajo enote GeV. Ta dogovor je uporabljen tudi v diplomskem delu.
+
+Tega dogovora se držim tudi v svojem diplomskem delu.
 
 Gibalna količina je povezana s hitrostjo delca $v$.  Za delec z neničelno maso v posebni teoriji relativnosti velja zveza $p = \gamma m v$, kjer je $p$ oznaka za gibalno količino, $m$ masa delca, $\gamma$ pa je definirana kot
 \begin{equation}
-	\gamma = \frac{1}{\sqrt{1 - (v/c)^2}}.
+	\gamma = \frac{1}{\sqrt{1 - v/c)^2}}.
 	\label{eq:gamma}
 \end{equation}
 Enačba velja tako za velikosti, kakor tudi za tridimenzionalne vektorje $\mathbf{v}$ in $\mathbf{p}$. Zapišemo lahko $\mathbf{p} = \gamma m \mathbf{v}$, pri tem pa velja dogovor $p = |\mathbf{p}|$ in $v = |\mathbf{v}|$. Faktor $\gamma$ ob približevanju $v$ svetlobni hitrosti $c$ divergira proti $\infty$, kar pomeni, da svetlobne hitrosti delcem z neničelno maso ni mogoče doseči ali preseči. Kinematika delca je popolnoma definirana z vektorjem gibalne količine in energijo, torej s četvercem $(p_x, p_y, p_z, E)$. Ko delec identificiramo, ima le ta dobro definirano maso, tako da lahko energijo izračunamo s pomočjo gibalne količine z enačbo \ref{eq:4momentumsimplified}. Namesto komponent gibalne količine $p_x, p_y, p_z$ velikokrat uporabimo parametre $\phi, \eta$ in $p_T$.
@@ -776,7 +828,7 @@ Podatki, ki sem jih uporabil v diplomskem delu, so bili prvič objavljeni in upo
 
 Vzorec signala zajema dogodke, v katerih naj bi nastal Higgsov bozon (katerega masa je bila nastavljena na $m_H = 125\,\text{GeV}$). Vzorec, ki predstavlja ozadje, vsebuje dogodke, ki odražajo druge znane procese, ki lahko proizvajajo dogodke z vsaj enim elektronom ali mionom in hadronskim tau, s čimer posnemajo signal.
 
-V simuliranih podatkih so predstavljeni samo trije procesi ozadja. Prvi prihaja iz razpada $Z \rightarrow \tau^+\tau^-$ (masa $Z$ bozona je $m_Z = 91,2\,\text{GeV}$). Ta razpad proizvaja dogodke s topologijo, ki je zelo podobna tisti pri razpadu Higgsovega bozona. Druga množica dogodkov vsebuje par $t$ kvarkov, ki imata lahko med svojimi razpadnimi produkti lepton ali hadronski tau. Tretja množica vsebuje razpad $W$ bozona, kjer lahko nastaneta en elektron ali mion in hadronski tau. 
+V simuliranih podatkih so predstavljeni samo trije procesi ozadja. Prvi prihaja iz razpada $Z \rightarrow \tau^+\tau^-$ (masa bozona $Z$ je $m_Z = 91,2\,\text{GeV}$). Ta razpad proizvaja dogodke s topologijo, ki je zelo podobna tisti pri razpadu Higgsovega bozona. Druga množica dogodkov vsebuje par $t$ kvarkov, ki imata lahko med svojimi razpadnimi produkti lepton ali hadronski tau. Tretja množica vsebuje razpad bozona $W$, kjer lahko nastaneta en elektron ali mion in hadronski tau. 
 
 \section{Opis podatkov}
 \label{ch:opis_podatkov}
@@ -1485,8 +1537,8 @@ Izbrani - najboljši algoritem, ki temelji na metodi podpornih vektorjev, uporab
 			0,560 & 0,824 & 0,716 & 0,667 &
 			1,579 \\
 		logistična regresija (1) & 18,4\% & 56,4\% & 9,1\% & 16,1\% &
-			0.668 & 0.535 & 0.749 & 0.594
-			& 2.015 \\
+			0,668 & 0,535 & 0,749 & 0,594
+			& 2,015 \\
 		SVM-LIN (16) & 23,6\% & 57,3\% & 8,3\% & 10.9\% &
 		0,740 & 0,684 & 0,809 & 0,711 &
 		2,553 \\
