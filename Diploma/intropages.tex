@@ -1,6 +1,8 @@
+% !TeX spellcheck = sl_SI
+
 % stran 1 med uvodnimi listi
 \thispagestyle{empty} 
-
+\pagenumbering{Roman}
 \begin{center}
 {\large 
 Univerza v Ljubljani\\
@@ -43,7 +45,7 @@ Uporaba metod strojnega učenja pri analizi podatkov, zajetih z detektorjem ATLA
 \end{center}
 
 \begin{center} 
-{\Large elektronske oblike zaključnega dela}
+{\Large elektronske oblike diplomskega dela}
 \end{center}
 
 \vspace{1cm}
@@ -56,7 +58,11 @@ Podpisani Klemen Kenda izjavljam:
 \end{itemize}
 
 \vspace{1cm}
-Ljubljana, 5. septembra 2016 \hspace{2.5cm} Podpis avtorja:
+\hspace{9cm} Podpis avtorja:
+
+\vspace{2cm}
+
+Ljubljana, 5. septembra 2016 
 \newpage
 
 %stran 4 med uvodnimi listi (prazna)
@@ -73,10 +79,62 @@ $\;$
 \thispagestyle{empty}
 
 \vfill
-% Zahvala
-\newpage
+{\LARGE \textbf{Zahvala}}
+\vspace{0.5cm}
 
-%stran 6 in 7 med uvodnimi listi
+Za pomoč pri pripravi diplomskega dela se zahvaljujem mentorju prof. dr. Tomažu Podobniku in somentorju dr. Andreju Gorišku. Za dodaten pregled poglavij, povezanih s strojnim učenjem, in obilico koristnih namigov se zahvaljujem Roku Močniku in prof. dr. Dunji Mladenić. Predvsem doc. dr. Mihi Škarabotu in Ani Pribaković Borštnik, ki sta svoje spodbudne besede prenesla v konkretna dejanja, pa gre zahvala, da so se stvari na dolgotrajni poti do diplome na koncu le premaknile z mrtve točke. Takšne zahvale si zagotovo ne zasluži kolega Grega Milčinski.
+
+
+
+\newpage
+\setlength{\parindent}{0.7cm}
+\setlength{\parskip}{0.1cm}
+
+
+% -----------------------------------------------------------------------------
+% POVZETEK
+% -----------------------------------------------------------------------------
+\chapter*{Povzetek}
+\addcontentsline{toc}{chapter}{Povzetek}
+\noindent Diplomsko delo obravnava problem ločevanja signala in ozadja v eksperimentu ATLAS pri razpadu $H \rightarrow \tau^+\tau^-$. Reševanje problema temelji na skupku algoritmov, ki jih v računalništvu imenujemo tudi \textit{strojno učenje}. Algoritmi so uspešni pri iskanju področij faznega prostora meritev, ki ustrezajo signalu.
+
+Zaradi podobnosti z drugimi razpadi, je razpad $H \rightarrow \tau^+\tau^-$ še posebej težaven za klasifikacijo. Diplomsko delo se naslanja na podatke in nekatere izsledke javnega izziva \textit{HiggsML}, ki so ga z namenom iskanja najboljših algoritmov za klasifikacijo razpadov $H \rightarrow \tau^+\tau^-$ organizirali sodelavci kolaboracije ATLAS.
+
+V diplomskem delu je predstavljen kratek opis problema. Izbrane relevantne metode strojnega učenja, ki so jih identificirali organizatorji izziva, so predstavljene in preizkušene na podatkih simulatorja detektorja ATLAS. Poleg preizkusa omenjenih metod sem v diplomskem delu razvil lasten algoritem, ki temelji na metodi podpornih vektorjev.
+
+Uspešnost razvitega algoritma presega nekatere osnovne implementacije metode pospešenega gradientnega spusta na odločitvenih drevesih, ki jo trenutno uporabljajo pri klasifikaciji dogodkov na detektorju ATLAS, vseeno pa krepko zaostaja za zmagovalnimi rešitvami.
+
+
+\vspace{1.3cm}
+
+\noindent {\large \bf Ključne besede:}
+
+\vspace{0.1cm}
+\noindent strojno učenje, nadzorovano učenje, klasfikacijske metode, logistična regresija, pospešeni gradientni spust, odločitvena drevesa, metoda podpornih vektorjev, SVM, Higgsov bozon
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\vspace{1.3cm}
+\noindent Diplomma is focused on the problem of separating signal of decay $H \rightarrow \tau^+\tau^-$  from the background in the ATLAS experiment. Solution of the problem is based on algorithms that belong to the field of \textit{machine learning} in  computer science. Algorithms are successful and efficient at searching the phase space of ATLAS measurements that correspond to the signal.
+
+Due to similarities with other decays, the signal from decay $H \rightarrow \tau^+\tau^-$ is particularly difficult to classify. Diplomma work is based on the data and some of the achievements from the public \textit{HiggsML} challenge, which was organised by the ATLAS staff in order to find better algorithms to classify decays $H \rightarrow \tau^+\tau^-$.
+
+A short description of the problem is provided in the diplomma. Selected relevant machine learning methods that have been suggested by the challenge organisers, were described and tested on the data from the ATLAS detector simulator. I have also developed my own algorithm for solving the problem of separating signal from the background, that is based on the \textit{support vector machine} method.
+
+Accuracy of the developed algorithm exceeds some of the basic applications of the gradient boosted trees, which are currenty used for event classification in the ATLAS detector. However, in the selected metric it does not match the winning methods.
+\vspace{1.3cm}
+
+\noindent {\large \bf Keywords:}
+\vspace{0.1cm}
+
+\noindent machine learning, supervised learning, classification methods, logistic regression, gradient boosting, decision trees, support vector machines, SVM, Higgs boson
+\vspace{1.3cm}
+
+\noindent {\large \bf PACS:}
+\vspace{0.1cm} 
+
+\noindent 89.20.Ff, 14.80.Bn
+
 \newpage
 
 \renewcommand\thepage{} 
