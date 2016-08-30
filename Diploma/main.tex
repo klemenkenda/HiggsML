@@ -39,11 +39,12 @@
 % UVOD
 % -----------------------------------------------------------------------------
 \chapter*{Uvod}
+\markboth{Uvod}{}
 \addcontentsline{toc}{chapter}{Uvod}
 
 Eksperimenta ATLAS in CMS sta leta 2012 objavila odkritje Higgsovega bozona \cite{Aad20121,Chatrchyan201230}. Eksperimenti so potekali (in še vedno potekajo) na Velikem hadronskem trkalniku (\textit{Large Hadron Collider}, LHC) v CERN-u (Evropski organizaciji za jedrske raziskave) v Ženevi \cite{ChallengeDoc}. Odkritju je leta 2013 sledila Nobelova nagrada za fiziko, ki sta jo prejela François Englert in Peter Higgs. Obstoj delca, katerega vloga je, da daje maso ostalim elementarnim delcem, je bil predviden pred skoraj petdesetimi leti. 
 
-Higgsov bozon razpade na različne načine, ki jih v fiziki osnovnih delcev imenujemo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v razpadnih kanalih $H \rightarrow \gamma\gamma$, $H \rightarrow Z^0Z^0$ in $H \rightarrow W^+W^-$. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare, v leptone $\tau$ in kvarke $b$. Dokazi o razpadih $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013,atlas2015htautau}.
+Higgsov bozon razpade na različne načine, ki jih v fiziki osnovnih delcev imenujemo kanali. Pri tem nastanejo novi delci. Higgsov bozon so najprej opazili v razpadnih kanalih $H \rightarrow \gamma\gamma$, $H \rightarrow Z^0Z^0$ in $H \rightarrow W^+W^-$. V naslednjem koraku je bilo potrebno najti dokaze o razpadu Higgsovega bozona v fermionske pare: v leptone $\tau$ in kvarke $b$. Dokazi o razpadih $H \rightarrow \tau^+\tau^-$ so bili predstavljeni v \cite{atlas2013,atlas2015htautau}.
 
 Pri analizi eksperimentalnih podatkov je potrebno določiti relevantno območje faznega prostora izmerjenih značilk, v katerem je velika verjetnost, da smo naleteli na dogodke, ki nas zanimajo (v našem primeru na razpad $H \rightarrow \tau^+\tau^-$). V preteklosti so ta področja določali eksperti \textit{ročno} \cite{Adam-Bourdarios14}. Napredne klasifikacijske metode, ki temeljijo na strojnem učenju, pa se danes rutinirano uporabljajo za reševanje tega in podobnih problemov \cite{atlas2013}.
 
@@ -52,15 +53,15 @@ Področje dela tesno povezuje fiziko z računalništvom, natančneje s strojnim 
 \section*{Izziv HiggsML}
 Z namenom, da bi izboljšali uporabljene klasifikacijske metode za reševanje prej omenjenega problema ločevanja signala od ozadja, so sodelavci kolaboracije ATLAS pripravili mednarodno tekmovanje \textit{Higgs Boson Machine Learning Challenge} (ali krajše \textit{Izziv HiggsML}) \cite{HiggsMLChallenge}, s katerim so k sodelovanju privabili zajetno množico strokovnjakov s področja strojnega učenja. Na izzivu je sodelovalo 1942 oseb, ki so skupaj pripravile 35772 rešitev. Rezultate neoptimizirane metode iz knjižnice TMVA, ki so jo je razvili in prvotno uporabljali v CERN-u, so izzivalci premagali že prvi dan izziva, kar 781 rešitev pa je bilo boljših tudi od najbolje optimizirane metode TMVA \cite{Adam-Bourdarios14}.
 
-Pri pripravi diplomskega dela sem si pomagal s podatki, ki so bili pripravljeni posebej za omenjeni izziv, hkrati pa sem za primerjavo lastne metode in namige za izboljšavo uporabil javno dostopne rešitve, forume in druge vire v okivru izziva.
+Pri pripravi diplomskega dela sem si pomagal s podatki, ki so bili pripravljeni posebej za omenjeni izziv, hkrati pa sem za primerjavo lastne metode in namige za izboljšavo uporabil javno dostopne rešitve, forume in ideje.
 
-Izziv je bil namenjen širokemu naboru predvsem strokovnjakov s področja strojnega učenja, zato so sodelavci ATLAS-a surove podatke meritev že obogatili z večino relevantnimi izpeljankami, ki izhajajo iz domenskega znanja fizike visokih energij. Ob tem se je izkazalo, da nadaljnje poglabljanje v izpeljavo fizikalno relevantnih značilk načeloma ni prineslo znatnega izboljšanja končnih rezultatov\footnote{\url{https://www.kaggle.com/c/higgs-boson/forums/t/10350/how-physicists-fared}}.
+Izziv je bil namenjen širokemu naboru predvsem strokovnjakov s področja strojnega učenja, zato so sodelavci ATLAS-a surove podatke meritev že obogatili z večino relevantnimi izpeljankami, ki izhajajo iz domenskega znanja fizike visokih energij. Ob tem se je izkazalo, da nadaljnje poglabljanje v izpeljavo fizikalno relevantnih značilk načeloma ni prineslo znatnega izboljšanja končnih rezultatov \cite{KaggleHPF}.
 
 
 \section*{Terminologija}
 \addcontentsline{toc}{section}{Terminologija}
 
-Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru majhno in ker se slovenska terminologija na tem področju še redkeje uporablja in je zato tudi strokovno podkovanemu bralcu manj znana, na tem mestu prilagam kratek slovarček strokovnih terminov s področja strojnega učenja. Vsi prevodi temeljijo na \textit{Računalniškem slovarčku}, ki ga vzdržuje Odsek za inteligentne sistem na Inštitutu "Jožef Stefan"\footnote{\url{http://dis-slovarcek.ijs.si}}. Slovarček je prikazan v tabeli \ref{slovar}.
+Ker je področje strojnega učenja in umetne inteligence v slovenskem prostoru majhno in ker se slovenska terminologija na tem področju še redkeje uporablja in je zato tudi strokovno podkovanemu bralcu manj znana, na tem mestu prilagam kratek slovarček strokovnih terminov. Prevodi temeljijo na \textit{Računalniškem slovarčku}, ki ga vzdržuje Odsek za inteligentne sistem na Inštitutu "Jožef Stefan" \cite{DISSlovarcek}. Slovarček je prikazan v tabeli \ref{slovar}.
 
 \input{slovar}
 
@@ -75,7 +76,7 @@ Standardni model (SM) osnovnih delcev opisuje osnovne gradnike snovi in interakc
 	\centering
 	\includegraphics[width=12.0cm]{physics/sm.pdf}
 	
-	\caption{ Standardni model elementarnih delcev, s tremi generacijami gradnikov snovi in z bozoni s spinom 1 v četrtem stolpcu ter Higgsovim bozonom v petem \cite{WikiSM}. }
+	\caption{ Standardni model elementarnih delcev s tremi generacijami gradnikov snovi in z bozoni s spinom 1 v četrtem stolpcu ter Higgsovim bozonom v petem \cite{WikiSM}. }
 	\label{sl:sm}
 \end{figure}
 
@@ -97,51 +98,14 @@ Standardni model ne napoveduje mase $H$. Napoveduje pa, ob določeni masi $H$, r
 		$H \rightarrow Z^0\gamma$ & $\num{1,54} \times 10^{-3}$ \\
 		$H \rightarrow \mu^+\mu^-$ & $\num{2,19} \times 10^{-4}$
 	\end{tabular}
-	\caption{Razmejitvena razmerja za Higgsov bozon z maso $m_H = 125\,\text{GeV}$ po standardnem modelu\cite{PDGHiggs}.}
+	\caption{Razmejitvena razmerja za Higgsov bozon z maso $m_H = 125\,\text{GeV}$ po standardnem modelu \cite{PDGHiggs}.}
 	\label{tb:pdghiggs}
 \end{table}
 
 \section{Izpeljava relevantnih značilk}
 Podpoglavje opisuje nekaj osnovnih enačb iz posebne teorije relativnosti, ki so potrebne za razumevanje fizikalnega ozadja problema, hkrati pa so potrebne za izpeljavo novih relevantnih značilk iz izmerjenih podatkov. V celotnem diplomskem delu uporabljam termin \textit{značilka} s področja strojnega učenja, nanaša pa se predvsem na različne izmerjene ali izpeljane fizikalne količine, ki služijo kot vhodni podatki pri reševanju problema ločevanja signala od ozadja. Večina fizikalno pomembnih značilk je bila izračunanih že v izvornih podatkih, ki sem jih uporabil v diplomi. Celoten seznam značilk, ki sem jih uporabljal, si je moč ogledati v razdelku \ref{ch:opis_podatkov}, spodnji opis pa je povzet po \cite{ChallengeDoc}.
 
-\subsection{Gibalna količina, masa in energija}
-Osnovna enačba posebne teorije relativnosti je
-\begin{equation}
-E^2 = p^2c^2 + m^2c^4,
-\label{eq:4momentum}
-\end{equation}
-kjer je $E$ energija delca, $p$ njegova gibalna količina, $m$ lastna masa (masa v mirovanju) in $c$ hitrost svetlobe v praznem prostoru. V literaturi se avtorji velikokrat držijo dogovora o izpuščanju $c$ iz izrazov kot je enačba \ref{eq:4momentum}, ki s tem preide v 
-\begin{equation}
-E^2 = p^2 + m^2.
-\label{eq:4momentumsimplified}
-\end{equation}
-
-\noindent Tega dogovora se držim tudi v svojem diplomskem delu.
-
-Gibalna količina je povezana s hitrostjo delca $v$.  Za delec z neničelno maso v posebni teoriji relativnosti velja zveza $p = \gamma m v$, kjer je $p$ oznaka za gibalno količino, $m$ masa delca, $\gamma$ pa je definirana kot
-\begin{equation}
-\gamma = \frac{1}{\sqrt{1 - (v/c)^2}}.
-\label{eq:gamma}
-\end{equation}
-Enačba velja tako za velikosti, kakor tudi za tridimenzionalne vektorje $\mathbf{v}$ in $\mathbf{p}$. Zapišemo lahko $\mathbf{p} = \gamma m \mathbf{v}$, pri tem pa velja dogovor $p = |\mathbf{p}|$ in $v = |\mathbf{v}|$. Faktor $\gamma$ ob približevanju $v$ svetlobni hitrosti $c$ divergira proti $\infty$, kar pomeni, da svetlobne hitrosti delcem z neničelno maso ni mogoče doseči ali preseči. Kinematika delca je popolnoma definirana z vektorjem gibalne količine in energijo, torej s četvercem $(p_x, p_y, p_z, E)$. Ko delec identificiramo, ima le-ta dobro definirano maso, tako da lahko energijo izračunamo s pomočjo gibalne količine z enačbo \ref{eq:4momentumsimplified}. Namesto komponent gibalne količine $p_x,\;p_y$ in $p_z$ velikokrat uporabimo parametre $\phi, \eta$ in $p_T$. $\phi$ je azimutalni kot vektorja gibalne količine (v prečni ravnini). $\eta$ je psevdorapidnost, ki je definirana z
-\begin{equation}
-\eta = -\ln \tan(\theta/2),
-\label{eq:pseudorapidity}
-\end{equation}
-pri čemer je $\theta$ polarni kot vektorja gibalne količine (z osjo $z$). $p_T$ predstavlja prečno gibalno količino delca in je definiran z enačbo
-\begin{equation}
-p_T = \sqrt{p_x^2 + p_y^2}.
-\label{eq:transversemomentum}
-\end{equation}
-Zadnje tri količine so natančneje opisane v razdelku \ref{sec:atlasdetector}.
-
-\subsection{Invariantna masa in manjkajoča prečna energija}
-Masa delca je njegova notranja lastnost. Za vse dogodke, povezane s Higgsovim bozonom pričakujemo, da bodo imeli enako maso. Da bi maso Higgsovega bozona lahko izmerili, potrebujemo četverce $(p_x, p_y, p_z, E) = (\mathbf{p}, E)$ vseh razpadnih produktov. Denimo, da Higgsov bozon razpade v $N$ delcev, katerih četverce izmerimo s pomočjo detektorja. S pomočjo ohranitvenih zakonov za energijo in gibalno količino tako lahko zapišemo $E_H = E_1 + E_2 + E_3 + ... + E_N$ in $\mathbf{p}_H = \mathbf{p}_1 + \mathbf{p}_2 + \mathbf{p}_3 + ... + \mathbf{p}_N$. Invariantno maso kandidata za Higgsov bozon pa lahko izračunamo iz enačbe \ref{eq:4momentumsimplified}.
-
-Pri topologiji razpada $H \rightarrow \tau^+\tau^-$, ki je predmet diplomske naloge (glej naslednje podpoglavje), končno stanje sestavljajo lepton, hadronski tau in trije nevtrini. Lastnosti leptona in hadronskega tau izmerimo s pomočjo detektorja, od nevtrinov pa poznamo samo manjkajočo prečno energijo ($\mathbf{E^{miss}_T}$), ki predstavlja oceno vsote gibalnih količin treh nevtrinov v prečni ravnini. Mase $H$ torej ne moremo izmeriti, zato se moramo zanesti na oceno s pomočjo količin, ki so povezane z maso primarnih produktov razpada ($\tau^+\tau^-$).
-
-\subsection{Druge uporabne formule in dogovori}
-
+\subsection{Referenčni okvir detektorja ATLAS}
 V diplomskem delu bom uporabljal konvencionalni referenčni okvir detektorja ATLAS (glej sliko \ref{detektoratlasokvir}). Os $z$ kaže vzdolž horizontalne linije žarka, osi $x$ in $y$ razpenjata na žarek pravokotno ravnino, pri čemer je os $y$ usmerjena proti vrhu detektorja. $\theta$ je polarni kot, $\phi$ pa azimutalni kot. Prečne količine so tiste, ki jih projiciramo na ravnino $x\text{-}y$, torej tiste količine, kjer je koordinata $z$ izpuščena. 
 
 \begin{figure}[h!]
@@ -187,8 +151,46 @@ V diplomskem delu bom uporabljal konvencionalni referenčni okvir detektorja ATL
 	\label{detektoratlasokvir}
 \end{figure}
 
+\subsection{Gibalna količina, masa in energija}
+Osnovna enačba posebne teorije relativnosti je
+\begin{equation}
+E^2 = p^2c^2 + m^2c^4,
+\label{eq:4momentum}
+\end{equation}
+kjer je $E$ energija delca, $p$ njegova gibalna količina, $m$ lastna masa (masa v mirovanju) in $c$ hitrost svetlobe v praznem prostoru. V literaturi se avtorji velikokrat držijo dogovora o izpuščanju $c$ iz izrazov kot je enačba \ref{eq:4momentum}, ki s tem preide v 
+\begin{equation}
+E^2 = p^2 + m^2.
+\label{eq:4momentumsimplified}
+\end{equation}
+
+\noindent Tega dogovora se držim tudi v svojem diplomskem delu.
+
+Gibalna količina je povezana s hitrostjo delca $v$.  Za delec z neničelno maso v posebni teoriji relativnosti velja zveza $p = \gamma m v$, kjer je $p$ oznaka za gibalno količino, $m$ masa delca, $\gamma$ pa je definirana kot
+\begin{equation}
+\gamma = \frac{1}{\sqrt{1 - (v/c)^2}}.
+\label{eq:gamma}
+\end{equation}
+Enačba velja tako za velikosti, kakor tudi za tridimenzionalne vektorje $\mathbf{v}$ in $\mathbf{p}$. Zapišemo lahko $\mathbf{p} = \gamma m \mathbf{v}$, pri tem pa velja dogovor $p = |\mathbf{p}|$ in $v = |\mathbf{v}|$. Faktor $\gamma$ ob približevanju $v$ svetlobni hitrosti $c$ divergira proti $\infty$, kar pomeni, da svetlobne hitrosti delcem z neničelno maso ni mogoče doseči ali preseči. Kinematika delca je popolnoma definirana z vektorjem gibalne količine in energijo, torej s četvercem $(p_x, p_y, p_z, E)$. Ko delec identificiramo, ima le-ta dobro definirano maso, tako da lahko energijo izračunamo s pomočjo gibalne količine z enačbo \ref{eq:4momentumsimplified}. Namesto komponent gibalne količine $p_x,\;p_y$ in $p_z$ velikokrat uporabimo parametre $\phi, \eta$ in $p_T$. $\phi$ je azimutalni kot vektorja gibalne količine (v prečni ravnini). $\eta$ je psevdorapidnost, ki je definirana z
+\begin{equation}
+\eta = -\ln \tan(\theta/2),
+\label{eq:pseudorapidity}
+\end{equation}
+pri čemer je $\theta$ polarni kot vektorja gibalne količine (z osjo $z$). $p_T$ predstavlja prečno gibalno količino delca in je definiran z enačbo
+\begin{equation}
+p_T = \sqrt{p_x^2 + p_y^2}.
+\label{eq:transversemomentum}
+\end{equation}
+Zadnje tri količine so podrobneje opisane v razdelku \ref{sec:atlasdetector}.
+
+\subsection{Invariantna masa in manjkajoča prečna energija}
+Masa delca je njegova notranja lastnost. Za vse dogodke, povezane s Higgsovim bozonom pričakujemo, da bodo imeli enako maso. Da bi maso Higgsovega bozona lahko izmerili, potrebujemo četverce $(p_x, p_y, p_z, E) = (\mathbf{p}, E)$ vseh razpadnih produktov. Denimo, da Higgsov bozon razpade v $N$ delcev, katerih četverce izmerimo s pomočjo detektorja. S pomočjo ohranitvenih zakonov za energijo in gibalno količino tako lahko zapišemo $E_H = E_1 + E_2 + E_3 + ... + E_N$ in $\mathbf{p}_H = \mathbf{p}_1 + \mathbf{p}_2 + \mathbf{p}_3 + ... + \mathbf{p}_N$. Invariantno maso kandidata za Higgsov bozon lahko izračunamo iz enačbe \ref{eq:4momentumsimplified}.
+
+Pri izbrani topologiji razpada $H \rightarrow \tau^+\tau^-$, ki je predmet diplomske naloge (glej naslednje podpoglavje), končno stanje sestavljajo lepton, hadronski tau in trije nevtrini. Lastnosti leptona in hadronskega tau izmerimo s pomočjo detektorja, od nevtrinov pa poznamo samo manjkajočo prečno energijo ($\mathbf{E^{miss}_T}$), ki predstavlja oceno vsote gibalnih količin treh nevtrinov v prečni ravnini. Mase $H$ torej ne moremo izmeriti, zato se moramo zanesti na oceno s pomočjo količin, ki so povezane z maso primarnih produktov razpada ($\tau^+\tau^-$).
+
+\subsection{Druge uporabne formule in dogovori}
+
 \noindent Vektor gibalne količine lahko zapišemo s pomočjo predhodno razloženih količin $p_T, \phi$ in $\eta$ kot
-\begin{eqnarray}
+\begin{equation}
 \mathbf{p} = \left( 
 \begin{array}{c}
 p_x \\
@@ -203,14 +205,14 @@ p_T \sinh \eta
 \end{array}
 \right).
 \label{eq:momentum}
-\end{eqnarray}
+\end{equation}
 Modulus $p$ je definiran kot
-\begin{eqnarray}
+\begin{equation}
 p_T \cosh \eta.
 \label{eq:modulus}
-\end{eqnarray}
+\end{equation}
 Manjkajoča prečna energija $\mathbf{E}^{miss}_T$ je dvodimenzionalni vektor
-\begin{eqnarray}
+\begin{equation}
 \mathbf{E}^{miss}_T = \left(
 \begin{array}{c}
 |\mathbf{E}^{miss}_T| \cos \phi_T \\
@@ -218,11 +220,11 @@ Manjkajoča prečna energija $\mathbf{E}^{miss}_T$ je dvodimenzionalni vektor
 \end{array}
 \right),
 \label{eq:emisst}
-\end{eqnarray}
+\end{equation}
 kjer je $\phi_T$ azimutalni kot manjkajoče prečne energije.
 
-Invarianta masa dveh delcev z definiranima četvercema gibalne količine je
-\begin{eqnarray}
+\noindent Invarianta masa dveh delcev z definiranima četvercema gibalne količine je
+\begin{equation}
 m_{inv}(\mathbf{a}, \mathbf{b}) =
 \sqrt{
 	\left(
@@ -233,9 +235,9 @@ m_{inv}(\mathbf{a}, \mathbf{b}) =
 	- (a_z + b_z)^2
 }.
 \label{eq:invmass}
-\end{eqnarray}
-Prečna masa dveh delcev je enaka invariantni masi vektorske vsote, pri čemer komponenti v $z$ smeri postavimo na 0:
-\begin{eqnarray}
+\end{equation}
+Prečna masa dveh delcev je enaka invariantni masi (\ref{eq:invmass}), pri čemer komponenti v $z$ smeri postavimo na 0:
+\begin{equation}
 m_{tr}(\mathbf{a}, \mathbf{b}) =
 \sqrt{
 	\left(
@@ -245,28 +247,28 @@ m_{tr}(\mathbf{a}, \mathbf{b}) =
 	- (a_y + b_y)^2
 }.	
 \label{eq:invmasstransverse}
-\end{eqnarray}
+\end{equation}
 Psevdorapidnostno ločitev med delcema $A$ in $B$ definiramo kot
-\begin{eqnarray}
+\begin{equation}
 |\eta_A - \eta_B|.
 \label{eq:pseudorapidityseparation}
-\end{eqnarray}
+\end{equation}
 $R$-ločitev med delcema $A$ in $B$ zapišemo kot
-\begin{eqnarray}
+\begin{equation}
 \sqrt{(\eta_A - \eta_B)^2 + (\phi_A - \phi_B)^2},
 \label{eq:rseparation}
-\end{eqnarray}
+\end{equation}
 pri čemer $\phi_A - \phi_B$ pretvorimo nazaj na interval $[-\pi, \pi]$. 
 
 \section{Razpad $H \rightarrow \tau^+\tau^-$}
 
 Higgsov bozon z maso $125\,\text{GeV}$ lahko razpade na različne načine, ki so prikazani v tabeli \ref{tb:pdghiggs}. V letih 2011 in 2012 so se pri eksperimentu ATLAS osredotočili na dva najbolj karakteristična kanala: $H \rightarrow \gamma\gamma$ in $H \rightarrow ZZ \rightarrow \ell\ell\ell\ell$. 
 
-\textbf{Kanal} ${\mathbf H \rightarrow \gamma\gamma}$. Higgsov bozon na dva fotona razpade samo v $\num{0,228}\%$ primerih. Kljub nizkemu razmejitvenemu razmerju pa je prednost tega razpada, da imata fotona z visoko energijo v detektorju precej jasno signaturo in je tako identifikacija takega dogodka relativno preprosta \cite{AadScience2012}.
+\textbf{Kanal} ${\mathbf H \rightarrow \gamma\gamma}$. Higgsov bozon na dva fotona razpade samo v $\num{0,228}\%$ primerih. Kljub nizkemu razmejitvenemu razmerju je bistvena prednost tega razpada, da imata fotona z visoko energijo v detektorju precej jasno signaturo in je tako identifikacija takega dogodka relativno preprosta \cite{AadScience2012}.
 
 Zanima nas vsota energij obeh fotonov, ki izhaja iz mase delca, iz katerega sta nastala. Detektor ATLAS izmeri kota $\phi$ in $\theta$ obeh fotonov ter njuni energiji. S pomočjo enačb \ref{eq:4momentumsimplified}, \ref{eq:pseudorapidity}, \ref{eq:momentum} lahko izračunamo vse potrebne količine za izračun invariantne mase kandidata za Higgsov bozon, kar storimo s pomočjo enačbe \ref{eq:invmass}.
 
-Masni spekter dogodkov $\gamma\gamma$ je predstavljen na sliki \ref{sl:hgammagamma}. Spekter opisujeta vsoti gladkega parametričnega modela ozadja in modela signala, ki ima obliko gaussove krivulje s podaljšanima repoma. Na sliki je viden majhen, vendar statistično signifikanten vrh pri $m_{\gamma\gamma} = \num{126,5}\,\text{GeV}$. Spodnji del slike prikazuje odstopanje podatkov glede na model ozadja.
+Masni spekter dogodkov $\gamma\gamma$ je predstavljen na sliki \ref{sl:hgammagamma}. Spekter opisuje vsota gladkega parametričnega modela ozadja in modela signala, ki ima obliko gaussove krivulje s podaljšanima repoma. Na sliki je viden majhen, vendar statistično signifikanten vrh pri $m_{\gamma\gamma} = \num{126,5}\,\text{GeV}$. Spodnji del slike prikazuje odstopanje podatkov glede na model ozadja.
 
 \begin{figure}[ht]
 	\centering
@@ -277,7 +279,7 @@ Masni spekter dogodkov $\gamma\gamma$ je predstavljen na sliki \ref{sl:hgammagam
 \end{figure}
 
 
-\textbf{Kanal} $\mathbf{H \rightarrow ZZ \rightarrow \ell\ell\ell\ell}$. V tem razpadnem načinu Higgsov bozon razpade na dva bozona $Z$, vsak od njiju pa naprej v par leptonov ($e^+e^-$ ali $\mu^+\mu^-$). Ker samo $7\%$ bozonov $Z$ razpade na tak način, je pričakovano število dogodkov zelo nizko (v prvem eksperimentu so pričakovali samo 6 dogodkov za maso $m_H = 126\,\text{GeV}$) \cite{AadScience2012}. Rezultati so prikazani na sliki \ref{sl:hzz}.
+\textbf{Kanal} $\mathbf{H \rightarrow ZZ \rightarrow \ell\ell\ell\ell}$. V tem razpadnem načinu Higgsov bozon razpade na dva bozona $Z$, vsak od njiju pa naprej v par leptonov ($e^+e^-$ ali $\mu^+\mu^-$). Ker samo $7\%$ bozonov $Z$ razpade na tak način, je pričakovano število dogodkov zelo nizko (v prvem eksperimentu so pričakovali samo 6 dogodkov pri $m_{\ell\ell\ell\ell} = 126\,\text{GeV}$) \cite{AadScience2012}. Rezultati so prikazani na sliki \ref{sl:hzz}.
 
 \begin{figure}[ht]
 	\centering
@@ -300,7 +302,7 @@ Manjši vrh pri $90\,\text{GeV}$ predstavlja en bozon $Z$, ki razpade na 4 lepto
 	\label{sl:htautaumass}
 \end{figure}
 
-V primerjavi s slikama \ref{sl:hgammagamma} in \ref{sl:hzz} opazimo, da je vrh pri $m_H$ znatno širši, zaradi česar je ločevanja signala od ozadja, s tem pa je tudi določanje razvejitvenega razmerja $H \rightarrow \tau^+\tau^-$, v tem primeru težavnejše. Ker se nevtrinov v detektorju ne meri, je namreč na podlagi (nepopolnega) končnega stanja težko ovrednotiti končno maso kandidata za Higgsov bozon. Prav tako lahko tudi bozon $Z$ razpade v dva delca $\tau$, pri čemer je verjetnost za takšen dogodek v detektorju ATLAS precej večja od verjetnosti za razpad iz $H$. Ker je masa $Z$ ($91\,\text{GeV}$) v bližini mase $H$ ($125\,\text{GeV}$), sta si razpada glede končnih produktov zelo podobna in ju je zato težko razločiti \cite{ChallengeDoc}.
+V primerjavi s slikama \ref{sl:hgammagamma} in \ref{sl:hzz} opazimo, da je vrh pri $m_H$ znatno širši, zaradi česar je ločevanja signala od ozadja, s tem pa tudi določanje razvejitvenega razmerja $H \rightarrow \tau^+\tau^-$, v tem primeru težavnejše. Ker se nevtrinov v detektorju ne meri, je namreč na podlagi (nepopolnega) končnega stanja težko ovrednotiti končno maso kandidata za Higgsov bozon. Prav tako lahko tudi bozon $Z$ razpade v dva delca $\tau$, pri čemer je verjetnost za takšen dogodek v detektorju ATLAS precej večja od verjetnosti za razpad iz $H$. Ker je masa $Z$ ($91\,\text{GeV}$) v bližini mase $H$ ($125\,\text{GeV}$), sta si razpada glede končnih produktov zelo podobna in ju je zato težko razločiti \cite{ChallengeDoc}.
 
 Delec $\tau$ je nestabilen. Njegova povprečna življenska doba je $2,9 \times 10^{-13}\,\text{s}$ \cite{WikiTau}. Nekaj najbolj verjetnih razpadnih kanalov in razvejitvenih razmerij je prikazanih v tabeli \ref{tb:pdgtau}.
 
@@ -333,7 +335,7 @@ Slika \ref{htautau} prikazuje primer dogodka $H \rightarrow \tau^+\tau^-$. Rezul
 
 \section{Detektor ATLAS}
 \label{sec:atlasdetector}
-Veliki hadronski trkalnik (\textit{Large Hadron Collider} ali {LHC}) je doslej največji trkalnik delcev. Med njegove glavne fizikalne cilje se uvršča preizkus hipoteze SM o obstoju Higgsovega bozona. LHC pospeši dva žarka protonov v nasprotnih smereh skoraj do svetlobne hitrosti, tako da je ob trku skupna razpoložljiva energija dovolj visoka za nastanek Higgsovega bozona. Med leti 2010 in 2013 je razpoložljiva težiščna energija pri trku protonov znašala $7\,\text{TeV}$, v letu 2015 pa je bila dosežena rekordna vrednost $13\,\text{TeV}$ \cite{WikiLHC}.
+Veliki hadronski trkalnik (\textit{Large Hadron Collider}, {LHC}) je doslej največji trkalnik delcev. Med njegove glavne fizikalne cilje se uvršča preizkus hipoteze SM o obstoju Higgsovega bozona. LHC pospeši dva žarka protonov v nasprotnih smereh skoraj do svetlobne hitrosti, tako da je ob trku skupna razpoložljiva energija dovolj visoka za nastanek Higgsovega bozona. Med leti 2010 in 2013 je razpoložljiva težiščna energija pri trku protonov znašala $7\,\text{TeV}$, v letu 2015 pa je bila dosežena rekordna vrednost $13\,\text{TeV}$ \cite{WikiLHC}.
 
 Glavni mehanizem za nastanek Higgsovega bozona ob trku dveh protonov imenujemo gluonska fuzija. Higgsov bozon nastane iz para gluonov preko kvantne zanke najtežjega kvarka $t$ \cite{AadScience2012}. 
 
@@ -350,13 +352,13 @@ Eksperiment se sooča z veliko količino dogodkov, ki jih je potrebno klasificir
 
 Zgradba detektorja, ki v višino meri 25, v dolžino pa 44 metrov, je prikazana na sliki \ref{detektoratlas}. Zgrajen je iz velikega števila komponent, ki so potrebne za merjenje produktov, ki nastanejo ob trkih. Notranji detektor (\textit{inner detector}, ID) zaznava sledi nabitih delcev, ki so ukrivljene zaradi magnetnega polja tankih selenoidnih magnetov. V srednji plasti se nahajata dva kalorimetra, elektromagnetni (EM) in hadronski, ki merita energijo delcev. Na zunanji strani mionski spektrometer (MS) beleži sledi mionov, ki se ukrivijo zaradi magnetnega polja superprevodnih toroidnih magnetov.
 
-Elektron v sredici pusti sled in se zaustavi v elektromagnetnem kalorimetru. Foton se obnaša podobno, le da v sredici ne pusti sledi. Proton pusti sled, interagira pa v hadronskem kalorimetru. Nevtron se obnaša podobno, a za seboj ne pušča sledi. Mion potuje skozi detektor in za seboj pušča sled (v ID in MS). Nevtrino pa potuje skozi detektor ATLAS ne da bi ga le-ta zaznal \cite{CerknLHCParticles}.
+Elektron v sredici pusti sled in se zaustavi v elektromagnetnem kalorimetru. Foton se obnaša podobno, le da v notranjem detektorju ne pusti sledi. Proton pusti sled, interagira pa v hadronskem kalorimetru. Nevtron se obnaša podobno, a za seboj ne pušča sledi. Mion potuje skozi detektor in za seboj pušča sled (v ID in MS). Nevtrino pa potuje skozi detektor ATLAS, ne da bi ga le-ta zaznal \cite{CerknLHCParticles}.
 
-Vsak dogodek vsebuje v končnem stanju približno 10 delcev, ki nas zanimajo. Lastnosti delcev se rekonstruirajo iz stotin surovih signalov detektorja. V diplomskem delu med relevantne delce spadajo: elektroni, mioni, hadronski tau, pljuski (\textit{jets}) in manjkajoča prečna energija. Elektron, mion in delec $\tau$ so trije leptoni iz standardnega modela. Življenjska doba elektronov in mionov je dovolj velika, da lahko ti delci dosežejo detektorje. Zaradi tega je mogoče njihove lastnosti (energijo in smer) izmeriti neposredno. Delci $\tau$ razpadejo skoraj hipoma, bodisi v elektron in dva nevtrina, bodisi v mion in dva nevtrina ali skoraj kolinearni pljusk nabitih delcev in nevtrino. Pljusk imenujemo tudi hadronski tau.  Izmerjena gibalna količina vseh delcev v dogodku je najpomembnejša informacija, ki je na voljo pri klasifikaciji dogodkov.
+Lastnosti delcev se rekonstruirajo iz stotin surovih signalov detektorja. V diplomskem delu med relevantne delce spadajo: elektroni, mioni, hadronski tau, pljuski (\textit{jets}) in manjkajoča prečna energija. Elektron, mion in delec $\tau$ so trije leptoni iz standardnega modela. Življenjska doba elektronov in mionov je dovolj velika, da lahko ti delci dosežejo detektorje. Zaradi tega je mogoče njihove lastnosti (energijo in smer) izmeriti neposredno. Delci $\tau$ razpadejo skoraj hipoma, bodisi v elektron in dva nevtrina, bodisi v mion in dva nevtrina ali skoraj kolinearni pljusk nabitih delcev in nevtrino. Pljusk imenujemo tudi hadronski tau.  Izmerjena gibalna količina vseh delcev v dogodku je najpomembnejša informacija, ki je na voljo pri klasifikaciji dogodkov.
 
 Namesto koordinate $\theta$ pogosto uporabimo \textit{psevdorapidnost} (glej enačbo \ref{eq:pseudorapidity}). Vrednost $\eta = 0$ opisuje delec v $x\text{-}y$ ravnini ($\theta = \pi/2$), $\eta = +\infty$ pa ustreza delcu, ki potuje vzdolž osi $z$ ($\theta = 0$). Delec, ki potuje v nasprotni smeri ima $\eta = -\infty$. Delce je možno v celoti identificirati (in jim določiti gibalno količino) v razponu psevdorapidnosti $\eta \in \left[-\num{2,5}; \num{2,5} \right]$. Pri vrednostih $|\eta| \in \left(\num{2,5}; 5\right]$ delcev v detektorju ni več mogoče identificirati, je pa moč izmeriti njihovo gibalno količino. Delcev z $|\eta| > 5$ ni možno zaznati.
 
-Rekonstrukcijo in identifikacijo leptonov, pljuskov in manjkajoče prečne energije v detektorju ATLAS izvedejo s pomočjo standardnih algoritmov. Potrebne podatke za \textbf{rekonstrukcijo elektrona} pridobijo iz EM kalorimetra in sledi v notranjem detektorju. Pri \textbf{rekonstrukciji mionov} si ne morejo pomagati s podatki iz kalorimetra, pač pa podatkom iz ID detektorja dodajo še podatke o sledi iz mionskega spektrometra v zunanjem delu detektorja. Odvisno od $\eta$ in $p_T$ je uspešnost algoritmov za detekcijo obeh leptonov med $80\mbox{-}90\%$, uporabljati pa morajo še različne filtre za nezaželene podobne dogodke. \textbf{Pljuske rekonstruirajo} iz podatkov hadronskega kalorimetra, pri čemer upoštevajo tudi pripadajoče topološke podatke. Pljuski so namreč skoraj kolinearni. Uspešnost algoritma je $60\mbox{-}70\%$, pri tem pa se lahko v do $\num{0,5}\%$ primerih zgodijo tudi napake pri klasifikaciji. \cite{atlas2013}.
+Rekonstrukcijo in identifikacijo leptonov, pljuskov in manjkajoče prečne energije v detektorju ATLAS izvedejo s pomočjo posebnih algoritmov. Potrebne podatke za \textbf{rekonstrukcijo elektrona} pridobijo iz EM kalorimetra in sledi v notranjem detektorju. Pri \textbf{rekonstrukciji mionov} si ne morejo pomagati s podatki iz kalorimetra, pač pa podatkom iz ID detektorja dodajo še podatke o sledi iz mionskega spektrometra v zunanjem delu detektorja. Odvisno od $\eta$ in $p_T$ je uspešnost algoritmov za detekcijo obeh leptonov med $80\mbox{-}90\%$, uporabljati pa morajo še različne filtre za nezaželene podobne dogodke. \textbf{Pljuske rekonstruirajo} iz podatkov hadronskega kalorimetra, pri čemer upoštevajo tudi pripadajoče topološke podatke. Pljuski so namreč skoraj kolinearni. Uspešnost algoritma je $60\mbox{-}70\%$, pri tem pa se lahko v do $\num{0,5}\%$ primerih zgodijo tudi napake pri klasifikaciji \cite{atlas2013}.
 
 Nevtrinov, ki nastanejo ob razpadu delca $\tau$, detektor ne zazna. O njihovih lastnostih lahko sklepamo na podlagi zakona o ohranitvi gibalne količine. Veliko delcev, ki se pomikajo vzdolž osi $z$ ($|\eta| > 5$), tudi uide detekciji. Zaradi tega vsoto gibalnih količin delcev, ki jih nismo uspeli zaznati, izračunamo le v prečni ravnini, predstavlja pa jo dvodimenzionalni vektor $\mathbf{E^{miss}_T}$.
 
@@ -422,16 +424,16 @@ nepristranska ocena pričakovanega števila dogodkov ozadja, izbranih s pomočjo
 \end{eqnarray}
 V terminologiji strojnega učenja sta količini $s$ in $b$ nenormalizirani oceni pravilno pozitivnih in pravilno negativnih primerov (glej razdelek \ref{sec:ml_eval}).
 
-\section{AMS metrika}
+\section{Metrika AMS}
 \label{sc:ams}
 Glede na klasifikator $g$ je metrika za oceno uspešnosti definirana kot ciljna funkcija $AMS$ (\textit{approximate median significance})
 \begin{equation}
 \text{AMS} = \sqrt{2 \left( ( s + b + b_{reg} ) \ln \left( 1 +  \frac{s}{b + b_{reg}} \right) - s \right) },
 \label{en:ams}
 \end{equation}
-kjer sta $s$ in $b$ definirana z enačbama \ref{eq:s} in \ref{eq:b}, $b_{reg}$ pa je regularizacijska količina, nastavljena na konstantno vrednost $b_{reg} = 10$.
+kjer sta $s$ in $b$ definirana z enačbama \ref{eq:s} in \ref{eq:b}, $b_{reg}$ pa je regularizacijska količina, nastavljena na konstantno vrednost $b_{reg} = 10$. Vrednost $b_{reg}$ so v eksperimentu ATLAS določili na podlagi preliminarnih testov. Obširnejša razprava o naravi metrike in optimizaciji metod strojnega učenja na njeni podlagi je podana v \cite{ChallengeDoc}. Razprava bo zanimala bralca, ki bo želel izboljšati dosežke v tem diplomskem delu razvitega algoritma.
 
-Rešitev problema predstavlja implementacija klasifikatorja $g$, ki ga naučimo s pomočjo učne podatkovne množice ${\cal D}$, in sicer tako, da maksimiziramo $AMS$ na potrjevalni podatkovni množici.
+Rešitev problema predstavlja implementacija klasifikatorja $g$, ki ga naučimo s pomočjo učne podatkovne množice ${\cal D}$, in sicer tako, da maksimiziramo $AMS$ na potrjevalni podatkovni množici. 
 
 % -----------------------------------------------------------------------------
 % POGLAVJE: Metode strojnega učenja
@@ -453,7 +455,7 @@ Opisani pristop temelji na podatkih in ne na predhodnem domenskem znanju. Metodo
 
 \textbf{Korelacijska matrika značilk} je zelo učinkovita metoda za hiter in celosten pregled nad podatki. V matriki dimenzije $d \times d$, kjer je $d$ število značilk, s pomočjo barvne lestvice ponazorimo korelacijo med parom značilk. S pomočjo kompletnega pivotiranja, ki ga naredimo s hierarhičnim grozdenjem, lahko značilke, ki so si med seboj podobne, smiselno uredimo. Metoda je še zlasti uporabna pri izločanju linearno odvisnih značilk, ki modelom ne prinašajo dodatne vrednosti. 
 
-\textbf{Analiza glavnih komponent} je definirana kot ortogonalna linearna transformacija, ki transformira nabor podatkov v nov koordinatni sistem, in sicer tako, da komponenta z največjo varianco neke projekcije podatkov leži na prvi koordinati, druga največja na drugem mestu in tako naprej. Metoda je poenostavitev metode večrazsežnega skaliranja.
+\textbf{Analiza glavnih komponent} je definirana kot ortogonalna linearna transformacija, ki transformira nabor podatkov v nov koordinatni sistem, in sicer tako, da komponenta z največjo varianco neke projekcije podatkov leži na prvi koordinati, druga največja na drugem mestu in tako naprej.
 
 Praktična uporaba opisanih metod z rezultati na podatkih iz detektorja ATLAS je opisana v poglavju \ref{analiza-podatkov}.
 
@@ -490,7 +492,7 @@ kjer se
 \begin{equation}
 	g(z) = \frac{1}{1 + e^{-z}}
 \end{equation}
-imenuje \textbf{logistična funkcija} ali \textbf{sigmoid}. $h(x)$ predstavlja linearno kombinacijo značilk $h(x) = \theta_0 + \theta_1x^{(1)} + \theta_2x^{(2)} + \dots + \theta_nx^{(n)}$. Če privzamemo $x_0^{(i)} = 1$, lahko zapišemo $h(x) = \theta \cdot x$.
+imenuje \textbf{logistična funkcija} ali \textbf{sigmoid}. $h_\theta(x)$ predstavlja linearno kombinacijo značilk $h_\theta(x) = \theta_0 + \theta_1x^{(1)} + \theta_2x^{(2)} + \dots + \theta_nx^{(n)}$. Če privzamemo $x_0^{(i)} = 1$, lahko zapišemo $_\theta(x) = \theta \cdot x$.
 
 Interpretacija hipoteze je verjetnostna. Vrednost hipoteze je $P(y=1|x;\theta)$ - torej verjetnost, da je $y = 1$ pri danem $x$ in $\theta$.
 
@@ -625,7 +627,7 @@ Cilj metode je maksimizirati razdaljo med podpornima vektorjema glede na $w$ in 
 \end{eqnarray}
 kjer je $y^{(i)} \in \{-1, 1\}$ oznaka razreda točke $x^{(i)}$. Prvi del funkcije poskrbi za maskimizacijo razmika, drugi del pa za minimizacijo napake pri učenju.
 
-Zanimajo nas parcialni odvodi Lagrangeve funkcije, ki jih postavimo na nič: $\frac{d}{db}L(w, b, \alpha) = 0$ in $\frac{d}{dw}L(w, b, \alpha)$. Dobimo
+Zanimajo nas parcialni odvodi Lagrangeve funkcije, ki jih postavimo na nič: $\frac{\partial}{\partial b}L(w, b, \alpha) = 0$ in $\frac{\partial}{\partial w}L(w, b, \alpha) = 0$. Dobimo
 \begin{eqnarray}
 	\sum^n_{i=1}\alpha_iy^{(i)} = 0 \qquad \text{in} \qquad
 	w = \sum^n_{i=1}\alpha_iy^{(i)}x^{(i)}.
@@ -653,7 +655,7 @@ Separabilnosti primerov v učni množici včasih ni mogoče doseči v prostoru z
 
 Denimo, da imamo funkcijo $\phi$, ki preslika značilko $x$ v visoko-dimenzionalni prostor $\mathbb{R}^{N_v}$, pri čemer je $N_v$ število dimenzij tega prostora. Z uporabo jeder $K$, ki so definirana v nizko-dimenzionalnem prostoru značilk, se izognemo včasih težavnemu izračunu skalarnega produkta v visoko-dimenzionalnem prostoru.
 
-Jedro $K$ je definirano z
+Jedro $K$ je definirano s
 \begin{eqnarray}
 	K(x^{(p)}, x^{(q)}) = \left<\phi(x^{(p)}), \phi(x^{(q)})\right>,
 \end{eqnarray}
@@ -666,7 +668,7 @@ klasifikacijsko funkcijo pa v
 	g(x) = \text{sign} \left(\sum^n_{i=1}\alpha y_i K(x^{(i)}, x) + b \right).
 \end{eqnarray}
 
-Obstaja veliko tipov jeder, med najbolj običajne spadajo:
+\noindent Obstaja veliko tipov jeder, med najbolj običajne spadajo:
 \begin{itemize}
 	\item linearno: $K(x^{(i)}, x^{(j)}) = x^{(i)T}x^{(j)}$
 	\item polinomsko: $K(x^{(i)}, x^{(j)}) = (\gamma x^{(i)T}x^{(j)} + c)^d$, $\gamma > 0$ 
@@ -712,7 +714,7 @@ Na sliki \ref{sl:algo-id3} je prikazan algoritem \texttt{ID3}, prilagojen učenj
 	\label{sl:algo-id3}	
 \end{figure}
 
-Bistveni del algoritma predstavlja iskanje značilke $Z$, ki najbolje klasificira primere iz množice primerov. Ena od mer, ki nam pomaga določiti takšno značilko se imenuje informacijski pribitek (\textit{information gain}), označimo jo z $G$. Za definicijo te količine pa potrebujemo mero, ki jo v teoriji informacija imenujemo tudi entropija. Entropija določa (ne)čistost množice primerkov. Naša učna množica ${\cal D}$ vsebuje pozitivne in negativne primere. Glede na to klasifikacijo definiramo entropijo
+Bistveni del algoritma predstavlja iskanje značilke $Z$, ki najbolje klasificira množico primerov. Ena od mer, ki nam pomaga določiti takšno značilko, se imenuje informacijski pribitek (\textit{information gain}), označimo jo z $G$. Za definicijo te količine potrebujemo mero, ki jo v teoriji informacija imenujemo tudi entropija. Entropija določa (ne)čistost množice primerkov. Naša učna množica ${\cal D}$ vsebuje pozitivne in negativne primere. Glede na to klasifikacijo definiramo entropijo
 \begin{eqnarray}
 	S({\cal D}) = -p_+\log_2 p_+ - p_- \log_2 p_-,
 	\label{eq:entropy}
@@ -729,7 +731,7 @@ kjer je $Z$ izbrana značilka, ${\cal Z}_Z$ množica vrednosti značilke $Z$, ${
 
 \subsection{Ansambli klasifikacijskih algoritmov}
 
-Odločitve ponavadi sprejemamo na podlagi enega modela, lahko pa kombiniramo več (ponavadi šibkejših) modelov in končno odločitev sprejmemo na podlagi njihovih rezultatov. Poznamo več vrst kombiniranja ansamblov modelov, in sicer: zlaganje (\textit{bagging}), pospeševanje (\textit{boosting}) in nalaganje (\textit{stacking}) \cite{Witten2005}. Metode kombiniranja modelov so doživele razcvet šele v zadnjih dveh desetletjih, rezultati njihove uporabe pa so ponavadi presenetljivo dobri. Izmed vseh treh metod se je pospeševanje izkazalo za najbolj uspešno, tudi v primeru klasifikacije dogodkov na detektorju ATLAS in mu je zato namenjen poseben razdelek \ref{sec:boosting}.
+Odločitve ponavadi sprejemamo na podlagi enega modela, lahko pa kombiniramo več (ponavadi šibkejših) modelov in končno odločitev sprejmemo na podlagi njihovih rezultatov. Poznamo več vrst kombiniranja ansamblov modelov, in sicer: zlaganje (\textit{bagging}), pospeševanje (\textit{boosting}) in nalaganje (\textit{stacking}) \cite{Witten2005}. Metode kombiniranja modelov so doživele razcvet šele v zadnjih dveh desetletjih, rezultati njihove uporabe pa so ponavadi presenetljivo dobri. Izmed vseh treh metod se je pospeševanje izkazalo za najbolj uspešno, tudi v primeru klasifikacije dogodkov na detektorju ATLAS, in mu je zato namenjen poseben razdelek \ref{sec:boosting}.
 
 V literaturi pogosto zasledimo, da so metode kombiniranja modelov najbolj uspešne pri ansamblih odločitvenih dreves. Argumentacija pravi, da je generiranje odločitvenih dreves precej nestabilno. Na podobnih (vendar različnih podatkih) lahko dobimo modele, ki so si med seboj zelo različni. Zato vsak model nosi drugačno informacijo.
 
@@ -832,7 +834,7 @@ Uspešnost metod strojnega učenja ocenimo na podlagi različnih metrik. Poleg m
 % -----------------------------------------------------------------------------
 \chapter{Podatki}
 \label{analiza-podatkov}
-Podatki, ki sem jih uporabil v diplomskem delu, so bili prvič objavljeni in uporabljeni za izvedbo \textit{HiggsML} izziva. Podatki predstavljajo dogodke, ki so bili simulirani na uradnem simulatorju polnega detektorja ATLAS \cite{Adam-Bourdarios14}. Podatki iz simulatorja imajo lastnosti, ki posnemajo statistične lastnosti dejanskih dogodkov - tako signala, kakor tudi ozadja.
+Podatki, ki sem jih uporabil v diplomskem delu, so bili prvič objavljeni in uporabljeni za izvedbo \textit{HiggsML} izziva. Podatki predstavljajo dogodke, ki so jih simulirali na uradnem simulatorju polnega detektorja ATLAS \cite{Adam-Bourdarios14}. Podatki iz simulatorja imajo lastnosti, ki posnemajo statistične lastnosti dejanskih dogodkov - tako signala, kakor tudi ozadja.
 
 Vzorec signala zajema dogodke, v katerih naj bi nastal Higgsov bozon (katerega masa je bila nastavljena na $m_H = 125\,\text{GeV}$). Vzorec, ki predstavlja ozadje, vsebuje dogodke, ki odražajo druge znane procese, ki lahko proizvajajo dogodke z vsaj enim elektronom ali mionom in hadronskim tau, s čimer posnemajo signal.
 
@@ -849,7 +851,7 @@ Testna podatkovna množica vsebuje 1.000.000 dogodkov, ki pa niso opremljeni z o
 \label{sec:opis-znacilk}
 Podatki zajemajo $d = 30$ značilk, katerih opis je povzet po \cite{Adam-Bourdarios14}. Stolpci s predpono PRI (ki označuje \textit{PRImitives}) predstavlja \textit{surove} podatke o trkih, kot jih izmeri detektor. Stolpci s predpono DER (ki označuje \textit{DERived}) predstavljajo vrednosti, izpeljane iz primitivnih lastnosti. Količine so določili sodelavci kolaboracije ATLAS z namenom, da bi pomagale definirati relevantna področja faznega prostora za klasifikacijske metode.
 
-Stolpci brez predpone imajo posebno vlogo in se ne uporabljajo kot značilke:
+\noindent Stolpci brez predpone imajo posebno vlogo in se ne uporabljajo kot značilke:
 
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
@@ -859,7 +861,7 @@ Stolpci brez predpone imajo posebno vlogo in se ne uporabljajo kot značilke:
 \end{description}
 \end{changemargin}
 
-Stolpci s predpono \textbf{PRI} označujejo \textit{surove} podatke, ki jih detektor izmeri pri trku:
+\noindent Stolpci s predpono \textbf{PRI} označujejo \textit{surove} podatke, ki jih detektor izmeri pri trku:
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
 	\item[PRI\_tau\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ hadronskega tau.
@@ -875,37 +877,37 @@ Stolpci s predpono \textbf{PRI} označujejo \textit{surove} podatke, ki jih dete
 	
 	\item[PRI\_met\_sumet] Celotna prečna energija v detektorju.
 	
-	\item[PRI\_jet\_num] Število vseh curkov ($\in \{1, 2, 3\}$), vrednosti, večje od $3$ so bile zamenjane s 3.
+	\item[PRI\_jet\_num] Število vseh pljuskov ($\in \{1, 2, 3\}$), vrednosti, večje od $3$ so bile zamenjane s 3.
 	
-	\item[PRI\_jet\_leading\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ glavnega curka, t. j. curka z največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
-	\item[PRI\_jet\_leading\_eta] Psevdorapidnost $\eta$ glavnega curka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
-	\item[PRI\_jet\_leading\_phi] Azimutalni kot $\phi$ glavnega curka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	\item[PRI\_jet\_leading\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ glavnega pljuska, t. j. pljuska z največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	\item[PRI\_jet\_leading\_eta] Psevdorapidnost $\eta$ glavnega pljuska (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
+	\item[PRI\_jet\_leading\_phi] Azimutalni kot $\phi$ glavnega pljuska (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} = 0$).
 	
-	\item[PRI\_jet\_subleading\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ prvega pomožnega curka, t. j. curka z drugo največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
-	\item[PRI\_jet\_subleading\_eta] Psevdorapidnost $\eta$ prvega pomožnega curka, t. j. curka z drugo največjo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
-	\item[PRI\_jet\_subleading\_phi] Azimutalni kot $\phi$ prvega pomožnega curka (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
+	\item[PRI\_jet\_subleading\_pt] Prečna gibalna količina $\sqrt{p_x^2 + p_y^2}$ prvega pomožnega pljuska, t. j. pljuska z drugo največjo prečno energijo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
+	\item[PRI\_jet\_subleading\_eta] Psevdorapidnost $\eta$ prvega pomožnega pljuska, t. j. pljuska z drugo največjo (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
+	\item[PRI\_jet\_subleading\_phi] Azimutalni kot $\phi$ prvega pomožnega pljuska (vrednost ni definirana pri vrednosti značilke $\textbf{PRI\_jet\_num} \le 1$).
 	
-	\item[PRI\_jet\_all\_pt] Skalarna vsota prečnih gibalnih količin vseh curkov v dogodku.
+	\item[PRI\_jet\_all\_pt] Skalarna vsota prečnih gibalnih količin vseh pljuskov v dogodku.
 \end{description}
 \end{changemargin}
 
-Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količine:
+\noindent Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količine:
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
 	\item[DER\_mass\_MMC] Ocenjena masa kandidata za Higgsov bozon $m_H$ (vrednost ni definirana v primeru, da topologija dogodka preveč odstopa od pričakovane).
 	\item[DER\_mass\_transverse\_met\_lep] Prečna masa med manjkajočo prečno energijo in leptonom (\ref{eq:invmasstransverse}).
-	\item[DER\_mass\_vis] Invariantna masa hadronskega $\tau$ in leptona (\ref{eq:invmass}).
+	\item[DER\_mass\_vis] Invariantna masa hadronskega tau in leptona (\ref{eq:invmass}).
 	\item[DER\_pt\_h] Modulus (\ref{eq:modulus}) vektorske vsote prečne gibalne količine hadronskega tau, leptona in manjkajoče prečne energije.
-	\item[DER\_deltaeta\_jet\_jet] Absolutna vrednost psevdorapidnostne ločitve (\ref{eq:pseudorapidityseparation}) med obema curkoma (vrednost ni definirana v primeru $\textbf{PRI\_jet\_num} \le 1$).
-	\item[DER\_mass\_jet\_jet] Invariantna masa obeh curkov (vrednost ni definirana pri \\
+	\item[DER\_deltaeta\_jet\_jet] Absolutna vrednost psevdorapidnostne ločitve (\ref{eq:pseudorapidityseparation}) med obema pljuskoma (vrednost ni definirana v primeru $\textbf{PRI\_jet\_num} \le 1$).
+	\item[DER\_mass\_jet\_jet] Invariantna masa obeh pljuskov (vrednost ni definirana pri \\
 		$\textbf{PRI\_jet\_num} \le 1$).
-	\item[DER\_prodeta\_jet\_jet] Produkt psevdorapidnosti obeh curkov (vrednost ni definirana pri $\textbf{PRI\_jet\_num} \le 1$).
+	\item[DER\_prodeta\_jet\_jet] Produkt psevdorapidnosti obeh pljuskov (vrednost ni definirana pri $\textbf{PRI\_jet\_num} \le 1$).
 	\item[DER\_deltar\_tau\_lep] $R$-ločitev (\ref{eq:rseparation}) med hadronskim tau in leptonom.
-	\item[DER\_pt\_tot] Modulus vektorske vsote manjkajoče prečne gibalne količine in prečne gibalne količine hadronskega tau, leptona in vodilnega ter drugega curka (če obstajata).
-	\item[DER\_sum\_pt] Vsota modulusov prečne gibalne količine hadronskega tau, leptona in curkov.
+	\item[DER\_pt\_tot] Modulus vektorske vsote manjkajoče prečne gibalne količine in prečne gibalne količine hadronskega tau, leptona in vodilnega ter drugega pljuska (če obstajata).
+	\item[DER\_sum\_pt] Vsota modulusov prečne gibalne količine hadronskega tau, leptona in pljuskov.
 	\item[DER\_pt\_ratio\_lep\_tau] Razmerje prečne gibalne količine leptona in hadronskega tau.
 	\item[DER\_met\_phi\_centrality] Centralnost azimutalnega kota manjkajoče prečne energije glede na hadronskegi tau in lepton (natančneje razloženo v \cite{ChallengeDoc}).
-	\item[DER\_lep\_eta\_centrality] Centralnost psevdorapidnosti leptona glede na oba curka (glej \cite{ChallengeDoc}).
+	\item[DER\_lep\_eta\_centrality] Centralnost psevdorapidnosti leptona glede na oba pljuska (glej \cite{ChallengeDoc}).
 	
 \end{description}
 \end{changemargin}
@@ -913,14 +915,14 @@ Stolpci s predpono \textbf{DER} označujejo iz surovih podatkov izpeljane količ
 \section{Rezultati raziskovalne analize podatkov}
 \label{sec:raziskovalna-analiza}
 
-V raziskovalni analizi podatkov sem najprej pregledal \textbf{porazdelitev posameznih značilk, uteži in oznak skozi celotno množico}. Ugotovil sem, da so vse količine enakomerno porazdeljene, kar nam zagotavlja, da poljubno rezanje množice podatkov (npr. na učno in testno množico) ne bo bistveno vplivalo na končne rezultate.
+V raziskovalni analizi podatkov sem najprej pregledal \textbf{porazdelitev posameznih značilk, uteži in oznak skozi celotno množico}. Ugotovil sem, da so vse količine enakomerno porazdeljene, kar nam zagotavlja, da poljubno rezanje množice podatkov (npr. na učno in potrjevalno množico) ne bo bistveno vplivalo na končne rezultate.
 
 V drugem koraku sem si ogledal \textbf{porazdelitev uteži} $w^{(i)}$ pri obeh razredih. Rezultat je predstavljen na sliki \ref{sl:weight}. Povprečna utež pri signalu je $w = 0.0080 \pm 0.0082$, pri ozadju pa $w = 2.501 \pm 1.794$. Razlika v utežeh vpliva na optimizacijo algoritmov, kot je razloženo v poglavju \ref{ch:razvoj_lastne_metode}.
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=10cm]{exploratory/ea_weight.pdf} 
-	\caption{Porazdelitev uteži $w^{(i)}$ v učni podatkovni množici.}
+	\caption{Porazdelitev uteži $w^{(i)}$ v učni podatkovni množici. Rumena barva prikazuje signal, zelena pa ozadje.}
 	\label{sl:weight}		
 \end{figure}
 
@@ -963,7 +965,7 @@ Korelacijo dveh značilk in njun potencial pri ločevanju signala od ozadja si l
 
 Bolj popolna informacija o korelaciji posameznih značilk je prikazana na sliki \ref{sl:corr_clust_matrix}. Podobno obarvane vrstice oz. stolpci (ki so velikosti $d$) na sliki prikazujejo značilke, ki so si med seboj zelo podobne in podobno korelirajo z drugimi značilkami. Vsaka vrstica oz. stolpec ponazarja vektor korelacij posamezne značilke z vsemi ostalimi.
 
-Hierarhično grozdenje temelji na evklidski razdalji med vektorji korelacij, njegov rezultat pa je ponazorjen s skicama nad in levo od matrike korelacij. Podobnost dveh značilk lahko bralec oceni z odmikom razcepa, ki ponazarja posamični grozd.
+Hierarhično grozdenje temelji na evklidski razdalji med vektorji korelacij, njegov rezultat pa je ponazorjen s skicama nad in levo od matrike korelacij. Podobnost dveh vektorjev lahko bralec oceni z odmikom razcepa, ki ponazarja posamični grozd.
 
 S slike je razvidno, da obstaja en močno koreliran grozd značilk (zgoraj levo), ki zajema značilke: PRI\_met, PRI\_jet\_subleading\_pt, PRI\_jet\_num, PRI\_jet\_all\_pt, DER\_sum\_pt, PRI\_met\_sumet, DER\_pt\_h in PRI\_jet\_leading\_pt. Nobena izmed omenjenih značilk ne vsebuje veliko novih informacij, ki bi lahko pripomogle k izboljšanju klasifikacijskih metod, kakor katerakoli druga iz tega grozda. Podobnih grozdov ali vsaj parov (trojic) značilk lahko iz slike razberemo še precej.
 
@@ -976,21 +978,18 @@ Slika korelacij nam že sama po sebi da zelo informativen vpogled v podatke, pri
 	\label{sl:corr_clust_matrix}
 \end{figure}
 
-Na zadnji sliki (\ref{sl:pca}) je prikazanih nekaj vizualizacij na podlagi analize glavnih komponent (PCA). Namen te analize je preveriti potencial za linearno separabilnost vzorcev, ki pripadajo različnima razredoma. 
+Na zadnji sliki (\ref{sl:pca}) je prikazanih nekaj vizualizacij na podlagi analize glavnih komponent (PCA). Namen te analize je preveriti potencial za linearno separabilnost vzorcev, ki pripadajo različnima razredoma. Na vseh treh grafih je moč s prostim očesom razločiti območja, ki pripadajo predvsem signalu (rdeča) oz. ozadju (zelena).
 
-
-Na vseh treh grafih je moč s prostim očesom razločiti območja, ki pripadajo predvsem signalu (rdeča) oz. ozadju (zelena).
-
-\begin{figure}[h]	
+\begin{figure}[ht!]	
 	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d.pdf}
 	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d_1_3.pdf}
 	\includegraphics[width=5.2cm]{exploratory/ea_pca_2d_2_3.pdf}		
 	
-	\caption{Analiza glavnih komponent. Razpršeni grafi 1. in 2., 1. in 3. ter 2. in 3. komponente.}
+	\caption{Analiza glavnih komponent. Razpršeni grafi 1. in 2., 1. in 3. ter 2. in 3. komponente. Rdeča barva prikazuje signal, zelena pa ozadje.}
 	\label{sl:pca}
 \end{figure}
 
-Nekaj slik iz podrobnejše raziskovalne analize podatkov je na voljo v dodatku \ref{ch:dodatek_raziskovalna}.
+\noindent Nekaj slik podrobnejše raziskovalne analize podatkov je na voljo v dodatku \ref{ch:dodatek_raziskovalna}.
 
 	
 % -----------------------------------------------------------------------------
@@ -998,12 +997,12 @@ Nekaj slik iz podrobnejše raziskovalne analize podatkov je na voljo v dodatku \
 % -----------------------------------------------------------------------------
 \chapter{Rezultati osnovnih metod}
 
-Osnovne metode so bile predlagane in vsaj delno implementirane že v spremljevalnem gradivu \textit{HiggsML} izziva. Vse teste in dopolnitve sem sicer naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn} \cite{scikit-learn}. Za pospešeni gradientni spust na odločitvenih drevesih sem poleg implementacije v \texttt{scikit-learn} preizkusil še paket \texttt{XGBoost} \cite{chen2014}, ki ga uporabljajo na detektorju ATLAS.
+Osnovne metode so bile predlagane in vsaj delno implementirane že v spremljevalnem gradivu \textit{HiggsML} izziva. Vse teste in dopolnitve sem naredil v programskem jeziku Python z uporabo paketa \texttt{scikit-learn} \cite{scikit-learn}. Za pospešeni gradientni spust na odločitvenih drevesih sem poleg implementacije v \texttt{scikit-learn} preizkusil še paket \texttt{XGBoost} \cite{chen2014}, ki ga uporabljajo na detektorju ATLAS.
 
 	
 \section{Preprosto okno}
 
-Metoda preprostega okna temelji na izbiri preprostega okna s pomočjo ene same spremenljivke (ki naj bi vsebovalo signal)\footnote{\url{https://higgsml.lal.in2p3.fr/software/simplest-python-kit/}}. Predlagana implementacija temelji na oceni mase Higgsovega bozona (spremenljivka DER\_mass\_MMC). Dogodke, ki ustrezajo $m_H = 125\,\text{GeV} \pm 22\,\text{GeV}$, pri čemer je $22\,\text{GeV}$ predlog praga, metoda klasificira kot pozitivne (signal).
+Metoda preprostega okna temelji na izbiri intervala na definicijskem območju ene same spremenljivke (ki naj bi vseboval predvsem signal). Predlagana implementacija\footnote{\url{https://higgsml.lal.in2p3.fr/software/simplest-python-kit/}} temelji na oceni mase Higgsovega bozona (spremenljivka DER\_mass\_MMC). Dogodke, ki ustrezajo $m_{MMC} = 125\,\text{GeV} \pm 22\,\text{GeV}$, pri čemer je $22\,\text{GeV}$ predlog praga, metoda klasificira kot pozitivne (signal).
 
 \begin{table}[ht]
 	\centering
@@ -1022,13 +1021,13 @@ Metoda preprostega okna temelji na izbiri preprostega okna s pomočjo ene same s
 		ocena $AMS_2$ & 1,514 \\
 		ocena $AMS_{2(test)}$ & 1,535 		
 	\end{tabular}
-	\caption{Rezultati predlagane metode preprostega okna na podlagi $m_H$.}
+	\caption{Rezultati predlagane metode preprostega okna na podlagi $m_{MMC}$.}
 	\label{tb:preprosto_okno}
 \end{table}
 
 Preprosta metoda doseže na testni množici podatkov oceno $AMS_{2(test)} = \num{1,535}$, to oceno je moč razbrati tudi iz zadnje vrstice tabele \ref{tb:preprosto_okno}. Naključna rešitev, ki služi kot osnovna metoda, da rezultat $AMS_{2{(test)}} = \num{0,586}$.
 
-Pristop sicer kliče po optimizaciji in izboljšanju metode. V prvem koraku lahko na podlagi mere ($AMS_2$) izboljšamo vrednost praga. Glede na porazdelitev značilke DER\_mass\_MMC glede na oba razreda pa lahko sklepamo, da bi lahko optimizirali tudi sredino okna. Optimizacija po pragu je prikazana na sliki \ref{sl:simple_optimization_threshold}.
+Pristop sicer kliče po optimizaciji in izboljšanju metode. V prvem koraku lahko na podlagi mere ($AMS_2$) izboljšamo vrednost praga. Glede na porazdelitev značilke DER\_mass\_MMC v obeh razredih pa lahko sklepamo, da bi lahko optimizirali tudi sredino okna. Optimizacija praga je prikazana na sliki \ref{sl:simple_optimization_threshold}.
 
 \begin{figure}[h]
 	\centering	
@@ -1039,7 +1038,7 @@ Pristop sicer kliče po optimizaciji in izboljšanju metode. V prvem koraku lahk
 	\label{sl:simple_optimization_threshold}
 \end{figure}
 
-Izbira praga pri ($\pm 22\,\text{GeV}$) ni bila optimalna. Metoda prag postavlja približno na $\pm 31\,\text{GeV}$, pri čemer velja komentirati, da je na območju med $\pm 38\,\text{GeV}$ in $\pm 30\,\text{GeV}$ napaka pri izračunu $AMS_2$ velika v primerjavi z dejansko obliko krivulje, zato lahko velikost praga zgolj približno ocenimo, in sicer na $\pm 31\,\text{GeV}$. Rezultati so prikazani v tabeli \ref{tb:preprosto_okno_optimized}
+Izbira praga pri ($\pm 22\,\text{GeV}$) ni bila optimalna. Optimizacija prag postavlja približno na $\pm 31\,\text{GeV}$, pri čemer velja komentirati, da je na območju med $\pm 38\,\text{GeV}$ in $\pm 30\,\text{GeV}$ $AMS_2$ nikakor ni gladka krivulja, zato lahko velikost praga zgolj približno ocenimo. Rezultati tako optimizirane metode preprostega okna so prikazani v tabeli \ref{tb:preprosto_okno_optimized}
 
 \begin{table}[ht]
 	\centering
@@ -1058,11 +1057,11 @@ Izbira praga pri ($\pm 22\,\text{GeV}$) ni bila optimalna. Metoda prag postavlja
 		ocena $AMS_2$ & 1,573 \\
 		ocena $AMS_{2(test)}$ & 1,583 		
 	\end{tabular}
-	\caption{Rezultati metode preprostega okna na podlagi $m_H$ z optimiziranim pragom za mero $AMS_2$.}
+	\caption{Rezultati metode preprostega okna na podlagi $m_{MMC}$ z optimiziranim pragom za mero $AMS_2$.}
 	\label{tb:preprosto_okno_optimized}
 \end{table}
 
-Optimizacija po dveh parametrih (prag in $m_H$) je prikazan na sliki \ref{sl:simple_optimization_2d}. Po pregledu faznega prostora sem izluščil območje, kjer je $AMS_2$ najvišji. Določil sem $m_H = \num{127,25}\,\text{GeV} \pm \num{32,25}\,\text{GeV}$. Na levem grafu je celostni pregled zanimivega faznega prostora, na desnem pa povečan del z najvišjimi vrednostmi $AMS_2$. Na $x$ osi je prikazan prag, na $y$ osi je prikazana $m_H$. $AMS_2$ je predstavljen ob plastnicah. Modra barva predstavlja plastnice z nižjo, rdeča pa plastnice z višjo vrednostjo $AMS_2$.
+Optimizacija po dveh parametrih (prag in $m_{MMC}$) je prikazan na sliki \ref{sl:simple_optimization_2d}. Po pregledu faznega prostora sem izluščil območje, kjer je $AMS_2$ najvišji. Določil sem $m_H = \num{127,25}\,\text{GeV} \pm \num{32,25}\,\text{GeV}$. Na levem grafu je celostni pregled zanimivega faznega prostora, na desnem pa povečan del z najvišjimi vrednostmi $AMS_2$. Na $x$ osi je prikazan prag, na $y$ osi je prikazana $m_{MMC}$. $AMS_2$ je predstavljen ob plastnicah. Modra barva predstavlja plastnice z nižjo, rdeča pa plastnice z višjo vrednostjo $AMS_2$.
 
 \begin{figure}[h]
 	\centering	
@@ -1099,7 +1098,7 @@ Rezultati tako optimizirane metode so prikazani v tabeli \ref{tb:preprosto_okno_
 \section{Logistična regresija}
 Uporaba logistične regresije na problemu ločevanja signala od ozadja nam bo dala prvi vpogled v \textit{domet} linearne ekspresivnosti značilk. Rezultati osnovne metode so prikazani v tabeli \ref{tb:logisticna}. Metodo lahko izkoristimo predvsem zato, da dobimo dodatni vpogled v podatke. Pri raziskovalni analizi podatkov smo imeli vpogled v modeliranje po eni ali dveh značilkah, logistična regresija pa upošteva vse. 
 
-S slike \ref{sl:logistic_weights} lahko razberemo, da so najbolj dominantne značilke pri oblikovanju linearnega modela poleg števila curkov (PRI\_jet\_num) predvsem izpeljane vrednosti: DER\_deltar\_tau\_lep, DER\_pt\_ratio\_lep\_tau, DER\_lep\_eta\_centrality in DER\_deltaeta\_jet\_jet.
+S slike \ref{sl:logistic_weights} lahko razberemo, da so najbolj dominantne značilke pri oblikovanju linearnega modela poleg števila pljuskov (PRI\_jet\_num) predvsem izpeljane vrednosti: DER\_deltar\_tau\_lep, DER\_pt\_ratio\_lep\_tau, DER\_lep\_eta\_centrality in DER\_deltaeta\_jet\_jet.
 
 \begin{figure}[h]
 	\centering	
@@ -1109,7 +1108,7 @@ S slike \ref{sl:logistic_weights} lahko razberemo, da so najbolj dominantne zna�
 	\label{sl:logistic_weights}
 \end{figure}
 
-Uspešnost metode je primerljiva z uspešnostjo naivnega Bayesovega klasifikatorja ($AMS_2 \approx 2$). Z veliko verjetnostjo lahko zato trdimo, da lahko z linearno kombinacijo razpoložljivih značilk ne glede na izbrano klasifikacijsko metodo dosežemo podobno dober rezultat.
+Uspešnost metode je primerljiva z uspešnostjo naivnega Bayesovega klasifikatorja ($AMS_2 \approx 2$). Z veliko gotovostjo lahko zato trdimo, da lahko z linearno kombinacijo razpoložljivih značilk ne glede na izbrano klasifikacijsko metodo dosežemo podobno dober rezultat.
 
 Napovedno vrednost klasifikacijskega algoritma bomo torej znatno lahko izboljšali zgolj z vpeljavo novih značilk, predvsem takih, ki v sistem vnašajo nelinearne relacije. Podoben rezultat lahko npr. pričakujemo tudi od metode podpornih vektorjev (brez uporabe jeder ali razširjenega nabora značilk).
 
@@ -1137,7 +1136,7 @@ Napovedno vrednost klasifikacijskega algoritma bomo torej znatno lahko izboljša
 
 \section{Pospešena odločitvena drevesa}
 
-Na projektu ATLAS so pred izvedbo HiggsML izziva uporabljali interno knjižnico z implementacijo pospešenega gradientnega spusta (TMVA\footnote{\url{https://root.cern.ch/tmva}}). Prav z izzivom pa je v ospredje prišla knjižnica \texttt{XGBoost}\footnote{\url{https://github.com/dmlc/xgboost/}}, ki je ob hitrem algoritmu dala tudi izjemno dobre rezultate.
+Na projektu ATLAS so pred izvedbo izziva \textit{HiggsML} uporabljali interno knjižnico z implementacijo pospešenega gradientnega spusta (TMVA\footnote{\url{https://root.cern.ch/tmva}}). Prav z izzivom pa je v ospredje prišla knjižnica \texttt{XGBoost}\footnote{\url{https://github.com/dmlc/xgboost/}}, ki je ob hitrem algoritmu dala tudi izjemno dobre rezultate.
 
 V sklopu diplomskega dela sem preizkusil metodo GBC iz paketa \texttt{scikit\_learn} ter zmagovalno metodo XGBoost. Metoda XGBoost je bila pognana s parametri, kot jih predlagajo avtorji, sicer nagrajenci izziva \textit{HiggsML} (120 dreves, globine 6). Rezultati so prikazani v tabeli \ref{tb:gbt}.
 
@@ -1181,9 +1180,9 @@ V tabeli vidimo veliko razliko v oceni $AMS_2$ med rezultati metod GBC in XGBoos
 \chapter{Razvoj lastne metode}
 \label{ch:razvoj_lastne_metode}
 
-Metodi, ki sta se pri reševanju danega problema odrezali najbolje, sta bili metoda globokih nevronskih mrež in pa pospešeni gradientni spust. Kljub temu, da je bil najboljši rezultat $AMS$ dosežen s pomočjo globokih nevronskih mrež, je predvsem zaradi potrebe po hitrem algoritmu izbrana metoda pri ločevanju signala od ozadja na projektu ATLAS metoda, ki temelji na pospešenem gradientnem spustu na ansamblu odločitvenih dreves. Značilnost obeh metod je, da v sistem spontano vpeljeta nelinearnost. 
+Metodi, ki sta se pri reševanju danega problema odrezali najbolje, sta bili metoda globokih nevronskih mrež in pa pospešeni gradientni spust. Kljub temu, da je bil najboljši rezultat $AMS$ dosežen s pomočjo globokih nevronskih mrež, je bila predvsem zaradi potrebe po hitrem algoritmu pri ločevanju signala od ozadja na projektu ATLAS izbrana metoda, ki temelji na pospešenem gradientnem spustu nad ansamblom odločitvenih dreves. Značilnost obeh metod je, da v sistem spontano vpeljeta nelinearnost. 
 
-Nekaj poročil je bilo o uporabi metode podpornih vektorjev (SVM)\footnote{\url{https://www.kaggle.com/c/higgs-boson/forums/t/10165/}}, vendar so tekmovalci poročali o precej nižjem rezultati, kakor je bil npr. osnovni rezultat metode pospešenih odločitvenih dreves.
+Nekaj poročil je bilo o uporabi metode podpornih vektorjev (SVM)\footnote{\url{https://www.kaggle.com/c/higgs-boson/forums/t/10165/}}, vendar so tekmovalci poročali o precej nižjem rezultatu, kakor je bil npr. osnovni rezultat metode pospešenih odločitvenih dreves.
 
 Nelinearnost lahko v SVM modele pripeljemo s pomočjo jeder (\textit{kernel}) ali neposredno - z generiranjem večjega nabora novih značilk, ki temeljijo na izvirnih značilkah. V grobem lahko zapišemo $x_j = f(x_{k_1}, x_{k_2}, ..., x_{k_l})$, pri čemer je $l$ celo število in indeks izpeljane značilke $j > d$. Ponavadi velja $l \in \{1, 2, 3\}$. Funkcija $f$ je lahko poljubna. Pri vrednosti $l = 1$ lahko vpeljemo kvadrat, kub, logaritem, eksponent ali kakšno drugo podobno funkcijo. Pri večjem naboru se osredotočimo predvsem na produkte, vsote, diference, eksponente značilk v kombinaciji s prej omenjenimi funkcijami. 
 
@@ -1201,13 +1200,13 @@ Od vseh preizkušenih metod je prav SVM najbolj občutljiv na velikost značilk.
 
 
 \section{Generiranje in izbira novih značilk}
-Med rezultati učnega procesa linearnega SVM je tudi matrika koeficientov, ki izražajo pomembnost posameznih značilk. Podobno funkcionalnost smo dosegli tudi pri logistični regresiji (glej sliko \ref{sl:logistic_weights}).
+Med rezultati učnega procesa linearnega SVM je tudi matrika koeficientov, ki izražajo pomembnost posameznih značilk. Podobno funkcionalnost smo imeli na voljo tudi pri logistični regresiji (glej sliko \ref{sl:logistic_weights}).
 
-Število različnih značilk, je lahko ogromno. Najprej sem generiral značilke, ki so povedale, ali je določena vrednost bila izmerjena oz. izračunana (to je informacija, ki se je s strategijo nadomeščanja manjkajočih vrednosti izgubila). Takih značilk je 10. Nato sem vsako izmed značilk transformiral z izbrano nelinearno funkcijo ($x^2$, $x^3$, $e^{x}$, $\log(x)$, $\sqrt{x}$). Vsak tak poizkus je dodal 30 novih značilk - skupaj 150.
+Število različnih značilk je lahko ogromno. Najprej sem generiral značilke, ki so povedale, ali je določena vrednost bila izmerjena oz. izračunana (to je informacija, ki se je s strategijo nadomeščanja manjkajočih vrednosti izgubila). Takih značilk je 10. Nato sem vsako izmed značilk transformiral z izbrano nelinearno funkcijo ($x^2$, $x^3$, $e^{x}$, $\log(x)$, $\sqrt{x}$). Vsak tak poizkus je dodal 30 novih značilk - skupaj 150.
 
-V naslednjem koraku sem vpeljal nelinearne funkcije dveh značilk $x_i$ in $x_j$. Za vsako smiselno transformacijsko funkcijo lahko generiramo $d^2 = 900$ novih značilk. Ker gre večinoma za simetrične značilke, je kombinacij $d(d-1)/2 = 435$. Uporabil sem naslednje transformacijske funkcije: $x_ix_j$, $x_i^2 + x_j^2$, $e^{x_i^2 + x_j^2}$, $\sqrt{x_i^2 + x_j^2}$, $(1 + x_ix_j)^2$. V vseh eksperimentih sem preizkusil skupno več kot 2000 značilk.
+V naslednjem koraku sem vpeljal nelinearne funkcije dveh značilk $x_i$ in $x_j$. Za vsako smiselno transformacijsko funkcijo lahko generiramo $d^2 = 900$ novih značilk. Vrstni red značilk v transformacijskih funkcijah lahko poljubno spreminjamo, zato je kombinacij $d(d-1)/2 = 435$. Uporabil sem naslednje transformacijske funkcije: $x_ix_j$, $x_i^2 + x_j^2$, $e^{x_i^2 + x_j^2}$, $\sqrt{x_i^2 + x_j^2}$, $(1 + x_ix_j)^2$. V vseh eksperimentih sem preizkusil skupno več kot 2000 značilk.
 
-Ker gre za nepregledno množico značilk je praktično nemogoče v omejenem času preveriti vse in izbrati optimalno kombinacijo značilk in parametrov. V prvi fazi sem zato modelu dodajal omejeno število značilk in izbiral tiste, ki jih je SVM metoda spoznala za najbolj relevantne. Nekateri od vmesnih rezultatov so prikazani v tabeli \ref{tb:svm}.
+Nepregledno množico značilk je praktično nemogoče v omejenem času celostno preveriti vse in izbrati optimalno kombinacijo značilk in parametrov. V prvi fazi sem zato modelu dodajal omejeno število značilk in izbiral tiste, ki jih je SVM metoda spoznala za najbolj relevantne. Nekateri od vmesnih rezultatov so prikazani v tabeli \ref{tb:svm}.
 
 \begin{figure}[h]
 	\centering	
@@ -1246,7 +1245,7 @@ Primer relevantnosti posameznih značilk v modelu SVM je prikazan na sliki \ref{
 	\label{tb:feature_sets}
 \end{table}
 \newpage
-Izbrane transformiranke ene značilke:
+\noindent Izbrane transformiranke ene značilke:
 \begin{itemize}
 	\item \textbf{Manjkajoče vrednosti}: Manjkajoči DER\_mass\_MMC
 	\item \textbf{Kvadratna transformacijska funkcija $x^2$}: DER\_mass\_MMC, DER\_mass\_vis, \\ 
@@ -1257,9 +1256,9 @@ Izbrane transformiranke ene značilke:
 	\item \textbf{Logaritemska transformacijska funkcija $\log(x)$}: /
 \end{itemize}
 
-Kubične in logaritemske transformiranke so znatno poslabšale rezultat klasifikatorja, zato sem jih izpustil.
+\noindent Kubične in logaritemske transformiranke so znatno poslabšale rezultat klasifikatorja, zato sem jih izpustil.
 
-Izbrane transformiranke dveh značilk:
+\noindent Izbrane transformiranke dveh značilk:
 \begin{itemize}
 	\item \textbf{Zmnožek $x_ix_j$}: DER\_mass\_jet\_jet-DER\_mass\_MMC, DER\_mass\_jet\_jet- \\ DER\_mass\_vis, DER\_lep\_eta\_centrality-DER\_mass\_transverse\_met\_lep, \\ DER\_lep\_eta\_centrality-DER\_pt\_ratio\_lep\_tau, PRI\_tau\_phi-PRI\_tau\_pt, \\ PRI\_jet\_subleading\_eta-PRI\_tau\_pt
 	
@@ -1277,9 +1276,9 @@ Izbrane transformiranke dveh značilk:
 	
 \end{itemize}
 
-Izbrani pari značilk so pri vsoti kvadratov in korenu vsote kvadratov enaki. To je mogoče indikator, da koren ne prinese dodatne informacije v klasifikacijski algoritem.
+\noindent Izbrani pari značilk so pri vsoti kvadratov in korenu vsote kvadratov enaki. To je mogoče indikator, da koren ne prinese dodatne informacije v klasifikacijski algoritem.
 
-Nabori značilk, ki sem jih uporabil pri razvoju lastne metode, so razvidni iz tabele \ref{tb:feature_sets}. Na podlagi zgoraj opisanih postopkov sem določil 17 različnih naborov značilk. Eksperimentom sem za primerjavo dodal še enega od naborov značilk zmagovalne metode na izzivu (11), ki je služil za primerjavo uspešnosti postopka izbire značilk.
+Nabori značilk, ki sem jih uporabil pri razvoju lastne metode, so razvidni iz tabele \ref{tb:feature_sets}. Na podlagi zgoraj opisanih postopkov sem določil 17 različnih naborov značilk. Za primerjavo sem preveril še nabor značilk ene od zmagovalnih metod v izzivu (11).
 
 Najboljše rezultate pri klasifikaciji z linearnim jedrom (glej tabelo \ref{tb:svm}) so prinesli nefiltrirani nabori značilk (435 in več značilk). Posledica velikega nabora značilk je bil časovno potraten algoritem. Zmagovalni nabor značilk (11) je bil pri metodi SVM opazno slabši. 
 
@@ -1435,7 +1434,7 @@ Nabor značilk s transformirankami dveh parametrov je prinesel slabši rezultat 
 
 \section{Ansambli}
 
-Pri poskusu implementacije ansambla metod na podlagi več SVM klasifikatorjev, sem učno podatkovno množico razdelil na 10 delov. 9 sem jih porabil za učenje šibkih modelov, zadnji del pa je, podobno kot pri vseh ostalih eksperimentih, služil za validacijo. Za osnovni model sem si izbral najbolj uspešno metodo iz prejšnjih eksperimentov: SVM z jedrom RBF, in sicer z naborom značilk (8). Rezultati posameznih šibkih modelov so prikazani v tabeli \ref{tb:svm-ensemble-part}.
+Pri poskusu implementacije ansambla metod na podlagi več SVM klasifikatorjev sem učno podatkovno množico razdelil na 10 delov. 9 sem jih porabil za učenje šibkih modelov, zadnji del pa je, podobno kot pri vseh ostalih eksperimentih, služil za validacijo. Za osnovni model sem si izbral najbolj uspešno metodo iz prejšnjih eksperimentov: SVM z jedrom RBF, in sicer z naborom značilk (8). Rezultati posameznih šibkih modelov so prikazani v tabeli \ref{tb:svm-ensemble-part}.
 
 \begin{table}[h!]
 	\centering
@@ -1519,13 +1518,13 @@ Pri nalaganju sem uporabil 8 šibkih algoritmov. Na podlagi njihovih rezultatov 
 
 Linearni učni algoritem SVM je pri 476 značilkah na učni množici 25.000 primerkov potreboval približno 1 uro. Ker je zahtevnost algoritma ${\cal O}(n^3)$, kjer je $n$ število primerkov, eksperimentov nisem izvajal na polni učni množic (225.000 primerkov). Na polni učni množici sem pognal samo najbolj obetavne izmed kombinacij jeder in naborov značilk.
 
-Vsi rezultati so prikazani v tabeli \ref{tb:svm}. Osnovni nabor značilk je v kombinaciji z linearnim jedrom dal podoben rezultat kakor logistična regresija. Z dodajanjem izpeljanih značilk se rezultat algoritma hitro zelo izboljša. Pri dodajanju izpeljank iz parov značilk opazimo, da rezultat s filtriranim izborom značilk (16), ni dosti boljši kot rezultat s filtriranim naborov transformiranih značilk po eni sami komponenti. To lahko pomeni, da sem izpeljane značilke glede na njihovo utež prehitro rezali.
+Vsi rezultati so prikazani v tabeli \ref{tb:svm}. Osnovni nabor značilk je v kombinaciji z linearnim jedrom dal podoben rezultat kakor logistična regresija. Z dodajanjem izpeljanih značilk se rezultat algoritma hitro zelo izboljša. Pri dodajanju izpeljank iz parov značilk opazimo, da rezultat s filtriranim izborom značilk (16), ni dosti boljši kot rezultat s filtriranim naborov transformiranih značilk po eni sami komponenti. To lahko pomeni, da sem izpeljane značilke glede na njihovo utež prehitro rezal.
 
 Pri uporabi jeder se je efekt mešanih značilk izničil, rezultati pa so bili v splošnem boljši. Prikazani so v tabeli \ref{tb:svm_kernel}. Za najbolj obetavno kombinacijo jedra in značilk sem algoritem pognal na celotni učni množici podatkov. Če primerjamo RBF (16) in *RBF (16) iz tabele \ref{tb:svm_kernel} vidimo, da da metoda, označena z *, ki je bila pognana na celotni razpoložljivi učni množici, $AMS_2$, ki je za slabi 2 desetinki boljši.
 
 V naslednjem koraku sem poskusil izboljšati najboljšo kombinacijo jedra in značilk pri metodi podpornih vektorjev s pomočjo ansambelskih pristopov. Rezultati so bili slabši, kakor v primeru, ko sem en sam klasifikacijskih algoritem učil na celotni zbirki podatkov.
 
-Izbrani - najboljši algoritem, ki temelji na metodi podpornih vektorjev, uporablja gaussovsko jedro in izbor značilk (8) - izbor najboljših značilk po eni spremenljivki: manjkajoče, $x^2$, $e^x$, $\sqrt{x}$.
+Izbrani - najboljši algoritem, ki temelji na metodi podpornih vektorjev, uporablja gaussovsko jedro in izbor značilk (8) - izbor najboljših značilk po eni spremenljivki: manjkajoče vrednosti, $x^2$, $e^x$, $\sqrt{x}$.
 
 \begin{table}[h!]
 	\centering
@@ -1541,27 +1540,27 @@ Izbrani - najboljši algoritem, ki temelji na metodi podpornih vektorjev, uporab
 		\rotatebox[origin=l]{90}{ocena $F_1$} & 
 		\rotatebox[origin=l]{90}{ocena $AMS_2$} \\
 		\hline	
-		preprosto okno & 28,4\% & 43,2\% & 22,3\% & 6,1\% &
-			0,560 & 0,824 & 0,716 & 0,667 &
+		preprosto okno & \color{red}28,4\% & 43,2\% & 22,3\% & 6,1\% &
+			0,560 & \color{red}0,824 & 0,716 & 0,667 &
 			1,579 \\
-		logistična regresija (1) & 18,4\% & 56,4\% & 9,1\% & 16,1\% &
+		log. regresija (1) & 18,4\% & 56,4\% & 9,1\% & 16,1\% &
 			0,668 & 0,535 & 0,749 & 0,594
 			& 2,015 \\
 		SVM-LIN (16) & 23,6\% & 57,3\% & 8,3\% & 10.9\% &
 		0,740 & 0,684 & 0,809 & 0,711 &
 		2,553 \\
-		zlaganje SVM-RBF (8) & 24,4\% & 58,7\% & 6,9\% & 10,0\% &
+		zl. SVM-RBF (8) & 24,4\% & 58,7\% & 6,9\% & 10,0\% &
 		0,780 & 0,708 & 0,831 & 0,743 &
 		2,854 \\		
-		GBC (8) & 24,2\% & 59,0\% & 6,5\% & 10,2\% &
+		GBC (8) & 24,2\% & \color{red}59,0\% & \color{red}6,5\% & 10,2\% &
 		0,787 & 0,703 & 0,832 & 0,742 &
 		2,856 \\
-		SVM-RBF (8) & 24,7\% & 59,0\% & 6,5\% & 9,7\% &
-		0,791 & 0,718 & 0,837 & 0,752 &
+		SVM-RBF (8) & 24,7\% & \color{red}59,0\% & \color{red}6,5\% & \color{red}9,7\% &
+		\color{red}0,791 & 0,718 & \color{red}0,837 & \color{red}0,752 &
 		2,940 \\
 		XGBoost (1) & 27,8\% & 51,6\% & 14,0\% & 6,7\% &
 		0,665 & 0,806 & 0,793 & 0,729 &
-		3,735 \\
+		\color{red}3,735 \\
 	\end{tabular}
 	\caption{Primerjava izbranih metod z lastno metodo.}
 	\label{tb:bestof}
@@ -1569,7 +1568,7 @@ Izbrani - najboljši algoritem, ki temelji na metodi podpornih vektorjev, uporab
 
 Primerjava rešitve na podlagi metode podpornih vektorjev z ostalimi metodami je predstavljena v tabeli \ref{tb:bestof}.
 
-S pomočjo razširitve in izbora značilk ter izbire ustreznega jedra je v diplomskem delu razvita metoda krepko presegla osnovne metode, hkrati pa uspela doseči celo boljši rezultat od neoptimizirane metode pospešenega gradientnega spusta na odločitvenih drevesih (GBC iz paketa \texttt{scikit-learn}). Metoda je tudi presegla rezultate, o katerih so pri uporabi metode podpornih vektorjev poročali drugi tekmovalci v izzivu \textit{HiggsML} (ocena $AMS_2 < 2,8$)\footnote{\url{https://www.kaggle.com/c/higgs-boson/forums/t/10165/}}.
+S pomočjo razširitve in izbora značilk ter izbire ustreznega jedra je v diplomskem delu razvita metoda krepko presegla osnovne metode, hkrati pa uspela doseči celo boljši rezultat od neoptimizirane metode pospešenega gradientnega spusta na odločitvenih drevesih (GBC iz paketa \texttt{scikit-learn}). Metoda je tudi presegla rezultate, o katerih so pri uporabi metode podpornih vektorjev poročali drugi tekmovalci v izzivu \textit{HiggsML} (ocena $AMS_2 < \num{2,8}$) \cite{KaggleSVM}.
 
 Razlika do rezultatov optimizirane nagrajene metode XGBoost je kljub vsemu precej velika. Podrobnejši pogled v tabelo \ref{tb:bestof} nam razkriva razliko pri deležu napačno pozitivno in napačno negativno klasificiranih primerih. Pri XGBoost metodi gre razlika v prid manjšega števila napačno negativnih in večjega števila napačno pozitivnih primerov. Razen priklica (in seveda $AMS_2$) ima v diplomskem delu razvita metoda ostale standardne metrike krepko boljše. Hiter pregled pove, da je SVM metoda napačno klasificirala $16,2\%$ primerov, XGBoost pa kar $20,7\%$. 
 
