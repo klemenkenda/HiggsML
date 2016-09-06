@@ -172,7 +172,7 @@ Gibalna količina je povezana s hitrostjo delca $v$.  Za delec z neničelno maso
 \end{equation}
 kjer je, ob dogovoru o izpuščanju $c$, $\beta$ enaka $v$.
 
-Enačba velja tako za velikosti, kakor tudi za tridimenzionalne vektorje $\mathbf{v}$ in $\mathbf{p}$. Zapišemo lahko $\mathbf{p} = \gamma m \mathbf{v}$, pri tem pa velja dogovor $p = |\mathbf{p}|$ in $v = |\mathbf{v}|$. Faktor $\gamma$ ob približevanju $v$ svetlobni hitrosti $c$ divergira proti $\infty$, kar pomeni, da svetlobne hitrosti delcem z neničelno maso ni mogoče doseči ali preseči. Kinematika delca je popolnoma definirana z vektorjem gibalne količine in energijo, torej s četvercem $(E, p_x, p_y, p_z)$. Ko delec identificiramo, ima le-ta dobro definirano maso, tako da lahko energijo izračunamo s pomočjo gibalne količine z enačbo \ref{eq:4momentumsimplified}. Namesto komponent gibalne količine $p_x,\;p_y$ in $p_z$ velikokrat uporabimo parametre $\phi, \eta$ in $p_T$. $\phi$ je azimutalni kot krajevnega dela četverca gibalne količine (v prečni ravnini). $\eta$ je psevdorapidnost, ki je definirana z
+Enačba velja tako za velikosti, kakor tudi za tridimenzionalne vektorje $\mathbf{v}$ in $\mathbf{p}$. Zapišemo lahko $\mathbf{p} = \gamma m \mathbf{v}$, pri tem pa velja dogovor $p = |\mathbf{p}|$ in $v = |\mathbf{v}|$. Faktor $\gamma$ ob približevanju $v$ svetlobni hitrosti divergira proti $\infty$, kar pomeni, da svetlobne hitrosti delcem z neničelno maso ni mogoče doseči ali preseči. Kinematika delca je popolnoma definirana z energijo in vektorjem gibalne količine, torej s četvercem $(E, p_x, p_y, p_z)$. Ko delec identificiramo, ima le-ta dobro definirano maso, tako da lahko energijo izračunamo s pomočjo gibalne količine z enačbo \ref{eq:4momentumsimplified}. Namesto komponent gibalne količine $p_x,\;p_y$ in $p_z$ velikokrat uporabimo parametre $\phi, \eta$ in $p_T$. $\phi$ je azimutalni kot krajevnega dela četverca gibalne količine (v prečni ravnini). $\eta$ je psevdorapidnost, ki je definirana z
 \begin{equation}
 \eta = -\ln \tan(\theta/2),
 \label{eq:pseudorapidity}
@@ -201,7 +201,7 @@ Modulus $p$ je definiran kot
 p_T \cosh \eta.
 \label{eq:modulus}
 \end{equation}
-Prečna energija je definirana kot $E_T = \sqrt{m^2 + p_T^2}$. Manjkajočo prečno energijo lahko izračunamo z $|\textbf{E}^{miss}_T| = - \sum_i p_T(i)$, za vse izmerjene delce $i$. Ta energija pripada nevtrinom, ki jih detektor ne zazna. Manjkajoča prečna energija $\mathbf{E}^{miss}_T$ je dvodimenzionalni vektor
+Prečna energija je definirana kot $E_T = \sqrt{m^2 + p_T^2}$. Velikost manjkajoče prečne energije lahko izračunamo z $|\textbf{E}^{miss}_T| = - \sum_i p_T(i)$, za vse izmerjene delce $i$. Ta energija pripada nevtrinom, ki jih detektor ne zazna. Manjkajoča prečna energija $\mathbf{E}^{miss}_T$ je dvodimenzionalni vektor
 \begin{equation}
 \mathbf{E}^{miss}_T = \left(
 \begin{array}{c}
@@ -282,7 +282,7 @@ Spekter invariantnih mas parov $\gamma\gamma$ je predstavljen na sliki \ref{sl:h
 Manjši vrh pri $90\,\text{GeV}$ predstavlja en bozon $Z$, ki razpade na 4 leptone. Širši vrh pri $200\,\text{GeV}$ pa predstavlja neposredni nastanek parov bozonov $Z$. Dodaten vrh je v okolici $125\,\text{GeV}$ in sovpada s pričakovanim signalom, ki je na sliki prikazan s svetlo modro barvo.
 
 
-\textbf{Kanal} ${\mathbf H \rightarrow \tau^+\tau^-}$. Razpadni način $H \rightarrow \tau^+\tau^-$ je predmet obravnave poenostavljenega problema razločevanja signala od ozadja v izzivu \textit{HiggsML}, s katerim se ukvarjam v diplomskem delu. Slika \ref{sl:htautaumass} prikazuje spekter invariantnih mas podobnih razpadov $H \rightarrow \tau^+\tau^-$ in $Z \rightarrow \tau^+\tau^-$, ki sta bila izdelana s pomočjo simulatorja detektorja ATLAS. 
+\textbf{Kanal} ${\mathbf H \rightarrow \tau^+\tau^-}$. Razpadni način $H \rightarrow \tau^+\tau^-$ je predmet obravnave poenostavljenega problema razločevanja signala od ozadja v izzivu \textit{HiggsML}, s katerim se ukvarjam v diplomskem delu. Slika \ref{sl:htautaumass} prikazuje spektra invariantnih mas podobnih razpadov $H \rightarrow \tau^+\tau^-$ in $Z \rightarrow \tau^+\tau^-$, ki sta bila izdelana s pomočjo simulatorja detektorja ATLAS. 
 
 \begin{figure}[ht]
 	\centering
@@ -344,7 +344,7 @@ Zgradba detektorja, ki v višino meri 25, v dolžino pa 44 metrov, je prikazana 
 
 Elektron v notranjem detektorju pusti sled in se zaustavi v elektromagnetnem kalorimetru. Foton se obnaša podobno, le da v notranjem detektorju ne pusti sledi. Proton pusti sled, ustavi pa se v hadronskem kalorimetru. Nevtron se obnaša podobno, a za seboj ne pušča sledi. Mion potuje skozi detektor in za seboj pušča sled (v ID in MS). Nevtrino pa potuje skozi detektor ATLAS, ne da bi ga le-ta zaznal \cite{CerknLHCParticles}.
 
-Lastnosti delcev, pljuskov in ostale zanimive količine se rekonstruirajo iz stotin surovih signalov detektorja. V topologiji, na katero se osredotočam v diplomskem delu, so zanimivi elektroni, mioni, hadronski tau, pljuski (\textit{jets}) in manjkajoča prečna energija. Elektron, mion in delec $\tau$ so trije leptoni iz standardnega modela. Življenjska doba elektronov in mionov je dovolj velika, da lahko ti delci dosežejo detektorje. Zaradi tega je mogoče njihove lastnosti (energijo in smer) izmeriti neposredno. Delci $\tau$ razpadejo skoraj hipoma, bodisi v elektron in dva nevtrina, bodisi v mion in dva nevtrina ali v skoraj kolinearni pljusk nabitih delcev in nevtrino. Izmerjena gibalna količina vseh delcev v dogodku je najpomembnejša informacija, ki je na voljo pri klasifikaciji dogodkov.
+Lastnosti delcev, pljuskov in ostale zanimive količine se rekonstruirajo iz stotin surovih signalov detektorja. V topologiji, na katero se osredotočam v diplomskem delu, nas zanimajo elektroni, mioni, hadronski tau, pljuski (\textit{jets}) in manjkajoča prečna energija. Elektron, mion in delec $\tau$ so trije leptoni iz standardnega modela. Življenjska doba elektronov in mionov je dovolj velika, da lahko ti delci dosežejo detektorje. Zaradi tega je mogoče njihove lastnosti (energijo in smer) izmeriti neposredno. Delci $\tau$ razpadejo skoraj hipoma, bodisi v elektron in dva nevtrina, bodisi v mion in dva nevtrina ali v skoraj kolinearni pljusk nabitih delcev in nevtrino. Izmerjena gibalna količina vseh delcev v dogodku je najpomembnejša informacija, ki je na voljo pri klasifikaciji dogodkov.
 
 Namesto koordinate $\theta$ pogosto uporabimo \textit{psevdorapidnost} (glej enačbo \ref{eq:pseudorapidity}). Delec v $x\text{-}y$ ravnini ($\theta = \pi/2$) ima vrednost $\eta = 0$, $\eta = +\infty$ pa ustreza delcu, ki potuje vzdolž osi $z$ ($\theta = 0$). Delec, ki potuje v nasprotni smeri ima $\eta = -\infty$. Delce je možno s spektrometrom ATLAS v celoti identificirati (in jim določiti gibalno količino) v razponu psevdorapidnosti $\eta \in \left[-\num{2,5}; \num{2,5} \right]$. Pri vrednostih $|\eta| \in \left(\num{2,5}; 5\right]$ delcev v detektorju ni več mogoče identificirati, je pa moč izmeriti njihovo gibalno količino. Delcev z $|\eta| > 5$ ni možno zaznati.
 
@@ -443,7 +443,7 @@ Opisani pristop temelji na podatkih in ne na predhodnem domenskem znanju. Metodo
 
 \textbf{Razpršeni grafi} se nanašajo na 2 značilki. Podatke ponazorimo s točkami, katerih koordinate predstavljajo vrednosti obeh značilk. Grafe ponavadi prikažemo v matriki 2, 3 ali 4 različnih značilk, tako da jih lahko primerjamo med sabo. Takšen prikaz nam lahko razkrije skrito strukturo v podatkih, ki je po pregledu ene same značilke ne zasledimo. V primeru klasifikacije lahko npr. opazimo, če določena kombinacija značilk bolje loči oba razreda kot ena sama. Opazimo lahko tudi medsebojno korelacijo posameznih značilk, ki se odraža na urejenosti/razpršenosti točk.
 
-\textbf{Korelacijska matrika značilk} je zelo učinkovita metoda za hiter in celosten pregled nad podatki. V matriki dimenzije $d \times d$, kjer je $d$ število značilk, s pomočjo barvne lestvice ponazorimo korelacijo med parom značilk. S pomočjo kompletnega pivotiranja, ki ga naredimo s hierarhičnim grozdenjem, lahko značilke, ki so si med seboj podobne, smiselno uredimo. Metoda je še zlasti uporabna pri izločanju linearno odvisnih značilk, ki modelom ne prinašajo dodatne vrednosti. 
+\textbf{Korelacijska matrika značilk} je zelo učinkovita metoda za hiter in celosten pregled nad podatki. V matriki dimenzije $d \times d$, kjer je $d$ število značilk, s pomočjo barvne lestvice ponazorimo korelacijo med parom značilk. S pomočjo kompletnega pivotiranja, ki ga naredimo na podlagi hierarhičnega grozdenja, lahko značilke, ki so si med seboj podobne, smiselno uredimo. Metoda je še zlasti uporabna pri izločanju linearno odvisnih značilk, ki modelom ne prinašajo dodatne vrednosti. 
 
 \textbf{Analiza glavnih komponent} je definirana kot ortogonalna linearna transformacija, ki transformira nabor podatkov v nov koordinatni sistem, in sicer tako, da komponenta z največjo varianco neke projekcije podatkov leži na prvi koordinati, druga največja na drugem mestu in tako naprej.
 
@@ -482,7 +482,7 @@ kjer se
 \begin{equation}
 	g(z) = \frac{1}{1 + e^{-z}}
 \end{equation}
-imenuje \textbf{logistična funkcija} ali \textbf{sigmoid}. $h_\theta(x)$ predstavlja linearno kombinacijo značilk $h_\theta(x) = \theta_0 + \theta_1x^{(1)} + \theta_2x^{(2)} + \dots + \theta_nx^{(n)}$. Če privzamemo $x_0^{(i)} = 1$, lahko zapišemo $_\theta(x) = \theta \cdot x$.
+imenuje \textbf{logistična funkcija} ali \textbf{sigmoid}. $h_\theta(x)$ predstavlja linearno kombinacijo značilk $h_\theta(x) = \theta_0 + \theta_1x^{(1)} + \theta_2x^{(2)} + \dots + \theta_nx^{(n)}$. Če privzamemo $x_0^{(i)} = 1$, lahko zapišemo $h_\theta(x) = \theta \cdot x$.
 
 Interpretacija hipoteze je verjetnostna. Vrednost hipoteze je $P(y=1|x;\theta)$ - torej verjetnost, da je $y = 1$ pri danem $x$ in $\theta$.
 
@@ -533,7 +533,7 @@ Denimo, da imamo binarni klasifikacijski problem in da sta razreda točk v naše
 	\label{svmseparable}
 \end{figure}
 
-Metoda podpornih vektorjev (\textit{angl. Support Vector Machine} oz. SVM) se imenuje tudi klasifikator maksimalnega razmika. Prej opisani problem binarne klasifikacije s tem dobi enolično rešitev. Primer klasifikatorja z maksimalnim razmikom je ilustriran na sliki \ref{sl:svmmaxclass}.
+Metoda podpornih vektorjev (\textit{support vector machine}, SVM) se imenuje tudi klasifikator maksimalnega razmika. Prej opisani problem binarne klasifikacije s tem dobi enolično rešitev. Primer klasifikatorja z maksimalnim razmikom je ilustriran na sliki \ref{sl:svmmaxclass}.
 
 \begin{figure}[h!]
 	\centering
@@ -615,7 +615,7 @@ Cilj metode je maksimizirati razdaljo med podpornima vektorjema glede na $w$ in 
 \begin{eqnarray}
 	L(w, b, \alpha) = \frac{1}{2}||w||^2 - \sum^n_{i=1} \alpha_i(y^{(i)}(w^Tx^{(i)} + b) - 1),
 \end{eqnarray}
-kjer je $y^{(i)} \in \{-1, 1\}$ oznaka razreda točke $x^{(i)}$. Prvi del funkcije poskrbi za maskimizacijo razmika, drugi del pa za minimizacijo napake pri učenju.
+kjer je $y^{(i)} \in \{-1, 1\}$ oznaka razreda točke $x^{(i)}$. Prvi del funkcije poskrbi za maksimizacijo razmika, drugi del pa za minimizacijo napake pri učenju.
 
 Zanimajo nas parcialni odvodi Lagrangeve funkcije, ki jih postavimo na nič: $\frac{\partial}{\partial b}L(w, b, \alpha) = 0$ in $\frac{\partial}{\partial w}L(w, b, \alpha) = 0$. Dobimo
 \begin{eqnarray}
@@ -662,7 +662,7 @@ klasifikacijsko funkcijo pa v
 \begin{itemize}
 	\item linearno: $K(x^{(i)}, x^{(j)}) = x^{(i)T}x^{(j)}$
 	\item polinomsko: $K(x^{(i)}, x^{(j)}) = (\gamma x^{(i)T}x^{(j)} + c)^d$, $\gamma > 0$ 
-	\item gaussovsko (RBF - \textit{radial basis function}): $K(x^{(i)}, x^{(j)}) = \exp(-\gamma |x^{(i)}-x^{(j)}|^2)$, $\gamma > 0$ 
+	\item gaussovsko (\textit{radial basis function}, RBF): $K(x^{(i)}, x^{(j)}) = \exp(-\gamma |x^{(i)}-x^{(j)}|^2)$, $\gamma > 0$ 
 \end{itemize}
 
 \subsection{Odločitvena drevesa}
@@ -704,7 +704,7 @@ Na sliki \ref{sl:algo-id3} je prikazan algoritem \texttt{ID3}, prilagojen učenj
 	\label{sl:algo-id3}	
 \end{figure}
 
-Bistveni del algoritma predstavlja iskanje značilke $Z$, ki najbolje klasificira množico primerov. Ena od mer, ki nam pomaga določiti takšno značilko, se imenuje informacijski pribitek (\textit{information gain}), označimo jo z $G$. Za definicijo te količine potrebujemo mero, ki jo v teoriji informacija imenujemo tudi entropija. Entropija določa (ne)čistost množice primerkov. Naša učna množica ${\cal D}$ vsebuje pozitivne in negativne primere. Glede na to klasifikacijo definiramo entropijo
+Bistveni del algoritma predstavlja iskanje značilke $Z$, ki najbolje klasificira množico primerov. Ena od mer, ki nam pomaga določiti takšno značilko, se imenuje informacijski pribitek (\textit{information gain}), označimo jo z $G$. Za definicijo te količine potrebujemo mero, ki jo v teoriji informacije imenujemo tudi entropija. Entropija določa (ne)čistost množice primerkov. Naša učna množica ${\cal D}$ vsebuje pozitivne in negativne primere. Glede na to klasifikacijo definiramo entropijo
 \begin{eqnarray}
 	S({\cal D}) = -p_+\log_2 p_+ - p_- \log_2 p_-,
 	\label{eq:entropy}
@@ -826,7 +826,7 @@ Uspešnost metod strojnega učenja ocenimo na podlagi različnih metrik. Poleg m
 \label{analiza-podatkov}
 Podatki, ki sem jih uporabil v diplomskem delu, so bili prvič objavljeni in uporabljeni za izvedbo \textit{HiggsML} izziva. Podatki predstavljajo dogodke, ki so jih simulirali na uradnem simulatorju polnega detektorja ATLAS \cite{Adam-Bourdarios14}. Podatki iz simulatorja imajo lastnosti, ki posnemajo statistične lastnosti dejanskih dogodkov - tako signala, kakor tudi ozadja.
 
-Vzorec signala zajema dogodke, v katerih naj bi nastal Higgsov bozon (katerega masa je bila nastavljena na $m_H = 125\,\text{GeV}$). Vzorec, ki predstavlja ozadje, vsebuje dogodke, ki odražajo druge znane procese, v katerih nastanejo vsaj en elektron ali mion in hadronski tau, s čimer posnemajo signal.
+Vzorec signala zajema dogodke, v katerih naj bi nastal Higgsov bozon (katerega masa je bila nastavljena na $m_H = 125\,\text{GeV}$). Vzorec, ki predstavlja ozadje, vsebuje dogodke, ki odražajo druge znane procese, v katerih nastaneta vsaj en elektron ali mion in hadronski tau, s čimer posnemajo signal.
 
 V simuliranih podatkih so zastopani samo trije procesi ozadja. Prvi prihaja iz razpada $Z \rightarrow \tau^+\tau^-$ (masa bozona $Z$ je $m_Z = 91,2\,\text{GeV}$). Pri tem razpadu nastanejo dogodki s topologijo, ki je zelo podobna tisti pri razpadu Higgsovega bozona. Druga množica dogodkov vsebuje par $t$ kvarkov, ki imata lahko med svojimi razpadnimi produkti lepton ali hadronski tau. Tretja množica vsebuje razpad bozona $W$, kjer lahko nastaneta en elektron ali mion in hadronski tau. 
 
@@ -839,7 +839,7 @@ Testna podatkovna množica vsebuje 1.000.000 dogodkov, ki pa niso opremljeni z o
 
 \subsection{Opis značilk}
 \label{sec:opis-znacilk}
-Podatki zajemajo $d = 30$ značilk, katerih opis je povzet po \cite{Adam-Bourdarios14}. Stolpci s predpono PRI (ki označuje \textit{PRImitives}) predstavlja \textit{surove} podatke o trkih, kot jih izmeri detektor. Stolpci s predpono DER (ki označuje \textit{DERived}) predstavljajo vrednosti, izpeljane iz surovih podatkov. Količine so določili sodelavci kolaboracije ATLAS z namenom, da bi pomagale definirati relevantna področja faznega prostora za klasifikacijske metode. Stolpci brez predpone imajo posebno vlogo in se ne uporabljajo kot značilke:
+Podatki zajemajo $d = 30$ značilk, katerih opis je povzet po \cite{Adam-Bourdarios14}. Stolpci s predpono PRI (ki označuje \textit{PRImitives}) predstavlja \textit{surove} podatke o trkih, kot jih izmeri detektor. Stolpci s predpono DER (ki označuje \textit{DERived}) predstavljajo vrednosti, izpeljane iz surovih podatkov. Količine so določili sodelavci kolaboracije ATLAS z namenom, da bi pomagale klasifikacijskim metodam čimbolje določiti relevantna področja faznega prostora. Stolpci brez predpone imajo posebno vlogo in se ne uporabljajo kot značilke:
 
 \begin{changemargin}{0.5cm}{0.0cm} 
 \begin{description}
